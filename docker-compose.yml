@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  geomine-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: geomine_intel_app
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DATABASE_URL=postgresql://postgres:postgres@geomine-postgres:5432/geomine_intel
+      - JWT_SECRET=${JWT_SECRET:-cmpdi_cil_sih26023_secret}
+    depends_on:
+      - geomine-postgres
+    restart: unless-stopped
+
+  geomine-postgres:
+    image: pgvector/pgvector:pg16
+    container_name: geomine_intel_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: geomine_intel
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

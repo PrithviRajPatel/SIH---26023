@@ -1,0 +1,6 @@
+{
+  "name": "GeoMine Intel - CMPDI / CIL AI Document Platform",
+  "description": "Smart India Hackathon 2026 (SIH26023) - AI-assisted geological, mining and production document intelligence, structured extraction, validation, RAG, SQL querying, analytics, and automated reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

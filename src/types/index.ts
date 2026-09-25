@@ -1,0 +1,277 @@
+export type UserRole = 'ADMIN' | 'ANALYST' | 'VIEWER';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  designation: string;
+  department: string;
+  subsidiary: string;
+}
+
+export type DocumentType = 
+  | 'ANNUAL_REPORT'
+  | 'SCANNED_MINING_REPORT'
+  | 'GEOLOGICAL_ASSESSMENT'
+  | 'PRODUCTION_SPREADSHEET'
+  | 'PARLIAMENTARY_INQUIRY'
+  | 'SAFETY_COMPLIANCE_DOSSIER';
+
+export type DocumentStatus = 
+  | 'UPLOADED'
+  | 'PROCESSING'
+  | 'PROCESSED'
+  | 'VALIDATION_REQUIRED'
+  | 'VALIDATED'
+  | 'FAILED';
+
+export interface ExtractedTable {
+  id: string;
+  title: string;
+  pageNumber: number;
+  headers: string[];
+  rows: (string | number)[][];
+  confidence: number;
+}
+
+export interface DocumentChunk {
+  id: string;
+  pageNumber: number;
+  content: string;
+  sectionTitle?: string;
+  embedding?: number[];
+  confidence: number;
+}
+
+export interface ExtractedEntity {
+  id: string;
+  documentId: string;
+  pageNumber: number;
+  entityType: 
+    | 'mine'
+    | 'subsidiary'
+    | 'coalfield'
+    | 'year'
+    | 'target_production'
+    | 'achieved_production'
+    | 'dispatch'
+    | 'overburden_removal'
+    | 'stripping_ratio'
+    | 'geological_reserves'
+    | 'manpower'
+    | 'safety_incident'
+    | 'borehole_depth';
+  entityKey: string;
+  entityValue: string | number;
+  unit?: string;
+  normalizedValue?: number;
+  normalizedUnit?: string;
+  sourceText: string;
+  sourceTable?: string;
+  extractionMethod: 'OCR_REGEX' | 'TABULAR_PARSER' | 'GEMINI_NER' | 'STRUCTURED_CSV';
+  confidence: number;
+  validationStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CONFLICT_REQUIRES_REVIEW' | 'EDITED';
+  analystComment?: string;
+  timestamp: string;
+}
+
+export interface DocumentPage {
+  pageNumber: number;
+  ocrConfidence: number;
+  isScanned: boolean;
+  rawText: string;
+  boundingBoxes?: {
+    text: string;
+    box: [number, number, number, number]; // [top, left, width, height] in percentage
+    confidence: number;
+  }[];
+}
+
+export interface MiningDocument {
+  id: string;
+  title: string;
+  filename: string;
+  fileHash: string;
+  fileType: 'pdf' | 'docx' | 'xlsx' | 'csv' | 'jpg' | 'png' | 'txt';
+  fileSize: number;
+  subsidiary: string;
+  mineName?: string;
+  coalfield?: string;
+  reportingYear: number;
+  docType: DocumentType;
+  status: DocumentStatus;
+  isScanned: boolean;
+  pageCount: number;
+  uploadedAt: string;
+  processedAt?: string;
+  pages: DocumentPage[];
+  chunks: DocumentChunk[];
+  tables: ExtractedTable[];
+  entities: ExtractedEntity[];
+  summary?: string;
+  tags: string[];
+}
+
+export interface ProductionRecord {
+  id: string;
+  documentId: string;
+  pageNumber: number;
+  subsidiary: string;
+  mineName: string;
+  coalfield: string;
+  year: number;
+  month?: string;
+  targetProductionMt: number;
+  achievedProductionMt: number;
+  achievementPercentage: number;
+  dispatchMt: number;
+  overburdenRemovalMcm: number;
+  strippingRatio: number; // OB / Coal
+  productivityOms: number; // Output per manshift
+  confidence: number;
+  validationStatus: 'VERIFIED' | 'CONFLICT' | 'UNVERIFIED';
+}
+
+export interface GeologicalRecord {
+  id: string;
+  documentId: string;
+  pageNumber: number;
+  subsidiary: string;
+  coalfield: string;
+  blockName: string;
+  provenReservesMt: number;
+  indicatedReservesMt: number;
+  inferredReservesMt: number;
+  totalReservesMt: number;
+  coalGrade: string; // e.g. G11, G13, Steel Grade-I
+  avgSeamThicknessM: number;
+  gasDrainagePotential: 'LOW' | 'MEDIUM' | 'HIGH';
+  confidence: number;
+}
+
+export type QueryType = 'STRUCTURED' | 'UNSTRUCTURED' | 'HYBRID' | 'ANALYTICS' | 'REPORT_GENERATION';
+
+export interface CitationSource {
+  documentId: string;
+  documentTitle: string;
+  pageNumber: number;
+  sectionOrTable: string;
+  excerpt: string;
+  confidence: number;
+  dataType: 'STRUCTURED_RECORD' | 'EXTRACTED_TABLE' | 'TEXT_CHUNK' | 'OCR_SCAN';
+}
+
+export interface QueryResponse {
+  query: string;
+  queryType: QueryType;
+  answer: string;
+  structuredData?: any;
+  chartData?: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      color?: string;
+    }[];
+  };
+  sqlQuery?: string;
+  citations: CitationSource[];
+  executionTimeMs: number;
+  traceSteps: {
+    step: string;
+    status: 'COMPLETE' | 'RUNNING' | 'SKIPPED';
+    details: string;
+  }[];
+  isSyntheticDemo: boolean;
+}
+
+export interface TopicItem {
+  id: string;
+  topic: string;
+  description: string;
+  frequency: number;
+  trend: 'INCREASING' | 'STABLE' | 'DECREASING';
+  growthPercentage: number;
+  keywords: string[];
+  documentCount: number;
+  relatedDocIds: string[];
+}
+
+export interface WordCloudItem {
+  text: string;
+  value: number;
+  category: 'production' | 'geology' | 'safety' | 'subsidiary' | 'equipment' | 'general';
+  docCount: number;
+}
+
+export interface GeneratedReport {
+  id: string;
+  title: string;
+  reportType: string;
+  reportingPeriod: string;
+  subsidiary: string;
+  mineName?: string;
+  createdAt: string;
+  generatedBy: string;
+  sections: {
+    id: string;
+    title: string;
+    content: string;
+    table?: {
+      headers: string[];
+      rows: (string | number)[][];
+    };
+    chart?: any;
+    citations?: string[];
+  }[];
+  summaryStats: {
+    totalProductionMt: number;
+    targetAchievementPct: number;
+    reservesAssessedMt: number;
+    dataConfidenceScore: number;
+  };
+  sourceDocuments: string[];
+}
+
+export interface AuditLogEntry {
+  id: string;
+  timestamp: string;
+  userId: string;
+  userName: string;
+  userRole: UserRole;
+  action: 
+    | 'LOGIN'
+    | 'DOCUMENT_UPLOAD'
+    | 'DOCUMENT_PROCESS'
+    | 'ENTITY_VALIDATION_APPROVE'
+    | 'ENTITY_VALIDATION_REJECT'
+    | 'ENTITY_VALIDATION_EDIT'
+    | 'NATURAL_QUERY'
+    | 'SQL_QUERY'
+    | 'REPORT_GENERATION'
+    | 'REPORT_EXPORT'
+    | 'SYSTEM_CONFIG_CHANGE';
+  resourceType: 'DOCUMENT' | 'ENTITY' | 'REPORT' | 'QUERY' | 'SYSTEM';
+  resourceId?: string;
+  details: string;
+  ipAddress: string;
+  status: 'SUCCESS' | 'WARNING' | 'FAILURE';
+}
+
+export interface PerformanceMetrics {
+  extractionAccuracy: number;
+  validationAccuracy: number;
+  automationPercentage: number;
+  timeReductionPercentage: number;
+  manualReportTimeHours: number;
+  automatedReportTimeSeconds: number;
+  averageQueryResponseTimeMs: number;
+  citationAccuracyScore: number;
+  documentsProcessed: number;
+  pagesProcessed: number;
+  tablesExtracted: number;
+  structuredRecordsCount: number;
+  reportsGeneratedCount: number;
+  conflictsResolvedCount: number;
+}
