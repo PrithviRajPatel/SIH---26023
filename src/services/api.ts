@@ -7,7 +7,10 @@ import {
   PerformanceMetrics, 
   GeneratedReport, 
   ExtractedEntity, 
-  User 
+  User,
+  ParliamentaryInquiry,
+  DocumentComparisonResult,
+  SystemSettings
 } from '../types';
 
 export const api = {
@@ -43,6 +46,15 @@ export const api = {
     return res.json();
   },
 
+  async deleteDocument(id: string, userName?: string): Promise<{ success: boolean; message: string }> {
+    const params = new URLSearchParams();
+    if (userName) params.append('userName', userName);
+    const res = await fetch(`/api/documents/${id}?${params.toString()}`, {
+      method: 'DELETE'
+    });
+    return res.json();
+  },
+
   async uploadDocument(data: {
     title: string;
     filename: string;
@@ -52,6 +64,8 @@ export const api = {
     reportingYear: number;
     docType: string;
     textContent?: string;
+    tags?: string[];
+    fileSize?: number;
   }): Promise<{ success: boolean; document: MiningDocument }> {
     const res = await fetch('/api/documents/upload', {
       method: 'POST',
@@ -63,6 +77,43 @@ export const api = {
 
   async reprocessDocument(id: string): Promise<{ success: boolean; document: MiningDocument }> {
     const res = await fetch(`/api/documents/${id}/process`, {
+      method: 'POST'
+    });
+    return res.json();
+  },
+
+  // Document Comparison
+  async compareDocuments(docA: string, docB: string): Promise<{ success: boolean; comparison: DocumentComparisonResult }> {
+    const res = await fetch(`/api/comparison?docA=${encodeURIComponent(docA)}&docB=${encodeURIComponent(docB)}`);
+    return res.json();
+  },
+
+  // Parliamentary & High-Priority Administrative Inquiries
+  async getInquiries(): Promise<{ inquiries: ParliamentaryInquiry[] }> {
+    const res = await fetch('/api/inquiries');
+    return res.json();
+  },
+
+  async createInquiry(data: Partial<ParliamentaryInquiry>): Promise<{ success: boolean; inquiry: ParliamentaryInquiry }> {
+    const res = await fetch('/api/inquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    return res.json();
+  },
+
+  async updateInquiry(id: string, updates: Partial<ParliamentaryInquiry>): Promise<{ success: boolean; inquiry: ParliamentaryInquiry }> {
+    const res = await fetch(`/api/inquiries/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    });
+    return res.json();
+  },
+
+  async generateInquiryDraft(id: string): Promise<{ success: boolean; inquiry: ParliamentaryInquiry }> {
+    const res = await fetch(`/api/inquiries/${id}/draft`, {
       method: 'POST'
     });
     return res.json();
@@ -174,6 +225,45 @@ export const api = {
 
   async getMetrics(): Promise<{ metrics: PerformanceMetrics; definitions: Record<string, string> }> {
     const res = await fetch('/api/metrics');
+    return res.json();
+  },
+
+  // Settings & Workspace Data Management
+  async getSettings(): Promise<{ settings: SystemSettings }> {
+    const res = await fetch('/api/settings');
+    return res.json();
+  },
+
+  async updateSettings(settings: Partial<SystemSettings>): Promise<{ success: boolean; settings: SystemSettings }> {
+    const res = await fetch('/api/settings', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(settings)
+    });
+    return res.json();
+  },
+
+  async clearWorkspace(): Promise<{ success: boolean; message: string }> {
+    const res = await fetch('/api/workspace/clear', { method: 'POST' });
+    return res.json();
+  },
+
+  async loadBenchmarkWorkspace(): Promise<{ success: boolean; message: string }> {
+    const res = await fetch('/api/workspace/benchmark', { method: 'POST' });
+    return res.json();
+  },
+
+  async exportBackup(): Promise<any> {
+    const res = await fetch('/api/system/backup');
+    return res.json();
+  },
+
+  async restoreBackup(backupData: any): Promise<{ success: boolean; message: string }> {
+    const res = await fetch('/api/system/restore', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(backupData)
+    });
     return res.json();
   },
 

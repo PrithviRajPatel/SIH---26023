@@ -183,7 +183,70 @@ export interface QueryResponse {
     status: 'COMPLETE' | 'RUNNING' | 'SKIPPED';
     details: string;
   }[];
-  isSyntheticDemo: boolean;
+  isSimulated?: boolean;
+}
+
+export interface ParliamentaryInquiry {
+  id: string;
+  referenceNumber: string; // e.g. "LS-PQ/Dy.No.4921/2024"
+  house: 'Lok Sabha' | 'Rajya Sabha' | 'Ministry of Coal' | 'PMO Reference';
+  questionType: 'Starred' | 'Unstarred' | 'Administrative Priority';
+  subject: string;
+  ministryDivision: string;
+  urgency: 'Critical' | 'High' | 'Medium' | 'Low';
+  dueDate: string;
+  assignedTo: string;
+  status: 'Pending' | 'Drafted' | 'Approved' | 'Dispatched';
+  queryDetails: string;
+  linkedDocuments: {
+    documentId: string;
+    documentTitle: string;
+    pageNumber: number;
+    citationSnippet: string;
+  }[];
+  draftReply?: string;
+  verifiedBy?: string;
+  dispatchedAt?: string;
+  updatedAt: string;
+}
+
+export interface DocumentComparisonResult {
+  docAId: string;
+  docBId: string;
+  docATitle: string;
+  docBTitle: string;
+  metadataDiff: {
+    field: string;
+    valA: string | number;
+    valB: string | number;
+    status: 'identical' | 'different';
+  }[];
+  productionDeltas: {
+    metric: string;
+    unit: string;
+    valA: number;
+    valB: number;
+    delta: number;
+    percentChange: number;
+  }[];
+  entityDiff: {
+    key: string;
+    entityType: string;
+    valA?: string | number;
+    valB?: string | number;
+    status: 'common' | 'only_a' | 'only_b' | 'value_diff';
+  }[];
+  conflictObservations: string[];
+}
+
+export interface SystemSettings {
+  geminiModel: string;
+  ocrEngineMode: 'HYBRID_VISION_TESSERACT' | 'TESSERACT_STRICT' | 'CLOUD_VISION';
+  autoApproveConfidenceThreshold: number; // e.g. 0.95
+  maxVectorChunksPerQuery: number;
+  enforceSourceTraceability: boolean;
+  activeOrganization: string;
+  enableRealTimeAuditing: boolean;
 }
 
 export interface TopicItem {
@@ -244,6 +307,7 @@ export interface AuditLogEntry {
     | 'LOGIN'
     | 'DOCUMENT_UPLOAD'
     | 'DOCUMENT_PROCESS'
+    | 'DOCUMENT_DELETE'
     | 'ENTITY_VALIDATION_APPROVE'
     | 'ENTITY_VALIDATION_REJECT'
     | 'ENTITY_VALIDATION_EDIT'
@@ -251,8 +315,14 @@ export interface AuditLogEntry {
     | 'SQL_QUERY'
     | 'REPORT_GENERATION'
     | 'REPORT_EXPORT'
+    | 'INQUIRY_CREATE'
+    | 'INQUIRY_DRAFT'
+    | 'INQUIRY_APPROVE'
+    | 'INQUIRY_DISPATCH'
+    | 'WORKSPACE_CLEAR'
+    | 'BENCHMARK_LOAD'
     | 'SYSTEM_CONFIG_CHANGE';
-  resourceType: 'DOCUMENT' | 'ENTITY' | 'REPORT' | 'QUERY' | 'SYSTEM';
+  resourceType: 'DOCUMENT' | 'ENTITY' | 'REPORT' | 'QUERY' | 'SYSTEM' | 'INQUIRY';
   resourceId?: string;
   details: string;
   ipAddress: string;

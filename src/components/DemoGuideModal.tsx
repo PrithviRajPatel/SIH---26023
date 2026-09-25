@@ -13,7 +13,11 @@ import {
   BarChart3, 
   FileText, 
   Download,
-  ExternalLink
+  ExternalLink,
+  GitCompare,
+  Landmark,
+  Cloud,
+  HelpCircle
 } from 'lucide-react';
 
 interface DemoGuideModalProps {
@@ -36,34 +40,22 @@ export const DemoGuideModal: React.FC<DemoGuideModalProps> = ({
   const steps = [
     {
       step: 1,
-      title: 'STEP 1: Document Ingestion & Heterogeneous Files',
-      tab: 'documents',
+      title: 'MODULE 1: Enterprise Document Ingestion',
+      tab: 'upload',
       icon: <FileUp className="w-5 h-5 text-amber-400" />,
-      description: 'CMPDI & CIL subsidiaries process scanned PDFs, digital annual reviews, geological assessments, and spreadsheets. View the 10 preloaded demonstration documents or upload a new report.',
-      actionText: 'Go to Documents & Upload',
+      description: 'Upload heterogeneous files including digital PDFs, scanned pithead logs, geological assessments, and XLSX spreadsheets with drag-and-drop batch queuing.',
+      actionText: 'Go to Upload Documents',
       execute: () => {
-        setActiveTab('documents');
+        setActiveTab('upload');
         onClose();
       }
     },
     {
       step: 2,
-      title: 'STEP 2: OCR & Multi-Stage Processing Pipeline',
-      tab: 'documents',
-      icon: <Cpu className="w-5 h-5 text-blue-400" />,
-      description: 'Documents undergo page rendering, OCR confidence scoring, table boundary extraction, chunking, and metadata parsing. Inspect confidence ratings for scanned vs digital documents.',
-      actionText: 'View Processing Status',
-      execute: () => {
-        setActiveTab('documents');
-        onClose();
-      }
-    },
-    {
-      step: 3,
-      title: 'STEP 3: Split-Screen Document & Evidence Viewer',
+      title: 'MODULE 2: Split-Screen Document & Evidence Viewer',
       tab: 'viewer',
       icon: <Table className="w-5 h-5 text-purple-400" />,
-      description: 'Examine original scanned reports with OCR bounding boxes alongside parsed tables, chunks, and extracted entities (e.g. Gevra Mega OC or Moonidih Colliery).',
+      description: 'Inspect original documents side-by-side with OCR bounding boxes, extracted tables, and named entities with full primary source traceability.',
       actionText: 'Open Split-Screen Viewer',
       execute: () => {
         setActiveTab('viewer');
@@ -71,11 +63,11 @@ export const DemoGuideModal: React.FC<DemoGuideModalProps> = ({
       }
     },
     {
-      step: 4,
-      title: 'STEP 4: Data Validation & Conflict Resolution',
+      step: 3,
+      title: 'MODULE 3: Analyst Validation Workbench & Conflict Resolution',
       tab: 'validation',
       icon: <ShieldCheck className="w-5 h-5 text-emerald-400" />,
-      description: 'Crucial SIH requirement: Detects conflicting values and unit discrepancies. Review the flagged conflict on Gevra 2023 (52.5 MT field estimate vs 50.80 MT audited balance) and approve or edit.',
+      description: 'Human-in-the-loop review workbench. Flags numerical discrepancies (e.g. operational estimates vs audited accounts) and unit mismatches for resolution.',
       actionText: 'Open Validation Workbench',
       execute: () => {
         setActiveTab('validation');
@@ -83,166 +75,164 @@ export const DemoGuideModal: React.FC<DemoGuideModalProps> = ({
       }
     },
     {
-      step: 5,
-      title: 'STEP 5: AI Natural Language Query (SQL + RAG)',
+      step: 4,
+      title: 'MODULE 4: AI Query Router (Relational SQL + Semantic RAG)',
       tab: 'assistant',
       icon: <MessageSquare className="w-5 h-5 text-amber-400" />,
-      description: 'The AI never hallucinates numbers. Test preloaded questions such as "What was the production of Mine A in 2022?" or "Compare Mine A and Mine B from 2020 to 2024".',
-      actionText: 'Test Natural Query',
+      description: 'Natural language query system with strict numerical hallucination guard. Routes structured queries to SQL and technical questions to semantic vector retrieval.',
+      actionText: 'Open AI Assistant',
       execute: () => {
         setActiveTab('assistant');
         if (onSelectSampleQuestion) {
-          onSelectSampleQuestion('Compare Mine A and Mine B from 2020 to 2024.');
+          onSelectSampleQuestion('Compare SECL Gevra and NCL Jayant production and stripping ratio from 2020 to 2024.');
         }
         onClose();
       }
     },
     {
-      step: 6,
-      title: 'STEP 6: Answer, Query Trace & Clickable Evidence Citations',
-      tab: 'assistant',
-      icon: <Search className="w-5 h-5 text-cyan-400" />,
-      description: 'Observe query routing (STRUCTURED SQL vs UNSTRUCTURED RAG), execution trace steps, and exact source citations with document name, page number, and confidence.',
-      actionText: 'Inspect Evidence Trace',
+      step: 5,
+      title: 'MODULE 5: Automated Statutory Report Generator',
+      tab: 'reports',
+      icon: <FileText className="w-5 h-5 text-blue-400" />,
+      description: 'Generates comprehensive 13-section technical dossiers with executive summaries, production tables, geological reserve analyses, and PDF/Excel/Word export.',
+      actionText: 'Open Report Generator',
       execute: () => {
-        setActiveTab('assistant');
+        setActiveTab('reports');
+        onClose();
+      }
+    },
+    {
+      step: 6,
+      title: 'MODULE 6: Side-by-Side Document Comparison',
+      tab: 'comparison',
+      icon: <GitCompare className="w-5 h-5 text-cyan-400" />,
+      description: 'Compare any two mining reports or geological assessments side-by-side to compute production deltas, stripping ratio variances, and entity differentials.',
+      actionText: 'Open Document Comparison',
+      execute: () => {
+        setActiveTab('comparison');
         onClose();
       }
     },
     {
       step: 7,
-      title: 'STEP 7: Historical Analytics, Topics & Word Cloud',
-      tab: 'analytics',
-      icon: <BarChart3 className="w-5 h-5 text-indigo-400" />,
-      description: 'Interactive analytics showing multi-year production curves (2020-2024), stripping ratio comparisons, topic frequency trends, and mining word clouds with stopword filtering.',
-      actionText: 'Explore Historical Analytics',
+      title: 'MODULE 7: Parliamentary & Administrative Inquiries',
+      tab: 'inquiries',
+      icon: <Landmark className="w-5 h-5 text-rose-400" />,
+      description: 'Manage parliamentary questions from Lok Sabha, Rajya Sabha, and Ministry of Coal with evidence-backed automated draft responses and official export.',
+      actionText: 'Open Inquiries Module',
       execute: () => {
-        setActiveTab('analytics');
+        setActiveTab('inquiries');
         onClose();
       }
     },
     {
       step: 8,
-      title: 'STEP 8: Automated 13-Section Report Generation',
-      tab: 'reports',
-      icon: <FileText className="w-5 h-5 text-rose-400" />,
-      description: 'Generate standardized statutory dossiers with 13 mandatory sections: Executive Summary, Scope, Data Sources, Production, Mining, Geology, Trends, Findings, Anomalies, Recommendations, References.',
-      actionText: 'Generate Official Report',
+      title: 'MODULE 8: Dynamic Vocabulary Cloud & Topic Modeling',
+      tab: 'wordcloud',
+      icon: <Cloud className="w-5 h-5 text-emerald-400" />,
+      description: 'Dynamic word cloud and semantic topic clustering automatically extracted from repository documents with stopword elimination and category filtering.',
+      actionText: 'View Vocabulary Cloud',
       execute: () => {
-        setActiveTab('reports');
-        onClose();
-      }
-    },
-    {
-      step: 9,
-      title: 'STEP 9: Real Export (PDF, Excel XLSX, Word DOCX)',
-      tab: 'reports',
-      icon: <Download className="w-5 h-5 text-emerald-400" />,
-      description: 'Export finalized reports with 1 click to PDF, multi-sheet formatted Excel spreadsheets, or Microsoft Word documents for parliamentary briefings.',
-      actionText: 'Open Report Exporter',
-      execute: () => {
-        setActiveTab('reports');
+        setActiveTab('wordcloud');
         onClose();
       }
     }
   ];
 
-  const current = steps[currentStep - 1];
+  const active = steps[currentStep - 1];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-slate-900 border border-slate-700 rounded-xl shadow-2xl max-w-2xl w-full overflow-hidden text-slate-100">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-amber-600 to-amber-800 p-4 flex items-center justify-between text-white">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95">
+        {/* Modal Header */}
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-amber-950/60 rounded-lg">
-              {current.icon}
+            <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <HelpCircle className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-amber-200">
-                SIH 2026 Evaluation Tour (Problem SIH26023)
-              </div>
-              <h3 className="text-base font-bold">{current.title}</h3>
+              <h3 className="text-base font-bold text-white">System Architecture & Operations Guide</h3>
+              <p className="text-xs text-slate-400">Platform functional modules and intelligence capabilities</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-amber-200 hover:text-white hover:bg-white/10 transition"
+            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Step progress bar */}
-        <div className="grid grid-cols-9 gap-1 p-2 bg-slate-950 border-b border-slate-800">
+        {/* Step Progress Bar */}
+        <div className="flex items-center justify-between gap-1">
           {steps.map((s) => (
             <button
               key={s.step}
               onClick={() => setCurrentStep(s.step)}
-              className={`h-2 rounded-full transition-all ${
+              className={`flex-1 h-1.5 rounded-full transition-all duration-300 ${
                 s.step === currentStep 
-                  ? 'bg-amber-400 shadow-sm shadow-amber-400/50' 
+                  ? 'bg-amber-500 ring-2 ring-amber-500/30' 
                   : s.step < currentStep 
                   ? 'bg-emerald-500' 
-                  : 'bg-slate-800'
+                  : 'bg-slate-800 hover:bg-slate-700'
               }`}
-              title={`Step ${s.step}: ${s.title}`}
+              title={`Module ${s.step}: ${s.title}`}
             />
           ))}
         </div>
 
-        {/* Content Body */}
-        <div className="p-6 space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-amber-400 border border-slate-700">
-              Stage {currentStep} of 9
+        {/* Active Step Content */}
+        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 space-y-3">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-bold text-amber-400 uppercase tracking-wider">
+              System Capability {currentStep} of {steps.length}
             </span>
-            <span className="text-xs text-slate-400">
-              Target Module: <span className="font-semibold text-slate-200 uppercase">{current.tab}</span>
+            <span className="text-[11px] text-slate-500 font-mono">
+              Target Module: {active.tab.toUpperCase()}
             </span>
           </div>
 
-          <div className="bg-slate-950/60 p-4 rounded-lg border border-slate-800 text-sm leading-relaxed text-slate-300">
-            {current.description}
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-slate-900 rounded-lg border border-slate-800">
+              {active.icon}
+            </div>
+            <h4 className="text-base font-bold text-white">
+              {active.title}
+            </h4>
           </div>
 
-          {/* Demonstration Notice */}
-          <div className="text-[11px] text-amber-300/80 bg-amber-950/30 border border-amber-800/40 p-2.5 rounded-lg flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>
-              All operational numbers are validated against the synthetic demonstration dataset (DEMONSTRATION DATA — NOT OFFICIAL CMPDI/CIL DATA).
-            </span>
-          </div>
+          <p className="text-xs text-slate-300 leading-relaxed pt-1">
+            {active.description}
+          </p>
         </div>
 
-        {/* Footer controls */}
-        <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button
-              disabled={currentStep === 1}
-              onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
-              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-medium flex items-center gap-1 transition"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" /> Previous
-            </button>
-            <button
-              disabled={currentStep === steps.length}
-              onClick={() => setCurrentStep(prev => Math.min(steps.length, prev + 1))}
-              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed text-xs font-medium flex items-center gap-1 transition"
-            >
-              Next <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
+        {/* Modal Controls */}
+        <div className="flex items-center justify-between pt-2 border-t border-slate-800 text-xs">
+          <button
+            onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+            disabled={currentStep === 1}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold disabled:opacity-40 transition"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Previous</span>
+          </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={current.execute}
-              className="px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-md transition"
-            >
-              <span>{current.actionText}</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </button>
-          </div>
+          <button
+            onClick={active.execute}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold transition shadow"
+          >
+            <span>{active.actionText}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+
+          <button
+            onClick={() => setCurrentStep((prev) => Math.min(steps.length, prev + 1))}
+            disabled={currentStep === steps.length}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold disabled:opacity-40 transition"
+          >
+            <span>Next</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </div>

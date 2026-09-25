@@ -1,0 +1,553 @@
+import React, { useState } from 'react';
+import { 
+  Landmark, 
+  Search, 
+  Filter, 
+  Plus, 
+  Sparkles, 
+  FileText, 
+  CheckCircle, 
+  Clock, 
+  AlertCircle, 
+  ExternalLink, 
+  Download, 
+  Send, 
+  ShieldCheck, 
+  FileCheck,
+  Building,
+  Calendar
+} from 'lucide-react';
+import { ParliamentaryInquiry, MiningDocument } from '../types';
+
+interface InquiriesTabProps {
+  inquiries: ParliamentaryInquiry[];
+  documents: MiningDocument[];
+  onOpenViewer: (docId: string) => void;
+  onCreateInquiry: (data: Partial<ParliamentaryInquiry>) => Promise<void>;
+  onUpdateInquiry: (id: string, updates: Partial<ParliamentaryInquiry>) => Promise<void>;
+  onGenerateDraft: (id: string) => Promise<ParliamentaryInquiry>;
+}
+
+export const InquiriesTab: React.FC<InquiriesTabProps> = ({
+  inquiries,
+  documents,
+  onOpenViewer,
+  onCreateInquiry,
+  onUpdateInquiry,
+  onGenerateDraft
+}) => {
+  const [selectedHouse, setSelectedHouse] = useState('ALL');
+  const [selectedUrgency, setSelectedUrgency] = useState('ALL');
+  const [selectedStatus, setSelectedStatus] = useState('ALL');
+  const [search, setSearch] = useState('');
+  const [selectedInquiryId, setSelectedInquiryId] = useState<string>(inquiries[0]?.id || '');
+  const [isDrafting, setIsDrafting] = useState(false);
+  const [isNewModalOpen, setIsNewModalOpen] = useState(false);
+
+  // New Inquiry Form State
+  const [newRef, setNewRef] = useState('');
+  const [newHouse, setNewHouse] = useState<'Lok Sabha' | 'Rajya Sabha' | 'Ministry of Coal' | 'PMO Reference'>('Lok Sabha');
+  const [newType, setNewType] = useState<'Starred' | 'Unstarred' | 'Administrative Priority'>('Starred');
+  const [newSubject, setNewSubject] = useState('');
+  const [newQuery, setNewQuery] = useState('');
+  const [newUrgency, setNewUrgency] = useState<'Critical' | 'High' | 'Medium' | 'Low'>('High');
+  const [newDueDate, setNewDueDate] = useState('2024-12-10');
+
+  const filtered = inquiries.filter(inq => {
+    const matchHouse = selectedHouse === 'ALL' || inq.house === selectedHouse;
+    const matchUrgency = selectedUrgency === 'ALL' || inq.urgency === selectedUrgency;
+    const matchStatus = selectedStatus === 'ALL' || inq.status === selectedStatus;
+    const matchSearch = search === '' || 
+      inq.subject.toLowerCase().includes(search.toLowerCase()) ||
+      inq.referenceNumber.toLowerCase().includes(search.toLowerCase()) ||
+      inq.queryDetails.toLowerCase().includes(search.toLowerCase());
+    return matchHouse && matchUrgency && matchStatus && matchSearch;
+  });
+
+  const activeInquiry = inquiries.find(i => i.id === selectedInquiryId) || inquiries[0];
+
+  const handleGenerateDraftClick = async () => {
+    if (!activeInquiry) return;
+    setIsDrafting(true);
+    try {
+      await onGenerateDraft(activeInquiry.id);
+    } finally {
+      setIsDrafting(false);
+    }
+  };
+
+  const handleCreateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await onCreateInquiry({
+      referenceNumber: newRef || `LS-PQ/${Math.floor(1000 + Math.random() * 9000)}/2024`,
+      house: newHouse,
+      questionType: newType,
+      subject: newSubject,
+      queryDetails: newQuery,
+      urgency: newUrgency,
+      dueDate: newDueDate,
+      assignedTo: 'Ananya Sen (Analyst)'
+    });
+    setIsNewModalOpen(false);
+    setNewSubject('');
+    setNewQuery('');
+    setNewRef('');
+  };
+
+  const handleApprove = async () => {
+    if (!activeInquiry) return;
+    await onUpdateInquiry(activeInquiry.id, {
+      status: 'Approved',
+      verifiedBy: 'Dr. Rajeshwar Sharma (Admin)'
+    });
+  };
+
+  const handleDispatch = async () => {
+    if (!activeInquiry) return;
+    await onUpdateInquiry(activeInquiry.id, {
+      status: 'Dispatched',
+      dispatchedAt: new Date().toISOString()
+    });
+  };
+
+  const exportOfficialDossier = () => {
+    if (!activeInquiry) return;
+    const text = `====================================================\n` +
+      `MINISTRY OF COAL / COAL INDIA LIMITED\n` +
+      `PARLIAMENTARY SECRETARIAT & HIGH-PRIORITY INQUIRY DOSSIER\n` +
+      `====================================================\n\n` +
+      `REFERENCE NUMBER: ${activeInquiry.referenceNumber}\n` +
+      `HOUSE/FORUM: ${activeInquiry.house} (${activeInquiry.questionType})\n` +
+      `SUBJECT: ${activeInquiry.subject}\n` +
+      `DUE DATE: ${activeInquiry.dueDate}\n` +
+      `STATUS: ${activeInquiry.status}\n` +
+      `VERIFIED BY: ${activeInquiry.verifiedBy || 'Pending Executive Review'}\n\n` +
+      `1. OFFICIAL QUESTION / INQUIRY DETAILS:\n${activeInquiry.queryDetails}\n\n` +
+      `2. EVIDENCE CITATIONS FROM REPOSITORY:\n` +
+      activeInquiry.linkedDocuments.map(ld => `- Document: ${ld.documentTitle} (Page ${ld.pageNumber})\n  Citation: "${ld.citationSnippet}"`).join('\n\n') +
+      `\n\n3. DRAFT PARLIAMENTARY STATEMENT:\n${activeInquiry.draftReply || 'Draft pending synthesis.'}\n\n` +
+      `====================================================\n` +
+      `Generated by GeoMine Intel Enterprise Knowledge Platform\n` +
+      `====================================================`;
+
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${activeInquiry.referenceNumber.replace(/[\/\\]/g, '_')}_Dossier.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header Banner */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Landmark className="w-5 h-5 text-amber-400" />
+            <h2 className="text-lg font-bold text-white tracking-tight">Parliamentary & High-Priority Inquiries Module</h2>
+          </div>
+          <p className="text-xs text-slate-400 max-w-2xl">
+            Streamlined response management for Lok Sabha Starred/Unstarred Questions, Rajya Sabha inquiries, PMO references, and Ministry of Coal directives with automated factual evidence retrieval and verifiable citations.
+          </p>
+        </div>
+
+        <button
+          onClick={() => setIsNewModalOpen(true)}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition shadow-sm self-start md:self-auto"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Register New Inquiry</span>
+        </button>
+      </div>
+
+      {/* Filter Strip */}
+      <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="relative">
+            <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search inquiries, ref no, subjects..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-500 w-56"
+            />
+          </div>
+
+          <select
+            value={selectedHouse}
+            onChange={(e) => setSelectedHouse(e.target.value)}
+            className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none"
+          >
+            <option value="ALL">All Houses / Forums</option>
+            <option value="Lok Sabha">Lok Sabha</option>
+            <option value="Rajya Sabha">Rajya Sabha</option>
+            <option value="Ministry of Coal">Ministry of Coal</option>
+            <option value="PMO Reference">PMO Reference</option>
+          </select>
+
+          <select
+            value={selectedUrgency}
+            onChange={(e) => setSelectedUrgency(e.target.value)}
+            className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none"
+          >
+            <option value="ALL">All Urgencies</option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none"
+          >
+            <option value="ALL">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Drafted">Drafted</option>
+            <option value="Approved">Approved</option>
+            <option value="Dispatched">Dispatched</option>
+          </select>
+        </div>
+
+        <div className="text-xs text-slate-400">
+          Showing <span className="text-white font-bold">{filtered.length}</span> of {inquiries.length} Inquiries
+        </div>
+      </div>
+
+      {/* Main Grid: List on Left, Active Inquiry Detail on Right */}
+      {inquiries.length === 0 ? (
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-12 text-center">
+          <Landmark className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+          <h3 className="text-base font-bold text-white mb-1">No Parliamentary Inquiries Registered</h3>
+          <p className="text-xs text-slate-400 max-w-md mx-auto mb-4">
+            Register incoming parliamentary questions or administrative requests from the Ministry of Coal to auto-synthesize verified replies.
+          </p>
+          <button
+            onClick={() => setIsNewModalOpen(true)}
+            className="px-4 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs"
+          >
+            Register Inquiry
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Inquiry List */}
+          <div className="lg:col-span-5 space-y-3">
+            {filtered.map(inq => {
+              const isSelected = inq.id === activeInquiry?.id;
+              return (
+                <div
+                  key={inq.id}
+                  onClick={() => setSelectedInquiryId(inq.id)}
+                  className={`p-4 rounded-xl border text-left cursor-pointer transition ${
+                    isSelected 
+                      ? 'bg-slate-850 border-amber-500 shadow-md ring-1 ring-amber-500/30' 
+                      : 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <span className="text-[11px] font-mono font-bold text-amber-400">
+                      {inq.referenceNumber}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                      inq.urgency === 'Critical' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
+                      inq.urgency === 'High' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                      'bg-slate-800 text-slate-300'
+                    }`}>
+                      {inq.urgency}
+                    </span>
+                  </div>
+
+                  <h4 className="text-xs font-bold text-white mb-2 line-clamp-2">
+                    {inq.subject}
+                  </h4>
+
+                  <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800/80">
+                    <div className="flex items-center gap-1.5">
+                      <Building className="w-3 h-3 text-slate-500" />
+                      <span>{inq.house}</span>
+                    </div>
+
+                    <span className={`font-semibold ${
+                      inq.status === 'Approved' || inq.status === 'Dispatched' ? 'text-emerald-400' :
+                      inq.status === 'Drafted' ? 'text-blue-400' : 'text-amber-400'
+                    }`}>
+                      • {inq.status}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Active Inquiry Detail Workbench */}
+          {activeInquiry && (
+            <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-5 shadow-lg">
+              {/* Top Meta */}
+              <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-slate-800">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                      {activeInquiry.referenceNumber}
+                    </span>
+                    <span className="text-xs text-slate-400">• {activeInquiry.house} ({activeInquiry.questionType})</span>
+                  </div>
+                  <h3 className="text-base font-bold text-white leading-snug">
+                    {activeInquiry.subject}
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={exportOfficialDossier}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition"
+                    title="Export Official Dossier"
+                  >
+                    <Download className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Export</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Inquiry Question Text */}
+              <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800">
+                <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <FileText className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Statutory Inquiry Details</span>
+                </div>
+                <p className="text-xs text-slate-200 leading-relaxed whitespace-pre-line">
+                  {activeInquiry.queryDetails}
+                </p>
+                <div className="flex items-center gap-4 text-[11px] text-slate-400 mt-3 pt-2 border-t border-slate-800/80">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-slate-500" />
+                    <span>Statutory Due Date: <strong className="text-white">{activeInquiry.dueDate}</strong></span>
+                  </div>
+                  <div>
+                    Assigned: <strong className="text-white">{activeInquiry.assignedTo}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Linked Evidence Documents & Citations */}
+              <div>
+                <div className="text-xs font-bold text-white mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span>Linked Repository Citations ({activeInquiry.linkedDocuments.length})</span>
+                  </span>
+                  <span className="text-[11px] text-slate-500">Auto-retrieved from verified repository</span>
+                </div>
+
+                {activeInquiry.linkedDocuments.length === 0 ? (
+                  <div className="p-4 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-400 text-center">
+                    No documents currently linked to this inquiry. Use the AI Draft tool to auto-match citations.
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {activeInquiry.linkedDocuments.map((ld, idx) => (
+                      <div key={idx} className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 flex items-start justify-between gap-3 text-xs">
+                        <div>
+                          <div className="font-semibold text-slate-200 mb-0.5">{ld.documentTitle}</div>
+                          <div className="text-slate-400 text-[11px] italic">"{ld.citationSnippet}"</div>
+                          <div className="text-[10px] text-amber-400 mt-1">Page {ld.pageNumber} • High Confidence Evidence</div>
+                        </div>
+                        <button
+                          onClick={() => onOpenViewer(ld.documentId)}
+                          className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] shrink-0 flex items-center gap-1"
+                        >
+                          <ExternalLink className="w-3 h-3 text-amber-400" />
+                          <span>View Page</span>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Official Parliamentary Draft Response */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <FileCheck className="w-4 h-4 text-amber-400" />
+                    <span>Official Draft Parliamentary Statement</span>
+                  </div>
+
+                  <button
+                    onClick={handleGenerateDraftClick}
+                    disabled={isDrafting}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs transition shadow-sm disabled:opacity-50"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{isDrafting ? 'Synthesizing...' : 'AI Auto-Draft from Evidence'}</span>
+                  </button>
+                </div>
+
+                <textarea
+                  rows={8}
+                  value={activeInquiry.draftReply || ''}
+                  placeholder="Official parliamentary statement will appear here once drafted or synthesized..."
+                  onChange={(e) => onUpdateInquiry(activeInquiry.id, { draftReply: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-slate-200 font-sans focus:outline-none focus:ring-1 focus:ring-amber-500 leading-relaxed"
+                />
+
+                {/* Status & Review Controls */}
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800">
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="text-slate-400">Current Status:</span>
+                    <span className={`font-bold ${
+                      activeInquiry.status === 'Approved' ? 'text-emerald-400' :
+                      activeInquiry.status === 'Dispatched' ? 'text-purple-400' : 'text-amber-400'
+                    }`}>
+                      {activeInquiry.status}
+                    </span>
+                    {activeInquiry.verifiedBy && (
+                      <span className="text-slate-500 text-[11px]">({activeInquiry.verifiedBy})</span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {activeInquiry.status !== 'Approved' && activeInquiry.status !== 'Dispatched' && (
+                      <button
+                        onClick={handleApprove}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition"
+                      >
+                        <CheckCircle className="w-3.5 h-3.5" />
+                        <span>Approve Draft</span>
+                      </button>
+                    )}
+
+                    {activeInquiry.status === 'Approved' && (
+                      <button
+                        onClick={handleDispatch}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Mark as Dispatched</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Register New Inquiry Modal */}
+      {isNewModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <Landmark className="w-5 h-5 text-amber-400" />
+                <h3 className="text-base font-bold text-white">Register Parliamentary / Administrative Inquiry</h3>
+              </div>
+              <button onClick={() => setIsNewModalOpen(false)} className="text-slate-400 hover:text-white">✕</button>
+            </div>
+
+            <form onSubmit={handleCreateSubmit} className="space-y-4 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-300 mb-1 font-semibold">Reference Number</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. LS-PQ/Starred/5102/2024"
+                    value={newRef}
+                    onChange={(e) => setNewRef(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 mb-1 font-semibold">House / Forum</label>
+                  <select
+                    value={newHouse}
+                    onChange={(e: any) => setNewHouse(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200"
+                  >
+                    <option value="Lok Sabha">Lok Sabha</option>
+                    <option value="Rajya Sabha">Rajya Sabha</option>
+                    <option value="Ministry of Coal">Ministry of Coal Directive</option>
+                    <option value="PMO Reference">PMO Reference</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 mb-1 font-semibold">Question Subject</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Coal evacuation infrastructure and FMC pipeline deployment"
+                  value={newSubject}
+                  onChange={(e) => setNewSubject(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-300 mb-1 font-semibold">Question Details / Query Text</label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Paste official inquiry questions (parts a, b, c)..."
+                  value={newQuery}
+                  onChange={(e) => setNewQuery(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-300 mb-1 font-semibold">Urgency Level</label>
+                  <select
+                    value={newUrgency}
+                    onChange={(e: any) => setNewUrgency(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200"
+                  >
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 mb-1 font-semibold">Statutory Due Date</label>
+                  <input
+                    type="date"
+                    value={newDueDate}
+                    onChange={(e) => setNewDueDate(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-200"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsNewModalOpen(false)}
+                  className="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold"
+                >
+                  Register Inquiry
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

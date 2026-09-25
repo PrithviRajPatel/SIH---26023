@@ -6,6 +6,28 @@ export async function processUnifiedQuery(query: string): Promise<QueryResponse>
   const startTime = Date.now();
   const lower = query.toLowerCase().trim();
 
+  // Guard: Empty Repository State
+  if (db.documents.length === 0) {
+    return {
+      query,
+      queryType: 'UNSTRUCTURED',
+      answer: 'No documents are currently ingested into the GeoMine Intel repository. Please upload mining operational dossiers, geological assessments, or production spreadsheets via the Upload Documents tab, or load the verified reference benchmark dataset from Settings.',
+      structuredData: null,
+      chartData: undefined,
+      sqlQuery: undefined,
+      citations: [],
+      executionTimeMs: Date.now() - startTime,
+      traceSteps: [
+        {
+          step: '1. Repository Index Check',
+          status: 'COMPLETE',
+          details: 'Repository status: 0 documents indexed. Awaiting document ingestion.'
+        }
+      ],
+      isSimulated: false
+    };
+  }
+
   // 1. Query Understanding & Classification
   let queryType: QueryType = 'UNSTRUCTURED';
   let sqlQuery: string | undefined;
@@ -431,6 +453,6 @@ Provide a structured, professional, evidence-backed answer with citations.`;
     citations,
     executionTimeMs,
     traceSteps,
-    isSyntheticDemo: true
+    isSimulated: false
   };
 }

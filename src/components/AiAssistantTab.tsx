@@ -86,7 +86,7 @@ export const AiAssistantTab: React.FC<AiAssistantTabProps> = ({
         { step: '3. SQL Query Execution', status: 'COMPLETE', details: 'Retrieved 10 validated multi-year production records.' },
         { step: '4. Hallucination Guard', status: 'COMPLETE', details: 'Zero hallucinated figures. Verified with primary sources.' }
       ],
-      isSyntheticDemo: true
+      isSimulated: false
     }
   ]);
 

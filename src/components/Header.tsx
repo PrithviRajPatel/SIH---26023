@@ -3,8 +3,8 @@ import {
   Database, 
   Sparkles, 
   ShieldCheck, 
-  RotateCcw, 
-  FileText, 
+  Settings, 
+  HelpCircle,
   PlayCircle
 } from 'lucide-react';
 import { User, UserRole } from '../types';
@@ -22,7 +22,8 @@ export const Header: React.FC<HeaderProps> = ({
   currentUser,
   onSwitchUser,
   onOpenDemoGuide,
-  onResetSeed
+  activeTab,
+  setActiveTab
 }) => {
   return (
     <header className="bg-slate-900 border-b border-slate-800 text-slate-100 sticky top-0 z-50 shadow-md">
@@ -30,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="bg-gradient-to-r from-amber-600 via-amber-700 to-amber-900 px-4 py-1 text-xs font-medium text-amber-50 flex items-center justify-between border-b border-amber-600/30">
         <div className="flex items-center gap-2">
           <span className="bg-amber-950/80 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase border border-amber-400/40">
-            SIH 2026 Problem SIH26023
+            Govt. of India
           </span>
           <span className="hidden sm:inline">Ministry of Coal • Coal India Limited (CIL) • CMPDI Enterprise Knowledge Infrastructure</span>
         </div>
@@ -69,24 +70,28 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* SIH Demo Walkthrough Button */}
+          {/* Operations & System Guide Button */}
           <button
             onClick={onOpenDemoGuide}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold text-xs transition shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition shadow-sm"
           >
-            <PlayCircle className="w-4 h-4 text-slate-950" />
-            <span className="hidden sm:inline">SIH Judge Walkthrough</span>
-            <span className="sm:hidden">Demo</span>
+            <HelpCircle className="w-4 h-4 text-amber-400" />
+            <span className="hidden sm:inline">System Architecture Guide</span>
+            <span className="sm:hidden">Guide</span>
           </button>
 
-          {/* Reset Demo Data Button */}
+          {/* Quick Settings Button */}
           <button
-            onClick={onResetSeed}
-            title="Reset dataset back to fresh demonstration state"
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition"
+            onClick={() => setActiveTab('settings')}
+            title="Enterprise Settings & Data Configuration"
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition ${
+              activeTab === 'settings' 
+                ? 'bg-amber-500 text-slate-950 border-amber-500' 
+                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+            }`}
           >
-            <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden md:inline">Reset Demo</span>
+            <Settings className="w-3.5 h-3.5 text-amber-400" />
+            <span className="hidden md:inline">Settings</span>
           </button>
 
           {/* Role Selector */}

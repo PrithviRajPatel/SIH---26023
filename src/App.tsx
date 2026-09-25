@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, 
   Files, 
+  FileUp,
   FileSearch, 
   ShieldCheck, 
   MessageSquare, 
   FileText, 
   TrendingUp, 
+  Layers,
   Cloud, 
   Search, 
+  GitCompare,
+  Landmark,
   History, 
-  Award,
-  AlertCircle,
-  RotateCcw
+  Settings,
+  AlertCircle
 } from 'lucide-react';
 
 import { 
@@ -22,22 +25,27 @@ import {
   AuditLogEntry, 
   PerformanceMetrics, 
   GeneratedReport, 
-  ExtractedEntity 
+  ExtractedEntity,
+  ParliamentaryInquiry
 } from './types';
 import { api } from './services/api';
 import { Header } from './components/Header';
 import { DemoGuideModal } from './components/DemoGuideModal';
 import { DashboardTab } from './components/DashboardTab';
 import { DocumentsTab } from './components/DocumentsTab';
+import { UploadDocumentsTab } from './components/UploadDocumentsTab';
 import { DocumentViewerTab } from './components/DocumentViewerTab';
 import { ValidationWorkbenchTab } from './components/ValidationWorkbenchTab';
 import { AiAssistantTab } from './components/AiAssistantTab';
+import { InquiriesTab } from './components/InquiriesTab';
 import { ReportGeneratorTab } from './components/ReportGeneratorTab';
 import { AnalyticsTab } from './components/AnalyticsTab';
-import { TopicsWordCloudTab } from './components/TopicsWordCloudTab';
+import { TopicsTab } from './components/TopicsTab';
+import { WordCloudTab } from './components/WordCloudTab';
 import { SearchTab } from './components/SearchTab';
+import { DocumentComparisonTab } from './components/DocumentComparisonTab';
 import { AuditLogsTab } from './components/AuditLogsTab';
-import { MetricsTab } from './components/MetricsTab';
+import { SettingsTab } from './components/SettingsTab';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User>({
@@ -57,6 +65,7 @@ export default function App() {
 
   // Loaded State
   const [documents, setDocuments] = useState<MiningDocument[]>([]);
+  const [inquiries, setInquiries] = useState<ParliamentaryInquiry[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>([]);
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
   const [reports, setReports] = useState<GeneratedReport[]>([]);
@@ -75,8 +84,9 @@ export default function App() {
 
   const loadAllData = async () => {
     try {
-      const [docsRes, logsRes, metricsRes, reportsRes, topicsRes, wcRes, valRes, analyticsRes] = await Promise.all([
+      const [docsRes, inqRes, logsRes, metricsRes, reportsRes, topicsRes, wcRes, valRes, analyticsRes] = await Promise.all([
         api.getDocuments(),
+        api.getInquiries(),
         api.getAuditLogs(),
         api.getMetrics(),
         api.getReports(),
@@ -87,6 +97,7 @@ export default function App() {
       ]);
 
       if (docsRes.documents) setDocuments(docsRes.documents);
+      if (inqRes.inquiries) setInquiries(inqRes.inquiries);
       if (logsRes.logs) setAuditLogs(logsRes.logs);
       if (metricsRes.metrics) setMetrics(metricsRes.metrics);
       if (reportsRes.reports) setReports(reportsRes.reports);
@@ -116,7 +127,7 @@ export default function App() {
       const res = await api.login(role);
       if (res.user) {
         setCurrentUser(res.user);
-        showToast(`Switched active profile to ${res.user.role}: ${res.user.name}`);
+        showToast(`Active profile switched to ${res.user.role}: ${res.user.name}`);
         const logsRes = await api.getAuditLogs();
         if (logsRes.logs) setAuditLogs(logsRes.logs);
       }
@@ -125,15 +136,18 @@ export default function App() {
     }
   };
 
-  const handleResetSeed = async () => {
-    try {
-      setIsLoading(true);
-      await api.resetSeed();
-      await loadAllData();
-      showToast('Database reset to fresh CMPDI / CIL demonstration state.');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleClearWorkspace = async () => {
+    await api.clearWorkspace();
+    await loadAllData();
+    showToast('Repository workspace cleared to empty state (0 documents).');
+    setActiveTab('dashboard');
+  };
+
+  const handleLoadBenchmark = async () => {
+    await api.loadBenchmarkWorkspace();
+    await loadAllData();
+    showToast('CMPDI & Coal India Limited reference benchmark dataset loaded.');
+    setActiveTab('dashboard');
   };
 
   const handleOpenViewer = (docId: string) => {
@@ -147,8 +161,15 @@ export default function App() {
       await loadAllData();
       showToast(`Document "${res.document.title}" ingested & OCR-parsed successfully.`);
       setSelectedViewerDocId(res.document.id);
-      setActiveTab('viewer');
+      return res.document;
     }
+    return null;
+  };
+
+  const handleDeleteDocument = async (docId: string) => {
+    await api.deleteDocument(docId, currentUser.name);
+    await loadAllData();
+    showToast('Document removed from repository.');
   };
 
   const handleReprocessDocument = async (docId: string) => {
@@ -166,7 +187,7 @@ export default function App() {
     const res = await api.actionValidationEntity(id, action, updatedValue, comment);
     if (res.entity) {
       await loadAllData();
-      showToast(`Entity "${res.entity.entityKey}" marked as ${action}. Audit log recorded.`);
+      showToast(`Entity "${res.entity.entityKey}" marked as ${action}. Audit trail recorded.`);
     }
   };
 
@@ -177,10 +198,36 @@ export default function App() {
     });
     if (res.report) {
       await loadAllData();
-      showToast(`Generated "${res.report.title}" with 13 statutory sections.`);
+      showToast(`Generated "${res.report.title}" with 13 statutory technical sections.`);
       return res.report;
     }
     throw new Error('Failed to generate report');
+  };
+
+  const handleCreateInquiry = async (data: Partial<ParliamentaryInquiry>) => {
+    const res = await api.createInquiry(data);
+    if (res.inquiry) {
+      await loadAllData();
+      showToast(`Parliamentary Inquiry Ref ${res.inquiry.referenceNumber} registered.`);
+    }
+  };
+
+  const handleUpdateInquiry = async (id: string, updates: Partial<ParliamentaryInquiry>) => {
+    const res = await api.updateInquiry(id, updates);
+    if (res.inquiry) {
+      await loadAllData();
+      showToast(`Inquiry ${res.inquiry.referenceNumber} status updated to ${res.inquiry.status}.`);
+    }
+  };
+
+  const handleGenerateInquiryDraft = async (id: string) => {
+    const res = await api.generateInquiryDraft(id);
+    if (res.inquiry) {
+      await loadAllData();
+      showToast('AI draft statement synthesized from verified primary source evidence.');
+      return res.inquiry;
+    }
+    throw new Error('Draft synthesis failed');
   };
 
   const handleExecuteQuery = async (query: string) => {
@@ -199,13 +246,13 @@ export default function App() {
         currentUser={currentUser}
         onSwitchUser={handleSwitchUser}
         onOpenDemoGuide={() => setIsDemoGuideOpen(true)}
-        onResetSeed={handleResetSeed}
+        onResetSeed={handleLoadBenchmark}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
 
       {/* Main Tab Navigation Strip */}
-      <div className="bg-slate-900/90 border-b border-slate-800 sticky top-[73px] z-40 backdrop-blur-sm">
+      <div className="bg-slate-900/95 border-b border-slate-800 sticky top-[73px] z-40 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 flex items-center gap-1 overflow-x-auto scrollbar-none py-1.5">
           <button
             onClick={() => setActiveTab('dashboard')}
@@ -228,14 +275,26 @@ export default function App() {
           </button>
 
           <button
-            onClick={() => setActiveTab('viewer')}
+            onClick={() => setActiveTab('upload')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
-              activeTab === 'viewer' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+              activeTab === 'upload' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
-            <FileSearch className="w-3.5 h-3.5" />
-            <span>Document Viewer</span>
+            <FileUp className="w-3.5 h-3.5 text-amber-400" />
+            <span>Upload Documents</span>
           </button>
+
+          {documents.length > 0 && (
+            <button
+              onClick={() => setActiveTab('viewer')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                activeTab === 'viewer' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <FileSearch className="w-3.5 h-3.5" />
+              <span>Document Viewer</span>
+            </button>
+          )}
 
           <button
             onClick={() => setActiveTab('validation')}
@@ -244,7 +303,7 @@ export default function App() {
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Validation Workbench</span>
+            <span>Validation</span>
             {pendingCount > 0 && (
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
             )}
@@ -257,7 +316,17 @@ export default function App() {
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" />
-            <span>AI Assistant (SQL+RAG)</span>
+            <span>AI Assistant</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('inquiries')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+              activeTab === 'inquiries' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <Landmark className="w-3.5 h-3.5" />
+            <span>Inquiries ({inquiries.length})</span>
           </button>
 
           <button
@@ -267,7 +336,7 @@ export default function App() {
             }`}
           >
             <FileText className="w-3.5 h-3.5" />
-            <span>Report Generator</span>
+            <span>Reports</span>
           </button>
 
           <button
@@ -277,7 +346,7 @@ export default function App() {
             }`}
           >
             <TrendingUp className="w-3.5 h-3.5" />
-            <span>Historical Analytics</span>
+            <span>Analytics</span>
           </button>
 
           <button
@@ -286,8 +355,18 @@ export default function App() {
               activeTab === 'topics' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Topics</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('wordcloud')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+              activeTab === 'wordcloud' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
             <Cloud className="w-3.5 h-3.5" />
-            <span>Topics & Word Cloud</span>
+            <span>Word Cloud</span>
           </button>
 
           <button
@@ -297,7 +376,17 @@ export default function App() {
             }`}
           >
             <Search className="w-3.5 h-3.5" />
-            <span>Global Search</span>
+            <span>Search</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('comparison')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+              activeTab === 'comparison' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <GitCompare className="w-3.5 h-3.5" />
+            <span>Document Comparison</span>
           </button>
 
           <button
@@ -307,17 +396,17 @@ export default function App() {
             }`}
           >
             <History className="w-3.5 h-3.5" />
-            <span>Audit Trail</span>
+            <span>Audit Logs</span>
           </button>
 
           <button
-            onClick={() => setActiveTab('metrics')}
+            onClick={() => setActiveTab('settings')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
-              activeTab === 'metrics' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+              activeTab === 'settings' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
-            <Award className="w-3.5 h-3.5" />
-            <span>ROI Metrics</span>
+            <Settings className="w-3.5 h-3.5" />
+            <span>Settings</span>
           </button>
         </div>
       </div>
@@ -334,8 +423,8 @@ export default function App() {
         {isLoading && !metrics ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-            <p className="text-sm font-bold text-slate-300">Loading CMPDI / CIL Intelligence Corpus...</p>
-            <p className="text-xs text-slate-500 mt-1">Initializing Relational Database & Vector Indices</p>
+            <p className="text-sm font-bold text-slate-300">Initializing Knowledge Repository...</p>
+            <p className="text-xs text-slate-500 mt-1">Connecting Vector Indices & Relational Structured Store</p>
           </div>
         ) : (
           <>
@@ -344,8 +433,10 @@ export default function App() {
                 metrics={metrics}
                 documents={documents}
                 auditLogs={auditLogs}
+                productionRecords={productionRecords}
                 setActiveTab={setActiveTab}
                 onOpenViewer={handleOpenViewer}
+                onLoadBenchmark={handleLoadBenchmark}
               />
             )}
 
@@ -355,6 +446,16 @@ export default function App() {
                 onOpenViewer={handleOpenViewer}
                 onUploadDocument={handleUploadDocument}
                 onReprocessDocument={handleReprocessDocument}
+                onDeleteDocument={handleDeleteDocument}
+                onGoToUpload={() => setActiveTab('upload')}
+              />
+            )}
+
+            {activeTab === 'upload' && (
+              <UploadDocumentsTab
+                onUploadDocument={handleUploadDocument}
+                onOpenViewer={handleOpenViewer}
+                onNavigateToDocuments={() => setActiveTab('documents')}
               />
             )}
 
@@ -383,6 +484,17 @@ export default function App() {
               />
             )}
 
+            {activeTab === 'inquiries' && (
+              <InquiriesTab
+                inquiries={inquiries}
+                documents={documents}
+                onOpenViewer={handleOpenViewer}
+                onCreateInquiry={handleCreateInquiry}
+                onUpdateInquiry={handleUpdateInquiry}
+                onGenerateDraft={handleGenerateInquiryDraft}
+              />
+            )}
+
             {activeTab === 'reports' && (
               <ReportGeneratorTab
                 reports={reports}
@@ -398,15 +510,29 @@ export default function App() {
             )}
 
             {activeTab === 'topics' && (
-              <TopicsWordCloudTab
+              <TopicsTab
                 topics={topics}
+                onOpenViewer={handleOpenViewer}
+              />
+            )}
+
+            {activeTab === 'wordcloud' && (
+              <WordCloudTab
                 wordCloud={wordCloud}
+                documents={documents}
                 onOpenViewer={handleOpenViewer}
               />
             )}
 
             {activeTab === 'search' && (
               <SearchTab
+                documents={documents}
+                onOpenViewer={handleOpenViewer}
+              />
+            )}
+
+            {activeTab === 'comparison' && (
+              <DocumentComparisonTab
                 documents={documents}
                 onOpenViewer={handleOpenViewer}
               />
@@ -419,16 +545,19 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'metrics' && metrics && (
-              <MetricsTab
-                metrics={metrics}
+            {activeTab === 'settings' && (
+              <SettingsTab
+                currentUser={currentUser}
+                onSwitchUser={handleSwitchUser}
+                onClearWorkspace={handleClearWorkspace}
+                onLoadBenchmark={handleLoadBenchmark}
               />
             )}
           </>
         )}
       </main>
 
-      {/* SIH Hackathon Evaluation Walkthrough Modal */}
+      {/* Architecture & Operations Walkthrough Modal */}
       <DemoGuideModal
         isOpen={isDemoGuideOpen}
         onClose={() => setIsDemoGuideOpen(false)}
@@ -440,10 +569,10 @@ export default function App() {
       <footer className="bg-slate-900 border-t border-slate-800 text-slate-500 text-xs py-4 px-4 text-center mt-12">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <div>
-            GeoMine Intel • Smart India Hackathon 2026 (SIH26023) • CMPDI / Coal India Limited
+            GeoMine Intel Enterprise • Central Mine Planning & Design Institute (CMPDI) • Coal India Limited
           </div>
           <div className="text-[11px] text-amber-500/80">
-            DEMONSTRATION DATA — NOT OFFICIAL CMPDI/CIL DATA • Strict Factual Accuracy Enforced
+            Ministry of Coal Digital Transformation Initiative • High-Fidelity Factual Extraction & Verification
           </div>
         </div>
       </footer>

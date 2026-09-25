@@ -1486,15 +1486,95 @@ export const INITIAL_METRICS: PerformanceMetrics = {
   conflictsResolvedCount: 9
 };
 
+export const INITIAL_INQUIRIES: import('../types').ParliamentaryInquiry[] = [
+  {
+    id: 'inq_parl_01',
+    referenceNumber: 'LS-PQ/Starred/4921/2024',
+    house: 'Lok Sabha',
+    questionType: 'Starred',
+    subject: 'Domestic Coking Coal Availability, Washery Yield and Steel Sector Self-Sufficiency',
+    ministryDivision: 'Parliamentary Cell / Operations Division',
+    urgency: 'Critical',
+    dueDate: '2024-11-28',
+    assignedTo: 'Vikramaditya Roy (Under Secretary)',
+    status: 'Drafted',
+    queryDetails: 'Will the Minister of Coal be pleased to state: (a) Total raw coking coal production across BCCL and CCL during FY 2023-24; (b) Current capacity utilization of existing coking coal washeries; (c) Steps initiated under Mission Coking Coal to substitute imported metallurgical coal in blast furnaces.',
+    linkedDocuments: [
+      {
+        documentId: 'doc_cil_ann_2024',
+        documentTitle: 'CIL Consolidated Annual Production & Dispatch Review 2023-24',
+        pageNumber: 14,
+        citationSnippet: 'BCCL achieved 41.10 MT (100.2%) and CCL produced 86.05 MT (102.4%) during FY 2023-24.'
+      },
+      {
+        documentId: 'doc_bccl_coking_2024',
+        documentTitle: 'BCCL Coking Coal Washery Yield & Offtake Assessment 2023-24',
+        pageNumber: 5,
+        citationSnippet: 'Madhuban and Moonidih washeries operated at 74.2% capacity utilization delivering 12.8 MT clean coal to SAIL/RINL.'
+      }
+    ],
+    draftReply: `GOVERNMENT OF INDIA\nMINISTRY OF COAL\nLOK SABHA STARRED QUESTION NO. 4921\nANSWERED ON 28.11.2024\n\nSTATEMENT REFERRED TO IN REPLY TO PARTS (a) TO (c) OF LOK SABHA STARRED QUESTION NO. 4921:\n\n(a): During the financial year 2023-24, Bharat Coking Coal Limited (BCCL) achieved a raw coal production of 41.10 Million Tonnes (MT) (100.2% of target), while Central Coalfields Limited (CCL) produced 86.05 MT (102.4% of target), providing a solid foundation for domestic metallurgical feedstock.\n\n(b): Operating washeries across BCCL and CCL operated at a weighted capacity utilization of 74.2%, dispatching 12.8 MT of washed metallurgical clean coking coal to domestic steel producers including Steel Authority of India Limited (SAIL) and Rashtriya Ispat Nigam Limited (RINL).\n\n(c): Under 'Mission Coking Coal', CMPDI has identified and proved additional Barakar Formation deep coking blocks in Jharia and East Bokaro with estimated reserves of 4,200 MT. CIL is constructing 4 new mechanized heavy medium cyclone washeries with aggregate throughput of 14 MTPA.`,
+    verifiedBy: 'Ananya Sen (Senior Analyst)',
+    updatedAt: '2024-11-20T14:30:00Z'
+  },
+  {
+    id: 'inq_parl_02',
+    referenceNumber: 'RS-PQ/Unstarred/1182/2024',
+    house: 'Rajya Sabha',
+    questionType: 'Unstarred',
+    subject: 'Overburden Removal Compliance and Stripping Ratio Monitoring in Mega Opencast Mines',
+    ministryDivision: 'Technical Directorate / DGMS Compliance',
+    urgency: 'High',
+    dueDate: '2024-12-05',
+    assignedTo: 'Ananya Sen (Analyst)',
+    status: 'Pending',
+    queryDetails: 'Whether Coal India subsidiaries have adhered to environmental and statutory stripping ratios in high-capacity opencast mines including Gevra and Kusmunda; and the measures deployed for composite slope stability monitoring.',
+    linkedDocuments: [
+      {
+        documentId: 'doc_secl_gevra_2023',
+        documentTitle: 'SECL Gevra Mega Opencast Project - Annual Performance Dossier 2022-23',
+        pageNumber: 8,
+        citationSnippet: 'Composite overburden handling reached 68.40 MCM against coal production of 50.80 MT, maintaining stripping ratio at 1.35 m3/t with continuous slope radar deployment.'
+      }
+    ],
+    draftReply: `GOVERNMENT OF INDIA\nMINISTRY OF COAL\nRAJYA SABHA UNSTARRED QUESTION NO. 1182\n\n(a) & (b): In SECL's Gevra Mega Opencast Project, composite overburden handled during FY 2022-23 stood at 68.40 Million Cubic Metres (MCM) against coal extraction of 50.80 MT, establishing a compliant stripping ratio of 1.35 m3/tonne. Slope stability is supervised using automated real-time ground-based radar systems certified by DGMS.`,
+    updatedAt: '2024-11-22T09:15:00Z'
+  },
+  {
+    id: 'inq_parl_03',
+    referenceNumber: 'MOC-PRIORITY/ADM-883/2024',
+    house: 'Ministry of Coal',
+    questionType: 'Administrative Priority',
+    subject: 'Verification of Geological Proved Reserves and Seam Correlation in Talcher Coalfield',
+    ministryDivision: 'Exploration & Geological Planning Desk',
+    urgency: 'Medium',
+    dueDate: '2024-12-12',
+    assignedTo: 'Dr. Rajeshwar Sharma (GM IT & Geomatics)',
+    status: 'Approved',
+    queryDetails: 'Immediate verification required by Secretary (Coal) regarding CMPDI Regional Institute VII exploration data in Talcher Barakar Seams and projected opencast extractability.',
+    linkedDocuments: [
+      {
+        documentId: 'doc_cmpdi_talcher_2023',
+        documentTitle: 'CMPDI Regional Institute VII - Geological Assessment Report on Talcher Coalfield',
+        pageNumber: 12,
+        citationSnippet: 'Proved coal reserves stand established at 18,450 MT across Barakar formations with average seam thickness of 18.6m.'
+      }
+    ],
+    draftReply: `CMPDI Regional Institute VII exploration assessment has confirmed 18,450 MT under the Proved category in Talcher Coalfield. Barakar Seam II presents exceptional deposit thickness (average 18.6m) with low stripping ratio suitable for 50 MTPA dragline expansion projects.`,
+    verifiedBy: 'Dr. Rajeshwar Sharma (Admin)',
+    updatedAt: '2024-11-24T11:00:00Z'
+  }
+];
+
 export const SAMPLE_QUESTIONS = [
-  'What was the production of Mine A in 2022?',
-  'Compare Mine A and Mine B from 2020 to 2024.',
-  'Which mine had the highest production growth?',
-  'What geological challenges were mentioned most frequently?',
-  'What were the major mining issues in 2023?',
-  'Summarize production trends from 2019 to 2024.',
-  'Generate a production report for Mine A.',
-  'Which reports contain information about equipment failure?',
-  'What changed between the 2021 and 2023 reports?',
-  'Show the evidence for the production figure.'
+  'What was the raw coal production of SECL Gevra Mega OC in FY 2022-23?',
+  'Compare SECL Gevra and NCL Jayant production and stripping ratio from 2020 to 2024.',
+  'Which subsidiary achieved the highest target completion percentage in 2023-24?',
+  'What geological reserves and seam thickness were proved by CMPDI in Talcher Coalfield?',
+  'What were the major mining equipment and slope stability issues recorded in 2023?',
+  'Summarize CIL pan-India coal production trends and overburden removal from 2020 to 2024.',
+  'Generate an official statutory production report for SECL Kusmunda Open Cast.',
+  'Which reports contain information about gas drainage and methane levels in underground mines?',
+  'What discrepancies or variances were flagged between operational logs and audited accounts for Gevra?',
+  'Show the exact document page citation and evidence table for NCL Northern Coalfields 141.52 MT production.'
 ];
