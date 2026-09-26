@@ -15,7 +15,11 @@ import {
   Eye,
   FileSpreadsheet,
   FileCode,
-  Sparkles
+  Sparkles,
+  TrendingUp,
+  Compass,
+  FileSignature,
+  HelpCircle
 } from 'lucide-react';
 import { DocumentType, MiningDocument } from '../types';
 
@@ -52,48 +56,91 @@ export const UploadDocumentsTab: React.FC<UploadDocumentsTabProps> = ({
   const [isProcessingBatch, setIsProcessingBatch] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Template pre-fill
-  const addTemplateItem = (template: 'csv_prod' | 'txt_geo' | 'docx_inquiry') => {
+  // Template pre-fill with 6 distinct document types
+  const addTemplateItem = (template: 'prod' | 'geo' | 'admin' | 'docx' | 'xlsx' | 'unknown') => {
     let item: UploadItem;
-    if (template === 'csv_prod') {
+    if (template === 'prod') {
       item = {
-        id: `tpl_${Date.now()}_1`,
-        name: 'SECL_Kusmunda_OCP_Monthly_Production_Log.csv',
-        size: 245000,
-        type: 'csv',
+        id: `tpl_${Date.now()}_prod`,
+        name: 'SECL_Gevra_Mega_OC_Annual_Production_2023_24.pdf',
+        size: 1450000,
+        type: 'pdf',
         subsidiary: 'SECL',
-        mineName: 'Kusmunda Open Cast',
+        mineName: 'Gevra Mega Opencast',
         year: 2024,
-        docType: 'PRODUCTION_SPREADSHEET',
-        rawText: `Subsidiary,Mine,Reporting_Year,Planned_Coal_MT,Achieved_Coal_MT,Overburden_MCM,Stripping_Ratio\nSECL,Kusmunda OC,2024,42.00,43.85,96.40,2.20\nSECL,Gevra Mega OC,2024,52.00,53.20,72.10,1.35\nSECL,Dipka OC,2024,38.00,38.50,81.20,2.11`,
+        docType: 'ANNUAL_REPORT',
+        rawText: `SOUTH EASTERN COALFIELDS LIMITED (SECL)\nANNUAL OPERATIONAL & RAW COAL EXTRACTION REVIEW 2023-24\nMine: Gevra Mega Opencast Project | Korba Coalfield, Chhattisgarh\n\n1. Production Highlights:\n• Raw Coal Production achieved: 53.20 MT against Target of 52.00 MT (102.3% target achievement).\n• Composite Overburden Removal: 72.10 MCM. Stripping Ratio achieved: 1.35 m3/t.\n• Dispatch to Pithead Super Thermal Power Plants: 51.80 MT via MGR merry-go-round rapid silo system.\n\n2. Geotechnical & Environmental Compliance:\n• Continuous highwall slope monitoring radar recorded zero critical displacement triggers.\n• Water mist spraying cannons deployed across all active haul roads.\n\nSummary Table:\nYear,Target_MT,Achieved_MT,OB_MCM,Stripping_Ratio\n2022,50.00,50.80,68.40,1.35\n2023,51.00,52.50,70.20,1.34\n2024,52.00,53.20,72.10,1.35`,
         status: 'QUEUED',
         progress: 0
       };
-    } else if (template === 'txt_geo') {
+    } else if (template === 'geo') {
       item = {
-        id: `tpl_${Date.now()}_2`,
-        name: 'CMPDI_RI1_Borehole_Exploration_Raniganj.txt',
-        size: 182000,
-        type: 'txt',
+        id: `tpl_${Date.now()}_geo`,
+        name: 'CMPDI_RI7_Talcher_Borehole_Geological_Assessment.pdf',
+        size: 2180000,
+        type: 'pdf',
         subsidiary: 'CMPDI',
-        mineName: 'Raniganj Deep Block',
+        mineName: 'Talcher Coalfield Regional Block',
         year: 2023,
         docType: 'GEOLOGICAL_ASSESSMENT',
-        rawText: `CENTRAL MINE PLANNING & DESIGN INSTITUTE (RI-I ASANSOL)\nGEOLOGICAL EXPLORATION & SEAM CORRELATION REPORT\nBasin: Raniganj Coalfield | Barakar Formation\n18 exploratory boreholes drilled up to 680m depth.\nDiscovered thick Kajora and Dishergarh seams. Average seam thickness: 14.8m.\nProved coal reserves estimated at 224.50 MT with coking potential.\nAnnual Coal Production achieved: 12.80 MT against Target of 12.00 MT. Composite Overburden Removal: 28.50 MCM.`,
+        rawText: `CENTRAL MINE PLANNING & DESIGN INSTITUTE (CMPDI RI-VII, BHUBANESWAR)\nGEOLOGICAL EXPLORATION & REGIONAL RESERVE EVALUATION REPORT\nLocation: Talcher Coalfield, Angul District, Odisha | Barakar & Karharbari Formations\n\n1. Exploration Summary:\n• Drilled 34 deep exploratory core boreholes totaling 12,450 meters.\n• Confirmed thick multi-seam persistence including Seam II (thickness: 18.6m) and Seam III.\n• Proved Geological Reserves: 18,450 MT.\n• Indicated Reserves: 9,200 MT. Inferred Reserves: 6,550 MT.\n• Total Coal Reserves evaluated: 34,200 MT.\n• Predominant Coal Grade: G11 to G13 Thermal grade with moderate ash content (38-42%).\n\nSummary Table:\nSeam_Name,Thickness_M,Depth_Range_M,Proved_Reserves_MT\nSeam I,8.4,40-120,4200\nSeam II,18.6,40-220,6400\nSeam III,12.2,80-280,4850\nSeam IV,6.5,120-340,3000`,
+        status: 'QUEUED',
+        progress: 0
+      };
+    } else if (template === 'admin') {
+      item = {
+        id: `tpl_${Date.now()}_admin`,
+        name: 'Ministry_of_Coal_Statutory_Safety_Circular_2024.pdf',
+        size: 420000,
+        type: 'pdf',
+        subsidiary: 'Ministry of Coal',
+        mineName: 'All Subsidiary Headquarters',
+        year: 2024,
+        docType: 'ADMINISTRATIVE_LETTER',
+        rawText: `GOVERNMENT OF INDIA\nMINISTRY OF COAL, SHASTRI BHAWAN, NEW DELHI\nCIRCULAR NO. MOC/SFTY/DIRECTIVE/2024/09\nDate: 14th June 2024\n\nSubject: Mandatory Implementation of Digital Highwall Radar & Fatigue Telemetry Systems across All Opencast Mines\n\n1. In accordance with DGMS recommendations and Ministry mandates, all subsidiary chairmen and technical directors are instructed to enforce:\n(a) Continuous 24x7 slope stability radar coverage on benches exceeding 60 meters depth.\n(b) AI-enabled driver fatigue and proximity detection sensors on all Heavy Earth Moving Machinery (HEMM).\n(c) Submission of weekly digital compliance audit returns to the Chief Vigilance and Safety Officer.\n\n2. Mandatory Compliance Deadlines:\n• Phase 1 installation across Tier-1 mega mines: 31st August 2024.\n• Pan-subsidiary deployment across all operational units: 31st December 2024.\n• Non-compliance shall attract immediate operational safety review under Mines Act 1952.`,
+        status: 'QUEUED',
+        progress: 0
+      };
+    } else if (template === 'docx') {
+      item = {
+        id: `tpl_${Date.now()}_docx`,
+        name: 'BCCL_Moonidih_Longwall_Engineering_Failure_Report.docx',
+        size: 890000,
+        type: 'docx',
+        subsidiary: 'BCCL',
+        mineName: 'Moonidih Underground Project',
+        year: 2023,
+        docType: 'TECHNICAL_REPORT',
+        rawText: `BHARAT COKING COAL LIMITED (BCCL) - ENGINEERING DIVISION\nTECHNICAL REPORT: POWERED ROOF SUPPORT (PRS) HYDRAULIC SYSTEM FAILURE & DOWNTIME ANALYSIS\nColliery: Moonidih Underground Colliery (Deep Longwall Face No. 4)\n\n1. Technical Overview & Incident Breakdown:\n• Moonidih operates mechanized longwall faces in Degree-III gassy coking coal seams at 450m depth.\n• On 12th October 2023, face shearer operations experienced critical stoppage due to electro-hydraulic directional control valve manifold burst.\n• High-pressure emulsion leak (420 bar) resulted in 21 days of unplanned face downtime.\n• Root cause identified: Thermal fatigue and particulate contamination in fluid reservoir.\n\n2. Operational Impact & Remediation:\n• Raw coking coal production for Q3 dropped to 0.94 MT against planned target of 1.20 MT.\n• Automated filtration skid and redundant dual-pump manifolds retrofitted on longwall gate road.\n• MTBF (Mean Time Between Failures) restored to 720 operating hours.`,
+        status: 'QUEUED',
+        progress: 0
+      };
+    } else if (template === 'xlsx') {
+      item = {
+        id: `tpl_${Date.now()}_xlsx`,
+        name: 'CIL_Subsidiary_Capital_Expenditure_Budget_2023_24.xlsx',
+        size: 380000,
+        type: 'xlsx',
+        subsidiary: 'CIL Consolidated',
+        mineName: 'Pan-India Operations',
+        year: 2024,
+        docType: 'SPREADSHEET_DATASET',
+        rawText: `Subsidiary,Approved_Budget_Cr,Actual_Capex_Cr,FMC_Projects_Cr,HEMM_Procurement_Cr,Utilization_Pct\nSECL,3850.00,3920.40,1450.00,1620.00,101.8\nMCL,3400.00,3450.80,1280.00,1540.00,101.5\nNCL,2400.00,2480.20,950.00,1120.00,103.3\nCCL,1800.00,1740.50,620.00,780.00,96.7\nWCL,1650.00,1610.20,540.00,710.00,97.6\nBCCL,1450.00,1380.00,410.00,650.00,95.2\nECL,1200.00,1150.00,380.00,520.00,95.8\nCMPDI,450.00,470.20,110.00,180.00,104.5`,
         status: 'QUEUED',
         progress: 0
       };
     } else {
+      // Environmental / Unknown Document
       item = {
-        id: `tpl_${Date.now()}_3`,
-        name: 'LokSabha_Starred_Q308_Coking_Coal_Substitution.docx',
-        size: 512000,
-        type: 'docx',
-        subsidiary: 'Ministry of Coal',
-        mineName: 'All Coking Mines (BCCL/CCL)',
+        id: `tpl_${Date.now()}_unknown`,
+        name: 'National_Clean_Energy_Transition_Study_2024.txt',
+        size: 290000,
+        type: 'txt',
+        subsidiary: 'National Energy Council',
+        mineName: 'Energy Transition Division',
         year: 2024,
-        docType: 'PARLIAMENTARY_INQUIRY',
-        rawText: `PARLIAMENT OF INDIA - LOK SABHA SECRETARIAT\nSTARRED QUESTION NO. 308 FOR 20.11.2024\nSubject: Enhancing Indigenous Coking Coal Production to Mitigate Import Dependency\n(a) Raw coking coal production in BCCL reached 41.10 MT and CCL 86.05 MT during FY 2023-24.\n(b) Four new heavy medium cyclone washeries are under construction with 14 MTPA throughput.\nComposite Overburden Removal: 168.40 MCM. Annual Coal Production achieved: 41.10 MT against Target of 41.00 MT.`,
+        docType: 'RESEARCH_REPORT',
+        rawText: `NATIONAL CLEAN ENERGY RESEARCH COUNCIL\nRESEARCH REPORT: METHANE CAPTURE & CARBON SEQUESTRATION POTENTIAL IN DEEP COAL BASINS\nAuthor: Dr. Arvind Swaminathan & Clean Coal Technology Taskforce\n\n1. Abstract & Executive Synthesis:\nThis research study investigates coal mine methane (CMM) and abandoned mine methane (AMM) drainage efficiency across deep sedimentary basins.\nBench-scale simulations and field tests confirm that pre-drainage boreholes can recover up to 74.5% of fugitive methane prior to longwall extraction.\nCaptured gas exhibits 92.4% purity suitable for direct power generation.\n\n2. Key Environmental & Economic Findings:\n• Estimated total fugitive methane emission abated: 14.8 million cubic meters per annum.\n• Carbon dioxide equivalent reduction: 280,000 tonnes CO2e.\n• Levelized cost of electricity from captured gas estimated at INR 3.85 per kWh.\n• Recommended policy mechanism: Integration with national green hydrogen and carbon credit trading platforms.`,
         status: 'QUEUED',
         progress: 0
       };
@@ -123,18 +170,28 @@ export const UploadDocumentsTab: React.FC<UploadDocumentsTabProps> = ({
         rawText = `[BINARY DOCUMENT CONTAINER: ${file.name.toUpperCase()}]\nIngested file stream (${file.size} bytes). OCR and layout structure extraction initiated.`;
       }
 
-      // Auto-detect subsidiary from filename
-      let detectedSub = 'CIL Consolidated';
+      // Auto-detect organization / domain from filename or content
+      let detectedOrg = 'Enterprise Organization';
+      let detectedLocation = 'Corporate / Operations';
+      let defaultDocType: DocumentType = 'GENERAL_DOCUMENT';
+
       const upperName = file.name.toUpperCase();
-      if (upperName.includes('SECL')) detectedSub = 'SECL';
-      else if (upperName.includes('MCL')) detectedSub = 'MCL';
-      else if (upperName.includes('NCL')) detectedSub = 'NCL';
-      else if (upperName.includes('CCL')) detectedSub = 'CCL';
-      else if (upperName.includes('BCCL')) detectedSub = 'BCCL';
-      else if (upperName.includes('WCL')) detectedSub = 'WCL';
-      else if (upperName.includes('ECL')) detectedSub = 'ECL';
-      else if (upperName.includes('CMPDI')) detectedSub = 'CMPDI';
-      else if (upperName.includes('PARLIAMENT') || upperName.includes('LOK') || upperName.includes('RAJYA')) detectedSub = 'Ministry of Coal';
+      if (upperName.includes('SECL')) { detectedOrg = 'SECL'; detectedLocation = 'Chhattisgarh / MP'; defaultDocType = 'ANNUAL_REPORT'; }
+      else if (upperName.includes('MCL')) { detectedOrg = 'MCL'; detectedLocation = 'Odisha'; defaultDocType = 'ANNUAL_REPORT'; }
+      else if (upperName.includes('NCL')) { detectedOrg = 'NCL'; detectedLocation = 'Singrauli'; defaultDocType = 'ANNUAL_REPORT'; }
+      else if (upperName.includes('CCL')) { detectedOrg = 'CCL'; detectedLocation = 'Ranchi, Jharkhand'; defaultDocType = 'ANNUAL_REPORT'; }
+      else if (upperName.includes('BCCL')) { detectedOrg = 'BCCL'; detectedLocation = 'Dhanbad, Jharkhand'; defaultDocType = 'TECHNICAL_REPORT'; }
+      else if (upperName.includes('WCL')) { detectedOrg = 'WCL'; detectedLocation = 'Nagpur, Maharashtra'; defaultDocType = 'ANNUAL_REPORT'; }
+      else if (upperName.includes('ECL')) { detectedOrg = 'ECL'; detectedLocation = 'Sanctoria, West Bengal'; defaultDocType = 'ANNUAL_REPORT'; }
+      else if (upperName.includes('CMPDI')) { detectedOrg = 'CMPDI'; detectedLocation = 'Central Basin'; defaultDocType = 'GEOLOGICAL_ASSESSMENT'; }
+      else if (upperName.includes('PARLIAMENT') || upperName.includes('LOK') || upperName.includes('RAJYA')) { detectedOrg = 'Parliamentary Affairs'; detectedLocation = 'New Delhi'; defaultDocType = 'PARLIAMENTARY_INQUIRY'; }
+      else if (['xlsx', 'xls', 'csv'].includes(extension)) { detectedOrg = 'Finance & Operations'; detectedLocation = 'Corporate HQ'; defaultDocType = 'SPREADSHEET_DATASET'; }
+      else if (upperName.includes('FINANC') || upperName.includes('BUDGET') || upperName.includes('INVOICE') || upperName.includes('REVENUE')) { detectedOrg = 'Corporate Finance'; detectedLocation = 'Finance Division'; defaultDocType = 'FINANCIAL_REPORT'; }
+      else if (upperName.includes('CIRCULAR') || upperName.includes('ADMIN') || upperName.includes('NOTICE') || upperName.includes('ORDER')) { detectedOrg = 'Administrative Directorate'; detectedLocation = 'Secretariat'; defaultDocType = 'ADMINISTRATIVE_LETTER'; }
+      else if (upperName.includes('TECH') || upperName.includes('SPEC') || upperName.includes('DESIGN') || upperName.includes('ENGINEER')) { detectedOrg = 'Engineering Division'; detectedLocation = 'Technology Center'; defaultDocType = 'TECHNICAL_REPORT'; }
+      else if (upperName.includes('RESEARCH') || upperName.includes('STUDY') || upperName.includes('PAPER')) { detectedOrg = 'Research Council'; detectedLocation = 'National Lab'; defaultDocType = 'RESEARCH_REPORT'; }
+      else if (upperName.includes('MINUTES') || upperName.includes('MEETING')) { detectedOrg = 'Executive Secretariat'; detectedLocation = 'Boardroom'; defaultDocType = 'MEETING_MINUTES'; }
+      else if (upperName.includes('POLICY')) { detectedOrg = 'Strategic Planning'; detectedLocation = 'Secretariat'; defaultDocType = 'POLICY_DOCUMENT'; }
 
       newItems.push({
         id: `upl_${Date.now()}_${i}`,
@@ -142,10 +199,10 @@ export const UploadDocumentsTab: React.FC<UploadDocumentsTabProps> = ({
         name: file.name,
         size: file.size,
         type: extension,
-        subsidiary: detectedSub,
-        mineName: 'Designated Mining Area',
+        subsidiary: detectedOrg,
+        mineName: detectedLocation,
         year: 2024,
-        docType: upperName.includes('PARLIAMENT') ? 'PARLIAMENTARY_INQUIRY' : upperName.includes('GEO') ? 'GEOLOGICAL_ASSESSMENT' : 'ANNUAL_REPORT',
+        docType: defaultDocType,
         rawText,
         status: 'QUEUED',
         progress: 0
@@ -325,53 +382,98 @@ export const UploadDocumentsTab: React.FC<UploadDocumentsTabProps> = ({
         </div>
       </div>
 
-      {/* Pre-Packaged Templates for Quick Demonstration / Testing */}
+      {/* Pre-Packaged Templates for Quick Demonstration / Testing (5 distinct types + 1 unknown) */}
       <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Quick Ingestion Templates (Standard Operational Formats)</span>
+            <span>Universal Test Document Templates (Instant Ingestion & Verification)</span>
           </div>
-          <span className="text-[11px] text-slate-500">Click any preset to test the extraction pipeline</span>
+          <span className="text-[11px] text-slate-500">Test different domains with 1-click verification</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {/* 1. Production Report */}
           <button
-            onClick={() => addTemplateItem('csv_prod')}
-            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group"
+            onClick={() => addTemplateItem('prod')}
+            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group cursor-pointer"
           >
             <div className="p-2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 group-hover:scale-105 transition">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-slate-200">1. Mining Production Dossier</div>
+              <div className="text-[11px] text-slate-400">PDF • SECL Gevra OC 53.2 MT production & OB</div>
+            </div>
+          </button>
+
+          {/* 2. Geological Assessment */}
+          <button
+            onClick={() => addTemplateItem('geo')}
+            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group cursor-pointer"
+          >
+            <div className="p-2 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 group-hover:scale-105 transition">
+              <Compass className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-slate-200">2. Geological Assessment Report</div>
+              <div className="text-[11px] text-slate-400">PDF • Talcher boreholes & 34,200 MT reserves</div>
+            </div>
+          </button>
+
+          {/* 3. Administrative Circular */}
+          <button
+            onClick={() => addTemplateItem('admin')}
+            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group cursor-pointer"
+          >
+            <div className="p-2 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 group-hover:scale-105 transition">
+              <FileSignature className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-slate-200">3. Statutory Safety Circular</div>
+              <div className="text-[11px] text-slate-400">PDF • Ministry DGMS compliance directives</div>
+            </div>
+          </button>
+
+          {/* 4. Technical Report (DOCX) */}
+          <button
+            onClick={() => addTemplateItem('docx')}
+            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group cursor-pointer"
+          >
+            <div className="p-2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover:scale-105 transition">
+              <Cpu className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-slate-200">4. Technical Engineering Report</div>
+              <div className="text-[11px] text-slate-400">DOCX • Longwall hydraulic downtime breakdown</div>
+            </div>
+          </button>
+
+          {/* 5. Financial / Capital Budget (XLSX) */}
+          <button
+            onClick={() => addTemplateItem('xlsx')}
+            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group cursor-pointer"
+          >
+            <div className="p-2 rounded bg-teal-500/10 text-teal-400 border border-teal-500/20 group-hover:scale-105 transition">
               <FileSpreadsheet className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-200">SECL Kusmunda Production Log</div>
-              <div className="text-[11px] text-slate-400">CSV dataset • Coal production & Overburden</div>
+              <div className="text-xs font-bold text-slate-200">5. Financial & Capex Matrix</div>
+              <div className="text-[11px] text-slate-400">XLSX • Subsidiary capex allocation & utilization</div>
             </div>
           </button>
 
+          {/* 6. Unknown / Clean Energy Study */}
           <button
-            onClick={() => addTemplateItem('txt_geo')}
-            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group"
+            onClick={() => addTemplateItem('unknown')}
+            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group cursor-pointer"
           >
-            <div className="p-2 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 group-hover:scale-105 transition">
-              <FileCode className="w-4 h-4" />
+            <div className="p-2 rounded bg-rose-500/10 text-rose-400 border border-rose-500/20 group-hover:scale-105 transition">
+              <HelpCircle className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-200">CMPDI Geological Borehole Dossier</div>
-              <div className="text-[11px] text-slate-400">TXT format • Seam correlation & Reserves</div>
-            </div>
-          </button>
-
-          <button
-            onClick={() => addTemplateItem('docx_inquiry')}
-            className="flex items-start gap-3 p-3 rounded-lg bg-slate-950/70 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/40 text-left transition group"
-          >
-            <div className="p-2 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 group-hover:scale-105 transition">
-              <FileText className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="text-xs font-bold text-slate-200">Parliamentary Question No. 308</div>
-              <div className="text-[11px] text-slate-400">DOCX file • Coking coal import substitution</div>
+              <div className="text-xs font-bold text-slate-200">6. Clean Energy Research (Unknown)</div>
+              <div className="text-[11px] text-slate-400">TXT • Deep basin methane capture & carbon abatement</div>
             </div>
           </button>
         </div>

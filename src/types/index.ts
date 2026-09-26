@@ -16,7 +16,20 @@ export type DocumentType =
   | 'GEOLOGICAL_ASSESSMENT'
   | 'PRODUCTION_SPREADSHEET'
   | 'PARLIAMENTARY_INQUIRY'
-  | 'SAFETY_COMPLIANCE_DOSSIER';
+  | 'SAFETY_COMPLIANCE_DOSSIER'
+  | 'FINANCIAL_REPORT'
+  | 'TECHNICAL_REPORT'
+  | 'RESEARCH_REPORT'
+  | 'ADMINISTRATIVE_LETTER'
+  | 'CIRCULAR'
+  | 'MEETING_MINUTES'
+  | 'POLICY_DOCUMENT'
+  | 'SPREADSHEET_DATASET'
+  | 'HISTORICAL_ARCHIVE'
+  | 'GENERAL_DOCUMENT'
+  | 'OTHER_AUTOMATICALLY_CLASSIFIED'
+  | 'UNKNOWN'
+  | string;
 
 export type DocumentStatus = 
   | 'UPLOADED'
@@ -25,6 +38,67 @@ export type DocumentStatus =
   | 'VALIDATION_REQUIRED'
   | 'VALIDATED'
   | 'FAILED';
+
+export interface DiscoveredKPI {
+  name: string;
+  value: number | string;
+  unit?: string;
+  category?: string;
+  page?: number;
+  sourceRef?: string;
+  confidence?: number;
+  validationState?: 'VERIFIED' | 'FLAGGED' | 'CALCULATED';
+  trend?: 'UP' | 'DOWN' | 'NEUTRAL';
+  changePercentage?: number;
+}
+
+export interface DiscoveredInsight {
+  id: string;
+  text: string;
+  category: 'FACT' | 'TREND' | 'ANOMALY' | 'COMPARISON' | 'RELATIONSHIP' | 'POTENTIAL_ISSUE' | 'SUMMARY';
+  confidence: number;
+  sourcePage?: number;
+  sourceRef?: string;
+}
+
+export interface DiscoveredVisualization {
+  id: string;
+  type: 'line' | 'bar' | 'donut' | 'area' | 'histogram' | 'timeline' | 'table';
+  title: string;
+  description?: string;
+  labels: string[];
+  datasets: {
+    label: string;
+    data: (number | string)[];
+    color?: string;
+  }[];
+  xAxisLabel?: string;
+  yAxisLabel?: string;
+  unit?: string;
+  sourceRef?: string;
+}
+
+export interface TimelineEvent {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  category: 'MILESTONE' | 'DECISION' | 'INCIDENT' | 'REPORT' | 'OPERATIONAL' | 'FINANCIAL' | 'GENERAL';
+  sourcePage?: number;
+  sourceRef?: string;
+}
+
+export interface DocumentQualityScore {
+  ocrQuality: number; // 0 - 100
+  readability: number; // 0 - 100
+  tableAccuracy: number; // 0 - 100
+  overallConfidence: number; // 0 - 100
+  missingPagesDetected: boolean;
+  unreadablePagesCount: number;
+  isDuplicate: boolean;
+  duplicateOfId?: string;
+  warnings: string[];
+}
 
 export interface ExtractedTable {
   id: string;
@@ -61,7 +135,13 @@ export interface ExtractedEntity {
     | 'geological_reserves'
     | 'manpower'
     | 'safety_incident'
-    | 'borehole_depth';
+    | 'borehole_depth'
+    | 'organization'
+    | 'person'
+    | 'location'
+    | 'technical_term'
+    | 'metric'
+    | 'date_event';
   entityKey: string;
   entityValue: string | number;
   unit?: string;
@@ -93,13 +173,18 @@ export interface MiningDocument {
   title: string;
   filename: string;
   fileHash: string;
-  fileType: 'pdf' | 'docx' | 'xlsx' | 'csv' | 'jpg' | 'png' | 'txt';
+  fileType: 'pdf' | 'docx' | 'xlsx' | 'xls' | 'csv' | 'jpg' | 'jpeg' | 'png' | 'txt' | 'doc' | string;
   fileSize: number;
-  subsidiary: string;
-  mineName?: string;
-  coalfield?: string;
-  reportingYear: number;
+  documentType?: string;
   docType: DocumentType;
+  category?: string;
+  domain?: 'MINING' | 'GEOLOGY' | 'PRODUCTION' | 'ADMINISTRATIVE' | 'FINANCIAL' | 'INQUIRY' | 'TECHNICAL' | 'GENERAL' | 'RESEARCH' | 'LEGAL_COMPLIANCE' | 'OTHER' | string;
+  language?: string;
+  date?: string;
+  reportingPeriod?: string;
+  organization?: string;
+  department?: string;
+  location?: string;
   status: DocumentStatus;
   isScanned: boolean;
   pageCount: number;
@@ -110,8 +195,22 @@ export interface MiningDocument {
   tables: ExtractedTable[];
   entities: ExtractedEntity[];
   summary?: string;
+  executiveSummary?: string;
+  keyInsights?: DiscoveredInsight[];
+  keyMetrics?: DiscoveredKPI[];
+  visualizations?: DiscoveredVisualization[];
+  timelineEvents?: TimelineEvent[];
+  qualityScore?: DocumentQualityScore;
+  customMetadata?: Record<string, any>;
   tags: string[];
+  // Pluggable domain fields
+  subsidiary?: string;
+  mineName?: string;
+  coalfield?: string;
+  reportingYear?: number;
 }
+
+export type UniversalDocument = MiningDocument;
 
 export interface ProductionRecord {
   id: string;
@@ -297,6 +396,8 @@ export interface GeneratedReport {
   sourceDocuments: string[];
 }
 
+export type QueryScope = 'GLOBAL' | 'CURRENT_DOCUMENT' | 'SELECTED_DOCUMENTS' | 'CATEGORY' | 'ORGANIZATION';
+
 export interface AuditLogEntry {
   id: string;
   timestamp: string;
@@ -308,6 +409,11 @@ export interface AuditLogEntry {
     | 'DOCUMENT_UPLOAD'
     | 'DOCUMENT_PROCESS'
     | 'DOCUMENT_DELETE'
+    | 'DOCUMENT_CLASSIFY'
+    | 'INSIGHT_DISCOVERY'
+    | 'METRIC_VALIDATE'
+    | 'CROSS_DOC_COMPARE'
+    | 'SPREADSHEET_ANALYZE'
     | 'ENTITY_VALIDATION_APPROVE'
     | 'ENTITY_VALIDATION_REJECT'
     | 'ENTITY_VALIDATION_EDIT'

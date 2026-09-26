@@ -9,6 +9,7 @@ import { db } from './server/db';
 import { processUnifiedQuery } from './server/queryRouter';
 import { generateAutomatedReport } from './server/reportService';
 import { generateGeminiCompletion } from './server/geminiService';
+import { universalAnalyzer } from './server/analyzers/universalAnalyzer';
 import { MiningDocument, ExtractedEntity, ExtractedTable, DocumentChunk } from './src/types';
 
 dotenv.config();
@@ -54,7 +55,7 @@ async function startServer() {
     let docs = db.documents;
 
     if (subsidiary && subsidiary !== 'ALL') {
-      docs = docs.filter(d => d.subsidiary.toLowerCase().includes(String(subsidiary).toLowerCase()));
+      docs = docs.filter(d => (d.subsidiary || d.organization || '').toLowerCase().includes(String(subsidiary).toLowerCase()));
     }
     if (year && year !== 'ALL') {
       docs = docs.filter(d => d.reportingYear === Number(year));
@@ -92,168 +93,138 @@ async function startServer() {
     res.json({ success: true, message: 'Document removed from repository.' });
   });
 
-  // Document Upload Endpoint with Dynamic Entity & Tabular Parsing
+  // Document Upload Endpoint with Universal Document Understanding & Adaptive Analysis Pipeline
   app.post('/api/documents/upload', (req, res) => {
     try {
       const { title, filename, fileType, subsidiary, mineName, reportingYear, docType, textContent, tags, fileSize } = req.body;
       const fileHash = 'sha256_' + crypto.randomBytes(8).toString('hex');
       const docId = `doc_${Date.now()}`;
-      const year = Number(reportingYear) || 2024;
-      const sub = subsidiary || 'CIL Consolidated';
-      const mine = mineName || 'Selected Mine';
-      const isScanned = fileType === 'jpg' || fileType === 'png' || fileType === 'pdf_scanned';
+      const fName = filename || 'Uploaded_Document.pdf';
+      const fType = (fileType as string) || 'pdf';
+      const size = Number(fileSize) || 1250000;
+      const isScanned = fType === 'jpg' || fType === 'png' || fType === 'pdf_scanned';
 
       const rawContent = textContent && textContent.trim().length > 0 
         ? textContent 
-        : `COAL INDIA LIMITED / ${sub}\nPROJECT PERFORMANCE REPORT (${year})\n` +
-          `Mine: ${mine}\n` +
-          `Annual Coal Production achieved: 14.50 MT against Target of 14.00 MT (103.5%).\n` +
-          `Composite Overburden Removal: 32.40 MCM. Stripping Ratio: 2.23 m3/t.\n` +
-          `Safety Audit: Continuous slope stability radar maintained. Zero fatal incidents recorded.`;
+        : `DOCUMENT TITLE: ${title || fName}\n` +
+          `Organization: ${subsidiary || 'Enterprise Organization'}\n` +
+          `Date: ${new Date().toISOString().substring(0, 10)}\n` +
+          `Section 1: General Operational Overview and Performance Parameters.\n` +
+          `Primary Metrics: Processed volume recorded at 24.50 with efficiency index of 94.2%.\n` +
+          `Compliance: Standard operating procedures maintained with zero statutory audit deviations.`;
 
-      // Dynamic regex parsing from raw text
-      let achievedProd = 14.50;
-      let targetProd = 14.00;
-      let obRemoval = 32.40;
-      let stripRatio = 2.23;
-
-      // Extract achieved production
-      const prodMatch = rawContent.match(/(?:achieved|production|extraction|total coal)[^0-9\n]*?(\d+(?:\.\d+)?)\s*(?:mt|million tonnes)?/i);
-      if (prodMatch && !isNaN(parseFloat(prodMatch[1]))) {
-        achievedProd = parseFloat(prodMatch[1]);
-      }
-
-      // Extract target
-      const targetMatch = rawContent.match(/(?:target|planned)[^0-9\n]*?(\d+(?:\.\d+)?)\s*(?:mt)?/i);
-      if (targetMatch && !isNaN(parseFloat(targetMatch[1]))) {
-        targetProd = parseFloat(targetMatch[1]);
-      }
-
-      // Extract overburden
-      const obMatch = rawContent.match(/(?:overburden|ob|composite ob)[^0-9\n]*?(\d+(?:\.\d+)?)\s*(?:mcm)?/i);
-      if (obMatch && !isNaN(parseFloat(obMatch[1]))) {
-        obRemoval = parseFloat(obMatch[1]);
-      }
-
-      // Calculate stripping ratio
-      if (achievedProd > 0) {
-        stripRatio = Number((obRemoval / achievedProd).toFixed(2));
-      }
-
-      // Extract tables if CSV or newline format
+      // 1. Table Extraction (from CSV, TSV, or structured lines)
       const extractedTables: ExtractedTable[] = [];
       const lines = rawContent.split('\n').filter((l: string) => l.trim().length > 0);
-      const csvLines = lines.filter((l: string) => l.includes(',') || l.includes('\t'));
+      const tabularLines = lines.filter((l: string) => l.includes(',') || l.includes('\t') || l.includes('|'));
 
-      if (csvLines.length >= 2) {
-        const separator = csvLines[0].includes('\t') ? '\t' : ',';
-        const headers = csvLines[0].split(separator).map((h: string) => h.trim());
-        const rows = csvLines.slice(1, 10).map((line: string) => line.split(separator).map((cell: string) => cell.trim()));
-        extractedTables.push({
-          id: `tbl_${Date.now()}`,
-          title: `${mine} Tabular Production Dataset`,
+      if (tabularLines.length >= 2) {
+        const separator = tabularLines[0].includes('|') ? '|' : tabularLines[0].includes('\t') ? '\t' : ',';
+        const headers = tabularLines[0].split(separator).map((h: string) => h.trim().replace(/^\||\|$/g, '')).filter((h: string) => h.length > 0);
+        const rows = tabularLines.slice(1, 12).map((line: string) => 
+          line.split(separator).map((c: string) => c.trim().replace(/^\||\|$/g, '')).filter((c: string) => c.length > 0)
+        ).filter((r: any[]) => r.length > 0);
+
+        if (headers.length >= 2 && rows.length >= 1) {
+          extractedTables.push({
+            id: `tbl_${Date.now()}`,
+            title: `Extracted Data Matrix - ${fName}`,
+            pageNumber: 1,
+            confidence: 0.98,
+            headers,
+            rows
+          });
+        }
+      }
+
+      // 2. OCR / Layout Pages
+      const pages = [
+        {
           pageNumber: 1,
-          confidence: 0.98,
-          headers,
-          rows
-        });
-      } else {
-        extractedTables.push({
-          id: `tbl_${Date.now()}`,
-          title: `${mine} Production & Geotechnical Metrics`,
-          pageNumber: 1,
-          confidence: isScanned ? 0.92 : 0.98,
-          headers: ['Metric Parameter', 'Unit', 'Planned', 'Achieved', 'Variance'],
-          rows: [
-            ['Raw Coal Production', 'MT', targetProd.toFixed(2), achievedProd.toFixed(2), `${achievedProd >= targetProd ? '+' : ''}${(((achievedProd - targetProd) / targetProd) * 100).toFixed(1)}%`],
-            ['Overburden Handled', 'MCM', (targetProd * 2.1).toFixed(2), obRemoval.toFixed(2), '+4.5%'],
-            ['Stripping Ratio', 'm3/t', '2.10', stripRatio.toFixed(2), '+3.8%']
+          ocrConfidence: isScanned ? 0.92 : 0.99,
+          isScanned,
+          rawText: rawContent,
+          boundingBoxes: [
+            { text: title || fName, box: [10, 15, 70, 5] as [number, number, number, number], confidence: 0.96 }
           ]
+        }
+      ];
+
+      // 3. Run Universal Document Intelligence Pipeline
+      const analysis = universalAnalyzer.analyzeDocument(
+        docId,
+        fName,
+        `application/${fType}`,
+        rawContent,
+        pages,
+        extractedTables,
+        size
+      );
+
+      // 4. Construct Chunks for Vector Retrieval
+      const chunks: DocumentChunk[] = [];
+      const chunkSize = 900;
+      for (let i = 0; i < rawContent.length; i += chunkSize) {
+        chunks.push({
+          id: `chk_${Date.now()}_${chunks.length + 1}`,
+          pageNumber: Math.floor(i / 1500) + 1,
+          confidence: isScanned ? 0.91 : 0.98,
+          sectionTitle: `Section ${chunks.length + 1}`,
+          content: rawContent.substring(i, i + chunkSize)
         });
       }
 
-      const extractedEntities: ExtractedEntity[] = [
-        {
-          id: `ent_${Date.now()}_1`,
-          documentId: docId,
-          pageNumber: 1,
-          entityType: 'achieved_production',
-          entityKey: `${mine} Coal Production`,
-          entityValue: achievedProd,
-          unit: 'MT',
-          normalizedValue: achievedProd,
-          normalizedUnit: 'MT',
-          sourceText: `Annual Coal Production achieved: ${achievedProd} MT`,
-          extractionMethod: isScanned ? 'OCR_REGEX' : 'TABULAR_PARSER',
-          confidence: isScanned ? 0.93 : 0.98,
-          validationStatus: 'PENDING',
-          timestamp: new Date().toISOString()
-        },
-        {
-          id: `ent_${Date.now()}_2`,
-          documentId: docId,
-          pageNumber: 1,
-          entityType: 'overburden_removal',
-          entityKey: `${mine} Overburden Removal`,
-          entityValue: obRemoval,
-          unit: 'MCM',
-          normalizedValue: obRemoval,
-          normalizedUnit: 'MCM',
-          sourceText: `Composite Overburden Removal: ${obRemoval} MCM`,
-          extractionMethod: 'OCR_REGEX',
-          confidence: isScanned ? 0.91 : 0.96,
-          validationStatus: 'PENDING',
-          timestamp: new Date().toISOString()
-        }
-      ];
-
-      const chunks: DocumentChunk[] = [
-        {
-          id: `chk_${Date.now()}_1`,
-          pageNumber: 1,
-          confidence: isScanned ? 0.92 : 0.98,
-          sectionTitle: `${mine} Operational Digest`,
-          content: rawContent.substring(0, 1500)
-        }
-      ];
-
+      // 5. Build Universal Document Object
       const newDoc: MiningDocument = {
         id: docId,
-        title: title || filename || 'Uploaded Mining Operational Dossier',
-        filename: filename || 'Uploaded_Document.pdf',
+        title: title || fName.replace(/\.[^/.]+$/, '').replace(/[_\\-]/g, ' '),
+        filename: fName,
         fileHash,
-        fileType: (fileType as any) || 'pdf',
-        fileSize: fileSize || Math.floor(Math.random() * 2000000) + 800000,
-        subsidiary: sub,
-        mineName: mine,
-        coalfield: 'Designated Basin',
-        reportingYear: year,
+        fileType: fType,
+        fileSize: size,
+        documentType: analysis.documentType,
         docType: (docType as any) || 'ANNUAL_REPORT',
-        status: 'VALIDATION_REQUIRED',
+        category: analysis.category,
+        domain: analysis.domain as any,
+        language: analysis.language,
+        date: analysis.date,
+        reportingPeriod: analysis.reportingPeriod,
+        organization: analysis.organization || subsidiary || 'Enterprise',
+        department: analysis.department,
+        location: analysis.location || mineName,
+        status: 'PROCESSED',
         isScanned,
-        pageCount: Math.max(1, Math.ceil(rawContent.length / 1200)),
+        pageCount: Math.max(1, Math.ceil(rawContent.length / 1500)),
         uploadedAt: new Date().toISOString(),
         processedAt: new Date().toISOString(),
-        tags: Array.isArray(tags) && tags.length > 0 ? tags : [sub, mine, 'Uploaded', 'Ingested', isScanned ? 'OCR-Scanned' : 'Digital-Parsed'],
-        summary: `Automated extraction from ${filename}. Extracted production figure of ${achievedProd} MT and Overburden of ${obRemoval} MCM with ${isScanned ? '92.4%' : '98.5%'} OCR confidence.`,
-        pages: [
-          {
-            pageNumber: 1,
-            ocrConfidence: isScanned ? 0.92 : 0.99,
-            isScanned,
-            rawText: rawContent,
-            boundingBoxes: [
-              { text: `${sub} - ${mine}`, box: [10, 15, 70, 5], confidence: 0.95 },
-              { text: `Production: ${achievedProd} MT`, box: [35, 20, 45, 4], confidence: 0.97 }
-            ]
-          }
-        ],
+        tags: Array.isArray(tags) && tags.length > 0 ? tags : analysis.tags,
+        summary: analysis.summary,
+        executiveSummary: analysis.executiveSummary,
+        keyInsights: analysis.keyInsights,
+        keyMetrics: analysis.keyMetrics,
+        visualizations: analysis.visualizations,
+        timelineEvents: analysis.timelineEvents,
+        qualityScore: analysis.qualityScore,
+        pages,
         tables: extractedTables,
         chunks,
-        entities: extractedEntities
+        entities: analysis.entities,
+        subsidiary: analysis.organization || subsidiary || 'Enterprise',
+        mineName: analysis.location || mineName || 'Headquarters',
+        coalfield: analysis.location || 'Central Basin',
+        reportingYear: Number(reportingYear) || (analysis.date ? parseInt(analysis.date.substring(0, 4), 10) : 2024)
       };
 
+      // Add to store
       db.addDocument(newDoc);
+
+      // Register pluggable production or geological records if generated
+      if (analysis.productionRecord) {
+        db.productionRecords.push(analysis.productionRecord);
+      }
+      if (analysis.geologicalRecord) {
+        db.geologicalRecords.push(analysis.geologicalRecord);
+      }
 
       db.logAudit({
         userId: 'usr_analyst_01',
@@ -262,7 +233,7 @@ async function startServer() {
         action: 'DOCUMENT_UPLOAD',
         resourceType: 'DOCUMENT',
         resourceId: docId,
-        details: `Uploaded and parsed document: "${newDoc.title}" (${newDoc.pageCount} pages, ${newDoc.fileType.toUpperCase()}).`,
+        details: `Uploaded and classified document: "${newDoc.title}" as [${newDoc.documentType}] (${analysis.keyMetrics.length} KPIs, ${analysis.keyInsights.length} insights discovered).`,
         ipAddress: req.ip || '127.0.0.1',
         status: 'SUCCESS'
       });
@@ -274,13 +245,38 @@ async function startServer() {
     }
   });
 
-  // Re-process document
+  // Re-process document with Universal Pipeline
   app.post('/api/documents/:id/process', (req, res) => {
     const doc = db.documents.find(d => d.id === req.params.id);
     if (!doc) return res.status(404).json({ error: 'Document not found' });
 
+    const rawText = doc.pages.map(p => p.rawText).join('\n');
+    const analysis = universalAnalyzer.analyzeDocument(
+      doc.id,
+      doc.filename,
+      `application/${doc.fileType}`,
+      rawText,
+      doc.pages,
+      doc.tables || [],
+      doc.fileSize
+    );
+
+    doc.documentType = analysis.documentType;
+    doc.category = analysis.category;
+    doc.domain = analysis.domain as any;
+    doc.executiveSummary = analysis.executiveSummary;
+    doc.summary = analysis.summary;
+    doc.keyInsights = analysis.keyInsights;
+    doc.keyMetrics = analysis.keyMetrics;
+    doc.visualizations = analysis.visualizations;
+    doc.timelineEvents = analysis.timelineEvents;
+    doc.qualityScore = analysis.qualityScore;
     doc.status = 'PROCESSED';
     doc.processedAt = new Date().toISOString();
+
+    db.recomputeWordCloudAndTopics();
+    db.recomputeMetrics();
+    db.saveToDisk();
 
     db.logAudit({
       userId: 'usr_analyst_01',
@@ -289,7 +285,7 @@ async function startServer() {
       action: 'DOCUMENT_PROCESS',
       resourceType: 'DOCUMENT',
       resourceId: doc.id,
-      details: `Re-ran OCR, table parser, and NER entity extraction on "${doc.title}".`,
+      details: `Re-ran Universal Document Intelligence & Adaptive Analytics on "${doc.title}".`,
       ipAddress: req.ip || '127.0.0.1',
       status: 'SUCCESS'
     });
@@ -431,15 +427,15 @@ Draft the reply in official Government of India parliamentary format with sectio
     res.json({ success: true, message: 'Backup restored successfully.' });
   });
 
-  // 7. AI Unified Query Engine (SQL + RAG Router)
+  // 7. AI Unified Query Engine (SQL + RAG Router with Universal Scope)
   app.post('/api/query', async (req, res) => {
     try {
-      const { query } = req.body;
+      const { query, scope, targetId, documentIds } = req.body;
       if (!query || typeof query !== 'string') {
         return res.status(400).json({ error: 'Query text is required' });
       }
 
-      const result = await processUnifiedQuery(query);
+      const result = await processUnifiedQuery(query, { scope, targetId, documentIds });
       res.json(result);
     } catch (err: any) {
       console.error('Error executing query:', err);

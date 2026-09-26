@@ -48,8 +48,8 @@ export const DocumentsTab: React.FC<DocumentsTabProps> = ({
       doc.filename.toLowerCase().includes(search.toLowerCase()) ||
       doc.tags.some(t => t.toLowerCase().includes(search.toLowerCase()));
 
-    const matchSub = selectedSub === 'ALL' || doc.subsidiary.toLowerCase().includes(selectedSub.toLowerCase());
-    const matchYear = selectedYear === 'ALL' || doc.reportingYear.toString() === selectedYear;
+    const matchSub = selectedSub === 'ALL' || (doc.subsidiary || doc.organization || '').toLowerCase().includes(selectedSub.toLowerCase());
+    const matchYear = selectedYear === 'ALL' || (doc.reportingYear ? doc.reportingYear.toString() : (doc.date ? doc.date.substring(0, 4) : '')) === selectedYear;
     const matchType = selectedType === 'ALL' || doc.docType === selectedType;
 
     return matchSearch && matchSub && matchYear && matchType;

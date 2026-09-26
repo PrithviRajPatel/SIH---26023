@@ -219,52 +219,58 @@ export const DocumentComparisonTab: React.FC<DocumentComparisonTabProps> = ({
             </div>
           </div>
 
-          {/* Key Production & Geotechnical Deltas */}
+          {/* Key Quantitative & Discovered Metric Deltas */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg">
             <div className="p-4 border-b border-slate-800">
               <h3 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
-                <span>Production & Geotechnical Variance Deltas</span>
+                <span>Quantitative & Discovered Metric Variance Deltas</span>
               </h3>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-950 text-slate-400 uppercase text-[10px]">
-                  <tr>
-                    <th className="py-2.5 px-4">Metric Parameter</th>
-                    <th className="py-2.5 px-4 text-amber-300">Doc A Value</th>
-                    <th className="py-2.5 px-4 text-blue-300">Doc B Value</th>
-                    <th className="py-2.5 px-4">Absolute Delta</th>
-                    <th className="py-2.5 px-4 text-right">Percentage Variance</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-300">
-                  {comparison.productionDeltas.map((delta, idx) => (
-                    <tr key={idx} className="hover:bg-slate-800/40">
-                      <td className="py-3 px-4 font-semibold text-white">{delta.metric}</td>
-                      <td className="py-3 px-4 font-mono text-slate-200">{delta.valA} {delta.unit}</td>
-                      <td className="py-3 px-4 font-mono text-slate-200">{delta.valB} {delta.unit}</td>
-                      <td className="py-3 px-4 font-mono">
-                        <span className={delta.delta >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
-                          {delta.delta >= 0 ? `+${delta.delta}` : delta.delta} {delta.unit}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-right font-mono font-bold">
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] ${
-                          delta.percentChange >= 0 
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                            : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                        }`}>
-                          {delta.percentChange >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                          <span>{delta.percentChange >= 0 ? `+${delta.percentChange}%` : `${delta.percentChange}%`}</span>
-                        </span>
-                      </td>
+            {comparison.productionDeltas.length === 0 ? (
+              <div className="p-6 text-center text-xs text-slate-400">
+                No overlapping quantitative metrics or numerical deltas detected between these two documents.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-950 text-slate-400 uppercase text-[10px]">
+                    <tr>
+                      <th className="py-2.5 px-4">Metric Parameter</th>
+                      <th className="py-2.5 px-4 text-amber-300">Doc A Value</th>
+                      <th className="py-2.5 px-4 text-blue-300">Doc B Value</th>
+                      <th className="py-2.5 px-4">Absolute Delta</th>
+                      <th className="py-2.5 px-4 text-right">Percentage Variance</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800 text-slate-300">
+                    {comparison.productionDeltas.map((delta, idx) => (
+                      <tr key={idx} className="hover:bg-slate-800/40">
+                        <td className="py-3 px-4 font-semibold text-white">{delta.metric}</td>
+                        <td className="py-3 px-4 font-mono text-slate-200">{delta.valA} {delta.unit}</td>
+                        <td className="py-3 px-4 font-mono text-slate-200">{delta.valB} {delta.unit}</td>
+                        <td className="py-3 px-4 font-mono">
+                          <span className={delta.delta >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
+                            {delta.delta >= 0 ? `+${delta.delta}` : delta.delta} {delta.unit}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-right font-mono font-bold">
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] ${
+                            delta.percentChange >= 0 
+                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+                              : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                          }`}>
+                            {delta.percentChange >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                            <span>{delta.percentChange >= 0 ? `+${delta.percentChange}%` : `${delta.percentChange}%`}</span>
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
 
           {/* Anomaly & Conflict Observations */}

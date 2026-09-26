@@ -120,11 +120,11 @@ export const api = {
   },
 
   // AI Query
-  async queryUnified(query: string): Promise<QueryResponse> {
+  async queryUnified(query: string, options?: { scope?: string; targetId?: string; documentIds?: string[] }): Promise<QueryResponse> {
     const res = await fetch('/api/query', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({ query, ...options })
     });
     return res.json();
   },

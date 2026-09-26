@@ -230,8 +230,8 @@ export default function App() {
     throw new Error('Draft synthesis failed');
   };
 
-  const handleExecuteQuery = async (query: string) => {
-    const resp = await api.queryUnified(query);
+  const handleExecuteQuery = async (query: string, options?: any) => {
+    const resp = await api.queryUnified(query, options);
     const logsRes = await api.getAuditLogs();
     if (logsRes.logs) setAuditLogs(logsRes.logs);
     return resp;
@@ -481,6 +481,7 @@ export default function App() {
                 onExecuteQuery={handleExecuteQuery}
                 onOpenViewer={handleOpenViewer}
                 initialQuestion={selectedSampleQuestion}
+                documents={documents}
               />
             )}
 

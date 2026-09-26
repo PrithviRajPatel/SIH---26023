@@ -1,0 +1,249 @@
+{
+  "updatedAt": "2026-09-26T09:12:10.786Z",
+  "documents": [
+    {
+      "id": "doc_1790413910632",
+      "title": "Global Logistics & Distribution Q3 Operations",
+      "filename": "Global_Logistics_Operations_Q3.csv",
+      "fileHash": "sha256_8fdf34cc7892af9e",
+      "fileType": "csv",
+      "fileSize": 1250000,
+      "documentType": "Tabular Dataset / Matrix",
+      "docType": "ANNUAL_REPORT",
+      "category": "Structured Spreadsheet",
+      "domain": "SPREADSHEET",
+      "language": "English",
+      "date": "2026-09-26",
+      "reportingPeriod": "Annual Cycle",
+      "organization": "Enterprise Organization",
+      "department": "Operations & Technical Services",
+      "location": "Central Operations",
+      "status": "PROCESSED",
+      "isScanned": false,
+      "pageCount": 1,
+      "uploadedAt": "2026-09-26T09:11:50.637Z",
+      "processedAt": "2026-09-26T09:11:50.637Z",
+      "tags": [
+        "SPREADSHEET",
+        "Structured Spreadsheet",
+        "Annual Cycle"
+      ],
+      "summary": "Tabular Dataset / Matrix issued by Enterprise Organization (Operations & Technical Services) for Central Operations. Document has been indexed and parsed into structured intelligence with 4 discovered quantitative metrics.",
+      "executiveSummary": "**Executive Overview:**\nThis document is classified under domain **[SPREADSHEET]** as a **Tabular Dataset / Matrix** (Annual Cycle). Primary entity attribution belongs to **Enterprise Organization**, reporting from **Central Operations**.\n\n**Discovered Highlights:**\n• [FACT] Primary operational milestone: North America confirmed at 14.5  with validated source attribution.\n• [SUMMARY] Document covers verified statutory disclosures and structured analytical parameters for domain [SPREADSHEET].\n\n**Key Quantitative Parameters:**\nNorth America: 14.5 , Europe: 18.2 , Asia Pacific: 11.8 .",
+      "keyInsights": [
+        {
+          "id": "ins_fact_1790413910635_1",
+          "text": "Primary operational milestone: North America confirmed at 14.5  with validated source attribution.",
+          "category": "FACT",
+          "confidence": 0.98,
+          "sourcePage": 1,
+          "sourceRef": "Table: Extracted Data Matrix - Global_Logistics_Operations_Q3.csv, Page 1"
+        },
+        {
+          "id": "ins_sum_1790413910635_5",
+          "text": "Document covers verified statutory disclosures and structured analytical parameters for domain [SPREADSHEET].",
+          "category": "SUMMARY",
+          "confidence": 0.96,
+          "sourcePage": 1
+        }
+      ],
+      "keyMetrics": [
+        {
+          "name": "North America",
+          "value": 14.5,
+          "category": "SPREADSHEET",
+          "page": 1,
+          "sourceRef": "Table: Extracted Data Matrix - Global_Logistics_Operations_Q3.csv, Page 1",
+          "confidence": 0.98,
+          "validationState": "CALCULATED"
+        },
+        {
+          "name": "Europe",
+          "value": 18.2,
+          "category": "SPREADSHEET",
+          "page": 1,
+          "sourceRef": "Table: Extracted Data Matrix - Global_Logistics_Operations_Q3.csv, Page 1",
+          "confidence": 0.98,
+          "validationState": "CALCULATED"
+        },
+        {
+          "name": "Asia Pacific",
+          "value": 11.8,
+          "category": "SPREADSHEET",
+          "page": 1,
+          "sourceRef": "Table: Extracted Data Matrix - Global_Logistics_Operations_Q3.csv, Page 1",
+          "confidence": 0.98,
+          "validationState": "CALCULATED"
+        },
+        {
+          "name": "Latin America",
+          "value": 22.4,
+          "category": "SPREADSHEET",
+          "page": 1,
+          "sourceRef": "Table: Extracted Data Matrix - Global_Logistics_Operations_Q3.csv, Page 1",
+          "confidence": 0.98,
+          "validationState": "CALCULATED"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "viz_tbl_0_1790413910635",
+          "type": "bar",
+          "title": "Extracted Data Matrix - Global_Logistics_Operations_Q3.csv",
+          "description": "Automated visualization extracted from Table \"Extracted Data Matrix - Global_Logistics_Operations_Q3.csv\" on page 1.",
+          "labels": [
+            "North America",
+            "Europe",
+            "Asia Pacific",
+            "Latin America"
+          ],
+          "datasets": [
+            {
+              "label": "Shipments_Total",
+              "data": [
+                145000,
+                112000,
+                189000,
+                43000
+              ],
+              "color": "#f59e0b"
+            }
+          ],
+          "xAxisLabel": "Hub",
+          "yAxisLabel": "Shipments_Total",
+          "sourceRef": "Extracted Table (Page 1)"
+        }
+      ],
+      "timelineEvents": [],
+      "qualityScore": {
+        "ocrQuality": 90,
+        "readability": 94,
+        "tableAccuracy": 96,
+        "overallConfidence": 93,
+        "missingPagesDetected": false,
+        "unreadablePagesCount": 0,
+        "isDuplicate": false,
+        "warnings": []
+      },
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.99,
+          "isScanned": false,
+          "rawText": "Hub,Shipments_Total,On_Time_Delivery_Pct,Average_Transit_Days,Cost_Per_Unit\nNorth America,145000,96.4,2.3,14.50\nEurope,112000,94.8,2.8,18.20\nAsia Pacific,189000,97.2,1.9,11.80\nLatin America,43000,91.5,4.1,22.40",
+          "boundingBoxes": [
+            {
+              "text": "Global Logistics & Distribution Q3 Operations",
+              "box": [
+                10,
+                15,
+                70,
+                5
+              ],
+              "confidence": 0.96
+            }
+          ]
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_1790413910632",
+          "title": "Extracted Data Matrix - Global_Logistics_Operations_Q3.csv",
+          "pageNumber": 1,
+          "confidence": 0.98,
+          "headers": [
+            "Hub",
+            "Shipments_Total",
+            "On_Time_Delivery_Pct",
+            "Average_Transit_Days",
+            "Cost_Per_Unit"
+          ],
+          "rows": [
+            [
+              "North America",
+              "145000",
+              "96.4",
+              "2.3",
+              "14.50"
+            ],
+            [
+              "Europe",
+              "112000",
+              "94.8",
+              "2.8",
+              "18.20"
+            ],
+            [
+              "Asia Pacific",
+              "189000",
+              "97.2",
+              "1.9",
+              "11.80"
+            ],
+            [
+              "Latin America",
+              "43000",
+              "91.5",
+              "4.1",
+              "22.40"
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_1790413910637_1",
+          "pageNumber": 1,
+          "confidence": 0.98,
+          "sectionTitle": "Section 1",
+          "content": "Hub,Shipments_Total,On_Time_Delivery_Pct,Average_Transit_Days,Cost_Per_Unit\nNorth America,145000,96.4,2.3,14.50\nEurope,112000,94.8,2.8,18.20\nAsia Pacific,189000,97.2,1.9,11.80\nLatin America,43000,91.5,4.1,22.40"
+        }
+      ],
+      "entities": [],
+      "subsidiary": "Enterprise Organization",
+      "mineName": "Central Operations",
+      "coalfield": "Central Operations",
+      "reportingYear": 2026
+    }
+  ],
+  "productionRecords": [],
+  "geologicalRecords": [],
+  "inquiries": [],
+  "reports": [],
+  "auditLogs": [
+    {
+      "id": "aud_1790413930785_plysf",
+      "timestamp": "2026-09-26T09:12:10.785Z",
+      "userId": "usr_active",
+      "userName": "User Session",
+      "userRole": "ANALYST",
+      "action": "NATURAL_QUERY",
+      "resourceType": "QUERY",
+      "details": "Executed UNSTRUCTURED query: \"What was the performance of North America and Asia...\" (2 citations returned)",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "aud_1790413910639_7aedt",
+      "timestamp": "2026-09-26T09:11:50.639Z",
+      "userId": "usr_analyst_01",
+      "userName": "Ananya Sen",
+      "userRole": "ANALYST",
+      "action": "DOCUMENT_UPLOAD",
+      "resourceType": "DOCUMENT",
+      "resourceId": "doc_1790413910632",
+      "details": "Uploaded and classified document: \"Global Logistics & Distribution Q3 Operations\" as [Tabular Dataset / Matrix] (4 KPIs, 2 insights discovered).",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS"
+    }
+  ],
+  "settings": {
+    "geminiModel": "gemini-3.8-flash",
+    "ocrEngineMode": "HYBRID_VISION_TESSERACT",
+    "autoApproveConfidenceThreshold": 0.95,
+    "maxVectorChunksPerQuery": 6,
+    "enforceSourceTraceability": true,
+    "activeOrganization": "Coal India Limited & CMPDI",
+    "enableRealTimeAuditing": true
+  }
+}

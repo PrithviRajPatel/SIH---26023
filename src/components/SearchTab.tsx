@@ -17,13 +17,13 @@ export const SearchTab: React.FC<SearchTabProps> = ({ documents, onOpenViewer })
 
     const inTitle = doc.title.toLowerCase().includes(term);
     const inFilename = doc.filename.toLowerCase().includes(term);
-    const inSub = doc.subsidiary.toLowerCase().includes(term);
+    const inSub = (doc.subsidiary || doc.organization || '').toLowerCase().includes(term);
     const inMine = doc.mineName?.toLowerCase().includes(term);
     const inTags = doc.tags.some(t => t.toLowerCase().includes(term));
     const inText = doc.pages.some(p => p.rawText.toLowerCase().includes(term));
     const inTables = doc.tables?.some(t => t.title.toLowerCase().includes(term) || t.headers.some(h => h.toLowerCase().includes(term)));
 
-    const matchSub = selectedSub === 'ALL' || doc.subsidiary.toLowerCase().includes(selectedSub.toLowerCase());
+    const matchSub = selectedSub === 'ALL' || (doc.subsidiary || doc.organization || '').toLowerCase().includes(selectedSub.toLowerCase());
 
     return (inTitle || inFilename || inSub || inMine || inTags || inText || inTables) && matchSub;
   });

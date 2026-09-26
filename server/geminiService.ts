@@ -34,16 +34,23 @@ export async function generateGeminiCompletion(
   }
 
   try {
-    const response = await ai.models.generateContent({
+    const timeoutPromise = new Promise<null>((resolve) => 
+      setTimeout(() => resolve(null), 5000)
+    );
+
+    const completionPromise = ai.models.generateContent({
       model: 'gemini-3.8-flash',
       contents: prompt,
       config: {
         systemInstruction: systemInstruction || 
-          'You are the CMPDI / Coal India Limited (CIL) AI Document Intelligence & Geological Mining Assistant. Follow strict factual accuracy: Never fabricate numbers, dates, mine names, or citations. Always cite exact document title, page number, and table. If evidence is insufficient, state clearly: "I could not find sufficient evidence in the available documents."'
+          'You are the Universal Document Intelligence AI Assistant. Analyze any organizational, technical, financial, administrative, geological, or operational document with strict factual accuracy. Never fabricate numbers, dates, organizations, or citations. Always cite exact document title, page number, and table. If evidence is insufficient, state clearly: "I could not find sufficient evidence in the available documents."'
       }
+    }).then(res => res.text?.trim() || null).catch(err => {
+      console.warn('Gemini generateContent error:', err?.message || err);
+      return null;
     });
 
-    return response.text?.trim() || null;
+    return await Promise.race([completionPromise, timeoutPromise]);
   } catch (error) {
     console.warn('Gemini API call warning (falling back to deterministic synthesis):', error);
     return null;
