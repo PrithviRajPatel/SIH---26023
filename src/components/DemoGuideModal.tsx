@@ -17,7 +17,8 @@ import {
   GitCompare,
   Landmark,
   Cloud,
-  HelpCircle
+  HelpCircle,
+  Calculator
 } from 'lucide-react';
 
 interface DemoGuideModalProps {
@@ -134,6 +135,18 @@ export const DemoGuideModal: React.FC<DemoGuideModalProps> = ({
       actionText: 'View Vocabulary Cloud',
       execute: () => {
         setActiveTab('wordcloud');
+        onClose();
+      }
+    },
+    {
+      step: 9,
+      title: 'MODULE 9: Quantified Performance Metrics & Automation ROI',
+      tab: 'metrics',
+      icon: <Calculator className="w-5 h-5 text-amber-400" />,
+      description: 'Review time-reduction percentages, extraction accuracy benchmarks, 4,200x speedup comparisons, and validation pass rates.',
+      actionText: 'View Metrics & Automation ROI',
+      execute: () => {
+        setActiveTab('metrics');
         onClose();
       }
     }

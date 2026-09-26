@@ -15,7 +15,8 @@ import {
   Landmark,
   History, 
   Settings,
-  AlertCircle
+  AlertCircle,
+  Calculator
 } from 'lucide-react';
 
 import { 
@@ -46,6 +47,7 @@ import { SearchTab } from './components/SearchTab';
 import { DocumentComparisonTab } from './components/DocumentComparisonTab';
 import { AuditLogsTab } from './components/AuditLogsTab';
 import { SettingsTab } from './components/SettingsTab';
+import { MetricsTab } from './components/MetricsTab';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User>({
@@ -108,8 +110,12 @@ export default function App() {
         setAllEntities(valRes.allEntities || []);
       }
       if (analyticsRes.productionRecords) setProductionRecords(analyticsRes.productionRecords);
-      if (docsRes.documents && docsRes.documents.length > 0 && !selectedViewerDocId) {
-        setSelectedViewerDocId(docsRes.documents[0].id);
+      if (docsRes.documents && docsRes.documents.length > 0) {
+        if (!selectedViewerDocId || !docsRes.documents.some(d => d.id === selectedViewerDocId)) {
+          setSelectedViewerDocId(docsRes.documents[0].id);
+        }
+      } else {
+        setSelectedViewerDocId('');
       }
     } catch (err) {
       console.error('Failed to load initial data:', err);
@@ -137,10 +143,16 @@ export default function App() {
   };
 
   const handleClearWorkspace = async () => {
-    await api.clearWorkspace();
-    await loadAllData();
-    showToast('Repository workspace cleared to empty state (0 documents).');
-    setActiveTab('dashboard');
+    try {
+      await api.clearWorkspace();
+      setSelectedViewerDocId('');
+      await loadAllData();
+      showToast('Repository workspace cleared to empty state (0 documents).');
+      setActiveTab('dashboard');
+    } catch (err: any) {
+      console.error('Failed to clear workspace:', err);
+      showToast('Failed to clear workspace: ' + (err.message || 'Server error'));
+    }
   };
 
   const handleLoadBenchmark = async () => {
@@ -350,6 +362,16 @@ export default function App() {
           </button>
 
           <button
+            onClick={() => setActiveTab('metrics')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+              activeTab === 'metrics' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <Calculator className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Metrics & ROI</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('topics')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
               activeTab === 'topics' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800'
@@ -507,6 +529,12 @@ export default function App() {
             {activeTab === 'analytics' && (
               <AnalyticsTab
                 productionRecords={productionRecords}
+              />
+            )}
+
+            {activeTab === 'metrics' && metrics && (
+              <MetricsTab
+                metrics={metrics}
               />
             )}
 

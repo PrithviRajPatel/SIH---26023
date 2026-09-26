@@ -1,9 +1,11 @@
 import { dbConnection } from '../db/database';
 import { storageProvider } from '../storage/storageProvider';
 import { documentParser } from '../parsers/documentParser';
-import { entityExtractor } from '../parsers/entityExtractor';
+import { universalAnalyzer } from '../analyzers/universalAnalyzer';
 import { aiProvider } from '../ai/aiProvider';
-import { MiningDocument } from '../../src/types';
+import { qdrantVectorStore, QdrantPoint } from '../storage/qdrantClient';
+import { db } from '../db';
+import { MiningDocument, DocumentType, DocumentPage, ExtractedTable, ExtractedEntity } from '../../src/types';
 
 export interface JobRecord {
   id: string;
@@ -16,8 +18,6 @@ export interface JobRecord {
 }
 
 export class BackgroundJobWorker {
-  private activeJobs = new Map<string, boolean>();
-
   /**
    * Enqueue and run document ingestion asynchronously
    */
@@ -29,13 +29,13 @@ export class BackgroundJobWorker {
       title: string;
       filename: string;
       mimeType: string;
-      subsidiary: string;
+      subsidiary?: string;
       mineName?: string;
       coalfield?: string;
-      reportingYear: number;
-      docType: string;
-      tags: string[];
-      userName: string;
+      reportingYear?: number;
+      docType?: string;
+      tags?: string[];
+      userName?: string;
     }
   ): Promise<void> {
     // 1. Create job record in PostgreSQL
@@ -50,7 +50,13 @@ export class BackgroundJobWorker {
     });
   }
 
-  private async updateJob(jobId: string, progress: number, stage: string, status: 'QUEUED' | 'PROCESSING' | 'COMPLETED' | 'FAILED' = 'PROCESSING', error?: string) {
+  private async updateJob(
+    jobId: string, 
+    progress: number, 
+    stage: string, 
+    status: 'QUEUED' | 'PROCESSING' | 'COMPLETED' | 'FAILED' = 'PROCESSING', 
+    error?: string
+  ) {
     await dbConnection.query(`
       UPDATE processing_jobs 
       SET progress = $1, stage = $2, status = $3, error_message = $4, updated_at = CURRENT_TIMESTAMP
@@ -65,71 +71,200 @@ export class BackgroundJobWorker {
     meta: any
   ): Promise<void> {
     try {
-      // Stage 1: Storage & Checksum (20%)
-      await this.updateJob(jobId, 20, 'Storage & SHA-256 Checksum Validation');
+      // Stage 1: Storage & Checksum Validation (15%)
+      await this.updateJob(jobId, 15, 'Validating SHA-256 Checksum & File Storage');
       const stored = await storageProvider.saveFile(fileBuffer, meta.filename, meta.mimeType);
 
-      // Stage 2: OCR & Layout Preservation (40%)
-      await this.updateJob(jobId, 40, 'OCR & Structural Layout Extraction');
+      // Stage 2: OCR & Layout Analysis (35%)
+      await this.updateJob(jobId, 35, 'Document Layout Parsing & OCR Text Extraction');
       const parseResult = await documentParser.parseFile(fileBuffer, meta.filename, meta.mimeType);
 
-      // Stage 3: Tabular & Entity Extraction (60%)
-      await this.updateJob(jobId, 60, 'Tabular Parsing & Named Entity Recognition');
-      const extraction = entityExtractor.extract(
-        docId,
+      // Stage 3: Universal Document Understanding & Entity Discovery (55%)
+      await this.updateJob(jobId, 55, 'Universal Classification & Semantic Entity Extraction');
+      const analysis = universalAnalyzer.analyzeDocument(
+        meta.title || meta.filename,
+        meta.filename,
+        meta.mimeType,
         parseResult.rawText,
-        meta.subsidiary,
-        meta.mineName || meta.title,
-        meta.reportingYear
+        parseResult.pages,
+        parseResult.tables,
+        fileBuffer.length
       );
 
-      // Stage 4: Relational Database Persistence (80%)
-      await this.updateJob(jobId, 80, 'Relational Storage & Vector Embeddings');
+      // Stage 4: Content Chunking & Vector Embeddings (75%)
+      await this.updateJob(jobId, 75, 'Generating Dense Vector Embeddings & Indexing into Qdrant');
+      const chunks = this.createChunks(docId, parseResult.pages);
+      const qdrantPoints: QdrantPoint[] = [];
 
-      // 4a. Insert document
+      for (const c of chunks) {
+        const vector = await aiProvider.generateEmbedding(c.content);
+        
+        // Save chunk in PostgreSQL
+        await dbConnection.query(`
+          INSERT INTO document_chunks (id, document_id, page_number, section_title, content, embedding_json, confidence)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `, [
+          c.id,
+          docId,
+          c.pageNumber,
+          c.sectionTitle,
+          c.content,
+          JSON.stringify(vector),
+          c.confidence
+        ]);
+
+        qdrantPoints.push({
+          id: c.id,
+          vector,
+          payload: {
+            documentId: docId,
+            pageNumber: c.pageNumber,
+            sectionTitle: c.sectionTitle,
+            content: c.content,
+            documentType: analysis.documentType,
+            date: analysis.date || new Date().toISOString(),
+            organization: analysis.organization || meta.subsidiary || 'Enterprise',
+            permissions: ['PUBLIC', 'AUTHORIZED'],
+            confidence: c.confidence
+          }
+        });
+      }
+
+      // Index vectors in Qdrant Vector Store
+      await qdrantVectorStore.upsertPoints(qdrantPoints);
+
+      // Stage 5: Relational Persistence in PostgreSQL (90%)
+      await this.updateJob(jobId, 90, 'Writing Relational Records to PostgreSQL Database');
+
+      const docPages: DocumentPage[] = parseResult.pages.map(p => ({
+        pageNumber: p.pageNumber,
+        ocrConfidence: p.confidence,
+        isScanned: p.isScanned,
+        rawText: p.text,
+        boundingBoxes: p.boundingBoxes || []
+      }));
+
+      const docTables: ExtractedTable[] = parseResult.tables.map(t => ({
+        id: t.id,
+        title: t.title,
+        pageNumber: t.pageNumber,
+        headers: t.headers,
+        rows: t.rows,
+        confidence: t.confidence
+      }));
+
+      // Construct Unified Document Model
+      const documentModel: MiningDocument = {
+        id: docId,
+        title: meta.title || meta.filename,
+        filename: meta.filename,
+        fileHash: stored.fileHash,
+        fileType: meta.filename.split('.').pop()?.toLowerCase() || 'pdf',
+        fileSize: stored.fileSize,
+        documentType: analysis.documentType,
+        docType: (analysis.documentType as DocumentType) || 'ANNUAL_REPORT',
+        category: analysis.category,
+        domain: analysis.domain as any,
+        language: analysis.language || 'English',
+        date: analysis.date,
+        reportingPeriod: analysis.reportingPeriod,
+        organization: analysis.organization || meta.subsidiary,
+        department: analysis.department,
+        location: analysis.location || meta.mineName,
+        subsidiary: analysis.organization || meta.subsidiary || 'Enterprise',
+        mineName: analysis.location || meta.mineName,
+        coalfield: meta.coalfield || 'Basin / Region',
+        reportingYear: Number(analysis.reportingPeriod?.match(/\d{4}/)?.[0]) || meta.reportingYear || 2024,
+        status: 'VALIDATED',
+        isScanned: parseResult.isScanned,
+        pageCount: parseResult.pageCount,
+        uploadedAt: new Date().toISOString(),
+        processedAt: new Date().toISOString(),
+        pages: docPages,
+        chunks,
+        tables: docTables,
+        entities: analysis.entities,
+        summary: analysis.executiveSummary,
+        executiveSummary: analysis.executiveSummary,
+        keyInsights: analysis.keyInsights,
+        keyMetrics: analysis.keyMetrics,
+        visualizations: analysis.visualizations,
+        timelineEvents: analysis.timelineEvents,
+        qualityScore: analysis.qualityScore,
+        tags: meta.tags || [analysis.category, analysis.domain]
+      };
+
+      // 5a. Insert Document in PostgreSQL
       await dbConnection.query(`
         INSERT INTO documents (
           id, title, original_filename, storage_key, mime_type, file_size, file_hash,
-          subsidiary, mine_name, coalfield, reporting_year, doc_type, status, is_scanned,
-          page_count, summary, tags, created_by
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'VALIDATION_REQUIRED', $13, $14, $15, $16, $17)
+          document_type, doc_type, category, domain, language, doc_date, reporting_period,
+          organization, department, location, subsidiary, mine_name, coalfield, reporting_year,
+          status, is_scanned, page_count, summary, executive_summary, tags,
+          quality_score_json, key_metrics_json, insights_json, visualizations_json, timeline_events_json,
+          created_by
+        ) VALUES (
+          $1, $2, $3, $4, $5, $6, $7,
+          $8, $9, $10, $11, $12, $13, $14,
+          $15, $16, $17, $18, $19, $20, $21,
+          $22, $23, $24, $25, $26, $27,
+          $28, $29, $30, $31, $32,
+          $33
+        )
       `, [
         docId,
-        meta.title || meta.filename,
-        meta.filename,
+        documentModel.title,
+        documentModel.filename,
         stored.storageKey,
         stored.mimeType,
         stored.fileSize,
         stored.fileHash,
-        meta.subsidiary,
-        meta.mineName || 'Designated Mining Area',
-        meta.coalfield || 'Designated Basin',
-        meta.reportingYear,
-        meta.docType || 'ANNUAL_REPORT',
-        parseResult.isScanned,
-        parseResult.pageCount,
-        `Automated extraction from ${meta.filename}. Extracted ${extraction.entities.length} verified metrics across ${parseResult.pageCount} pages.`,
-        JSON.stringify(meta.tags || [meta.subsidiary, 'Ingested']),
+        documentModel.documentType,
+        documentModel.docType,
+        documentModel.category,
+        documentModel.domain,
+        documentModel.language,
+        documentModel.date || null,
+        documentModel.reportingPeriod || null,
+        documentModel.organization || null,
+        documentModel.department || null,
+        documentModel.location || null,
+        documentModel.subsidiary || null,
+        documentModel.mineName || null,
+        documentModel.coalfield || null,
+        documentModel.reportingYear || null,
+        documentModel.status,
+        documentModel.isScanned,
+        documentModel.pageCount,
+        documentModel.summary || null,
+        documentModel.executiveSummary || null,
+        JSON.stringify(documentModel.tags),
+        JSON.stringify(documentModel.qualityScore || null),
+        JSON.stringify(documentModel.keyMetrics || []),
+        JSON.stringify(documentModel.keyInsights || []),
+        JSON.stringify(documentModel.visualizations || []),
+        JSON.stringify(documentModel.timelineEvents || []),
         meta.userName || 'Analyst'
       ]);
 
-      // 4b. Insert pages
-      for (const p of parseResult.pages) {
+      // 5b. Insert Pages in PostgreSQL
+      for (const p of docPages) {
         await dbConnection.query(`
-          INSERT INTO document_pages (id, document_id, page_number, raw_text, ocr_confidence, is_scanned)
-          VALUES ($1, $2, $3, $4, $5, $6)
+          INSERT INTO document_pages (id, document_id, page_number, raw_text, ocr_confidence, is_scanned, bounding_boxes_json)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
         `, [
           `page_${docId}_${p.pageNumber}`,
           docId,
           p.pageNumber,
-          p.text,
-          p.confidence,
-          p.isScanned
+          p.rawText,
+          p.ocrConfidence,
+          p.isScanned,
+          JSON.stringify(p.boundingBoxes || [])
         ]);
       }
 
-      // 4c. Insert tables
-      for (const tbl of parseResult.tables) {
+      // 5c. Insert Tables in PostgreSQL
+      for (const tbl of docTables) {
         await dbConnection.query(`
           INSERT INTO document_tables (id, document_id, title, page_number, headers_json, rows_json, confidence)
           VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -144,8 +279,8 @@ export class BackgroundJobWorker {
         ]);
       }
 
-      // 4d. Insert entities
-      for (const ent of extraction.entities) {
+      // 5d. Insert Extracted Entities in PostgreSQL
+      for (const ent of analysis.entities) {
         await dbConnection.query(`
           INSERT INTO extracted_entities (
             id, document_id, page_number, entity_type, entity_key, entity_value,
@@ -168,9 +303,9 @@ export class BackgroundJobWorker {
         ]);
       }
 
-      // 4e. Insert structured production record if extracted
-      if (extraction.productionRecord) {
-        const pr = extraction.productionRecord;
+      // 5e. Insert Production Record if extracted
+      if (analysis.productionRecord) {
+        const pr = analysis.productionRecord;
         await dbConnection.query(`
           INSERT INTO production_records (
             id, document_id, subsidiary, mine_name, coalfield, year,
@@ -180,39 +315,54 @@ export class BackgroundJobWorker {
         `, [
           `pr_${Date.now()}`,
           docId,
-          meta.subsidiary,
-          meta.mineName || meta.title,
-          meta.coalfield || 'Designated Coalfield',
-          meta.reportingYear,
-          pr.targetProductionMt,
-          pr.achievedProductionMt,
+          documentModel.subsidiary,
+          documentModel.mineName || documentModel.title,
+          documentModel.coalfield || 'Designated Region',
+          documentModel.reportingYear,
+          pr.targetProductionMt || 0,
+          pr.achievedProductionMt || 0,
           pr.targetProductionMt > 0 ? Number(((pr.achievedProductionMt / pr.targetProductionMt) * 100).toFixed(1)) : 100,
-          pr.dispatchMt,
-          pr.overburdenRemovalMcm,
-          pr.strippingRatio,
-          pr.productivityOms
+          pr.dispatchMt || 0,
+          pr.overburdenRemovalMcm || 0,
+          pr.strippingRatio || 0,
+          pr.productivityOms || 0
         ]);
+        db.productionRecords.push(pr);
       }
 
-      // 4f. Chunking & Vector Embeddings for pgvector RAG
-      const chunks = this.createChunks(docId, parseResult.pages);
-      for (const c of chunks) {
-        const vector = await aiProvider.generateEmbedding(c.content);
+      // 5f. Insert Geological Record if extracted
+      if (analysis.geologicalRecord) {
+        const gr = analysis.geologicalRecord;
         await dbConnection.query(`
-          INSERT INTO document_chunks (id, document_id, page_number, section_title, content, embedding_json, confidence)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
+          INSERT INTO geological_records (
+            id, document_id, subsidiary, coalfield, block_name,
+            proven_reserves_mt, indicated_reserves_mt, inferred_reserves_mt, total_reserves_mt,
+            coal_grade, avg_seam_thickness_m, gas_drainage_potential
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         `, [
-          c.id,
+          `gr_${Date.now()}`,
           docId,
-          c.pageNumber,
-          c.sectionTitle,
-          c.content,
-          JSON.stringify(vector),
-          c.confidence
+          documentModel.subsidiary,
+          documentModel.coalfield,
+          gr.blockName,
+          gr.provenReservesMt || 0,
+          gr.indicatedReservesMt || 0,
+          gr.inferredReservesMt || 0,
+          gr.totalReservesMt || 0,
+          gr.coalGrade || 'G11',
+          gr.avgSeamThicknessM || 0,
+          gr.gasDrainagePotential || 'LOW'
         ]);
+        db.geologicalRecords.push(gr);
       }
 
-      // 4g. Audit log
+      // 5g. Update in-memory/cache store and recalculate metrics
+      db.documents.unshift(documentModel);
+      db.recomputeWordCloudAndTopics();
+      db.recomputeMetrics();
+      db.saveToDisk();
+
+      // 5h. Audit Log in PostgreSQL
       await dbConnection.query(`
         INSERT INTO audit_logs (id, timestamp, user_id, user_name, user_role, action, resource_type, resource_id, details, ip_address, status)
         VALUES ($1, CURRENT_TIMESTAMP, $2, $3, 'ANALYST', 'DOCUMENT_UPLOAD', 'DOCUMENT', $4, $5, '127.0.0.1', 'SUCCESS')
@@ -221,12 +371,12 @@ export class BackgroundJobWorker {
         'usr_analyst_01',
         meta.userName || 'Analyst',
         docId,
-        `Ingested document: "${meta.title || meta.filename}" (${parseResult.pageCount} pages, ${chunks.length} vector chunks).`
+        `Ingested document: "${documentModel.title}" (${documentModel.documentType}, ${documentModel.pageCount} pages, ${chunks.length} Qdrant vectors).`
       ]);
 
-      // Stage 5: Completed (100%)
+      // Stage 6: Completed (100%)
       await this.updateJob(jobId, 100, 'Ingestion & Vector Indexing Complete', 'COMPLETED');
-      console.log(`[Job Worker] Document ${docId} processed and indexed successfully.`);
+      console.log(`[Job Worker] Document ${docId} processed, persisted in PostgreSQL, and indexed in Qdrant successfully.`);
     } catch (err: any) {
       console.error(`[Job Worker Error for ${docId}]`, err);
       await this.updateJob(jobId, 0, 'Failed during processing', 'FAILED', err.message);
@@ -237,7 +387,6 @@ export class BackgroundJobWorker {
     const chunks: any[] = [];
     pages.forEach((p, idx) => {
       const text = p.text || '';
-      // Chunking by 800 characters with 100 char overlap
       const chunkSize = 800;
       const overlap = 100;
       let start = 0;

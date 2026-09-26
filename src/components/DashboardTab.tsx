@@ -189,11 +189,18 @@ export const DashboardTab: React.FC<DashboardTabProps> = ({
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center justify-between shadow-sm">
+        <div 
+          onClick={() => setActiveTab('metrics')}
+          className="bg-slate-900 border border-slate-800 hover:border-amber-500/50 rounded-xl p-4 flex items-center justify-between shadow-sm cursor-pointer transition"
+          title="Click to view full Quantified Performance Metrics & Automation ROI"
+        >
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Extraction Fidelity</div>
+            <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
+              <span>Extraction Fidelity</span>
+              <ArrowUpRight className="w-3 h-3 text-amber-400" />
+            </div>
             <div className="text-2xl font-black text-emerald-400 mt-1">{metrics.extractionAccuracy}%</div>
-            <div className="text-[10px] text-slate-400 mt-0.5">Source-Traceable</div>
+            <div className="text-[10px] text-slate-400 mt-0.5">ROI & Speedup Report</div>
           </div>
           <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
             <CheckCircle2 className="w-5 h-5" />

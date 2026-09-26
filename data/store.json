@@ -1,0 +1,1795 @@
+{
+  "updatedAt": "2026-09-26T10:43:00.822Z",
+  "documents": [
+    {
+      "id": "doc_cil_ann_2024",
+      "title": "CIL Consolidated Annual Production & Dispatch Review 2023-24",
+      "filename": "CIL_Annual_Production_Review_2023_24.pdf",
+      "fileHash": "sha256_e814a79b02a9b31d",
+      "fileType": "pdf",
+      "fileSize": 4820300,
+      "subsidiary": "CIL Consolidated",
+      "coalfield": "All Major Coalfields (Pan-India)",
+      "reportingYear": 2024,
+      "docType": "ANNUAL_REPORT",
+      "status": "VALIDATED",
+      "isScanned": false,
+      "pageCount": 38,
+      "uploadedAt": "2024-04-18T10:30:00Z",
+      "processedAt": "2024-04-18T10:32:15Z",
+      "tags": [
+        "Production",
+        "Dispatch",
+        "Annual Report",
+        "Subsidiaries",
+        "Financial figures"
+      ],
+      "summary": "Consolidated report detailing all 7 coal producing subsidiaries. Total coal production reached 773.6 MT against target of 780.0 MT (99.18% achievement). SECL and MCL accounted for 48% of total volume.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.99,
+          "isScanned": false,
+          "rawText": "COAL INDIA LIMITED (A Maharatna Company)\nANNUAL PRODUCTION & DESPATCH REVIEW 2023-24\nEXECUTIVE SUMMARY\nDuring the financial year 2023-24, Coal India Limited achieved a record total raw coal production of 773.6 million tonnes (MT), registering a growth of 10.0% compared to 703.2 MT achieved during 2022-23. Total off-take and dispatch stood at 753.5 MT.\nOpencast mines contributed 741.2 MT (95.8%), while Underground mines contributed 32.4 MT (4.2%). Composite overburden removal reached an all-time peak of 1,960.5 Million Cubic Metres (MCM)."
+        },
+        {
+          "pageNumber": 14,
+          "ocrConfidence": 0.98,
+          "isScanned": false,
+          "rawText": "TABLE 4.2: SUBSIDIARY-WISE PRODUCTION SUMMARY (FY 2023-24)\nSubsidiary Target (MT) Achieved (MT) Achievement (%) Off-take (MT) Overburden (MCM)\nECL        39.50       38.12         96.5%           37.40        142.6\nBCCL       41.00       41.10        100.2%           40.15        168.4\nCCL        84.00       86.05        102.4%           84.20        224.8\nNCL       139.00      141.52        101.8%          140.20        476.2\nWCL        67.00       67.85        101.3%           66.90        312.5\nSECL      197.00      187.00         94.9%          183.40        328.0\nMCL       204.00      206.10        101.0%          195.50        298.0\nCMPDI          -           -             -               -            -\nTOTAL CIL 780.00      773.60         99.2%          753.50       1960.5"
+        },
+        {
+          "pageNumber": 22,
+          "ocrConfidence": 0.97,
+          "isScanned": false,
+          "rawText": "CHAPTER 7: INFRASTRUCTURE & FIRST MILE CONNECTIVITY (FMC)\nRail evacuation capacity increased significantly with the commissioning of Phase-1 CHP lines in SECL (Gevra and Kusmunda sidings) and MCL (Talcher rail corridor). First Mile Connectivity projects handled 420 MT of raw coal via mechanized closed conveyors, reducing road transportation environmental impact."
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_cil_2024_01",
+          "title": "Subsidiary-Wise Coal Production & Off-take Summary 2023-24",
+          "pageNumber": 14,
+          "confidence": 0.98,
+          "headers": [
+            "Subsidiary",
+            "Target (MT)",
+            "Achieved (MT)",
+            "Achievement (%)",
+            "Off-take (MT)",
+            "OB Removal (MCM)"
+          ],
+          "rows": [
+            [
+              "ECL",
+              39.5,
+              38.12,
+              "96.5%",
+              37.4,
+              142.6
+            ],
+            [
+              "BCCL",
+              41,
+              41.1,
+              "100.2%",
+              40.15,
+              168.4
+            ],
+            [
+              "CCL",
+              84,
+              86.05,
+              "102.4%",
+              84.2,
+              224.8
+            ],
+            [
+              "NCL",
+              139,
+              141.52,
+              "101.8%",
+              140.2,
+              476.2
+            ],
+            [
+              "WCL",
+              67,
+              67.85,
+              "101.3%",
+              66.9,
+              312.5
+            ],
+            [
+              "SECL",
+              197,
+              187,
+              "94.9%",
+              183.4,
+              328
+            ],
+            [
+              "MCL",
+              204,
+              206.1,
+              "101.0%",
+              195.5,
+              298
+            ],
+            [
+              "Total CIL",
+              780,
+              773.6,
+              "99.2%",
+              753.5,
+              1960.5
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_cil_01",
+          "pageNumber": 1,
+          "confidence": 0.99,
+          "sectionTitle": "Executive Summary",
+          "content": "During financial year 2023-24, Coal India Limited achieved raw coal production of 773.6 MT (growth of 10.0% compared to 703.2 MT in 2022-23). Total dispatch reached 753.5 MT. Opencast accounted for 741.2 MT and Underground 32.4 MT."
+        },
+        {
+          "id": "chk_cil_02",
+          "pageNumber": 14,
+          "confidence": 0.98,
+          "sectionTitle": "Subsidiary Production",
+          "content": "MCL led subsidiary production with 206.10 MT (101.0% of target), followed by SECL with 187.00 MT. NCL produced 141.52 MT, CCL 86.05 MT, WCL 67.85 MT, BCCL 41.10 MT, and ECL 38.12 MT. Overburden removal was 1960.5 MCM."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_01",
+          "documentId": "doc_cil_ann_2024",
+          "pageNumber": 1,
+          "entityType": "achieved_production",
+          "entityKey": "CIL Total Raw Coal Production",
+          "entityValue": 773.6,
+          "unit": "MT",
+          "normalizedValue": 773.6,
+          "normalizedUnit": "MT",
+          "sourceText": "total raw coal production of 773.6 million tonnes (MT)",
+          "extractionMethod": "STRUCTURED_CSV",
+          "confidence": 0.99,
+          "validationStatus": "APPROVED",
+          "timestamp": "2024-04-18T10:32:00Z"
+        },
+        {
+          "id": "ent_02",
+          "documentId": "doc_cil_ann_2024",
+          "pageNumber": 14,
+          "entityType": "achieved_production",
+          "entityKey": "MCL Production FY24",
+          "entityValue": 206.1,
+          "unit": "MT",
+          "normalizedValue": 206.1,
+          "normalizedUnit": "MT",
+          "sourceText": "MCL Achieved 206.10 MT",
+          "sourceTable": "TABLE 4.2",
+          "extractionMethod": "TABULAR_PARSER",
+          "confidence": 0.98,
+          "validationStatus": "APPROVED",
+          "timestamp": "2024-04-18T10:32:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_secl_gevra_2023",
+      "title": "SECL Gevra Mega Opencast Project - Annual Performance Dossier 2022-23",
+      "filename": "SECL_Gevra_Mega_OCP_Performance_Report_2023.pdf",
+      "fileHash": "sha256_b4892c90fa187e22",
+      "fileType": "pdf",
+      "fileSize": 3120000,
+      "subsidiary": "SECL",
+      "mineName": "Gevra Mega OC",
+      "coalfield": "Korba Coalfield",
+      "reportingYear": 2023,
+      "docType": "SCANNED_MINING_REPORT",
+      "status": "VALIDATION_REQUIRED",
+      "isScanned": true,
+      "pageCount": 24,
+      "uploadedAt": "2023-05-12T14:15:00Z",
+      "processedAt": "2023-05-12T14:18:30Z",
+      "tags": [
+        "SECL",
+        "Gevra",
+        "Mega Mine",
+        "Opencast",
+        "Expansion",
+        "Conflict Flagged"
+      ],
+      "summary": "Detailed technical report for Gevra OC mine in Korba Coalfield. In-pit continuous miner operations and blasting-free surface miner deployment. Note: Contains initial draft production figure of 52.5 MT vs audited figure of 50.8 MT.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.89,
+          "isScanned": true,
+          "rawText": "SOUTH EASTERN COALFIELDS LIMITED\n(KORBA AREA - GEVRA PROJECT OFFICE)\nTECHNICAL & OPERATIONAL PERFORMANCE REVIEW FY 2022-23\nThe Gevra Opencast Project, recognized as Asia's single largest opencast coal mine, operated under environmental clearance expansion aiming for 70 MTPA capacity.\nFor the year 2022-23, tentative field dispatch and extraction figure recorded was 52.5 MT (52,500,000 Tonnes). [Audited reconciled balance: 50.80 MT].",
+          "boundingBoxes": [
+            {
+              "text": "GEVRA PROJECT OFFICE",
+              "box": [
+                12,
+                20,
+                60,
+                5
+              ],
+              "confidence": 0.94
+            },
+            {
+              "text": "recorded was 52.5 MT",
+              "box": [
+                45,
+                25,
+                35,
+                4
+              ],
+              "confidence": 0.88
+            },
+            {
+              "text": "50.80 MT",
+              "box": [
+                48,
+                62,
+                20,
+                4
+              ],
+              "confidence": 0.92
+            }
+          ]
+        },
+        {
+          "pageNumber": 7,
+          "ocrConfidence": 0.91,
+          "isScanned": true,
+          "rawText": "HEMM DEPLOYMENT & STRIPPING RATIO:\nShovels (42 Cu.m P&H): 4 Units commissioned.\nDumpers (240 T CAT 793D): 28 Units in operation.\nComposite stripping ratio achieved was 1.14 m3/t, reflecting advantageous seam geometry with Upper and Lower Kusumunda seams merging. Overburden handled: 58.2 MCM."
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_gevra_01",
+          "title": "Gevra OC Production Breakdown 2022-23",
+          "pageNumber": 7,
+          "confidence": 0.91,
+          "headers": [
+            "Seam / Bench",
+            "Thickness (m)",
+            "Coal Extracted (MT)",
+            "OB Stripping (MCM)",
+            "Stripping Ratio"
+          ],
+          "rows": [
+            [
+              "Upper Kusumunda",
+              "22.4",
+              "28.40",
+              "32.1",
+              "1.13"
+            ],
+            [
+              "Lower Kusumunda",
+              "31.2",
+              "22.40",
+              "26.1",
+              "1.16"
+            ],
+            [
+              "Combined Total",
+              "53.6",
+              "50.80",
+              "58.2",
+              "1.14"
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_gev_01",
+          "pageNumber": 1,
+          "confidence": 0.89,
+          "sectionTitle": "Production Reconciliation Note",
+          "content": "Gevra OCP operational records show tentative field measurement of 52.5 MT while statutory accounting finalized at 50.80 MT due to moisture adjustment and pit-head stockpile calibration."
+        },
+        {
+          "id": "chk_gev_02",
+          "pageNumber": 7,
+          "confidence": 0.91,
+          "sectionTitle": "HEMM and Stripping Ratio",
+          "content": "Stripping ratio at Gevra was 1.14 m3/t. Total overburden handled was 58.2 MCM with 240T dumpers and 42 Cu.m rope shovels."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_gev_01",
+          "documentId": "doc_secl_gevra_2023",
+          "pageNumber": 1,
+          "entityType": "achieved_production",
+          "entityKey": "Gevra Mine Production 2022-23",
+          "entityValue": 52.5,
+          "unit": "MT",
+          "normalizedValue": 52.5,
+          "normalizedUnit": "MT",
+          "sourceText": "tentative field dispatch and extraction figure recorded was 52.5 MT",
+          "extractionMethod": "OCR_REGEX",
+          "confidence": 0.88,
+          "validationStatus": "CONFLICT_REQUIRES_REVIEW",
+          "analystComment": "Field estimate states 52.5 MT, but official audited CIL statement lists 50.80 MT. Requires human verification.",
+          "timestamp": "2023-05-12T14:18:00Z"
+        },
+        {
+          "id": "ent_gev_02",
+          "documentId": "doc_secl_gevra_2023",
+          "pageNumber": 7,
+          "entityType": "stripping_ratio",
+          "entityKey": "Gevra Stripping Ratio",
+          "entityValue": 1.14,
+          "unit": "m3/t",
+          "normalizedValue": 1.14,
+          "normalizedUnit": "m3/t",
+          "sourceText": "Composite stripping ratio achieved was 1.14 m3/t",
+          "extractionMethod": "OCR_REGEX",
+          "confidence": 0.93,
+          "validationStatus": "APPROVED",
+          "timestamp": "2023-05-12T14:18:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_cmpdi_talcher_2022",
+      "title": "CMPDI Regional Institute VII - Geological Assessment Report on Talcher Coalfield",
+      "filename": "CMPDI_Geological_Exploration_Talcher_Ib_2022.pdf",
+      "fileHash": "sha256_77c13a0198bb6c12",
+      "fileType": "pdf",
+      "fileSize": 5410000,
+      "subsidiary": "CMPDI",
+      "coalfield": "Talcher & Ib Valley Coalfields",
+      "reportingYear": 2022,
+      "docType": "GEOLOGICAL_ASSESSMENT",
+      "status": "VALIDATED",
+      "isScanned": false,
+      "pageCount": 52,
+      "uploadedAt": "2022-11-05T09:20:00Z",
+      "processedAt": "2022-11-05T09:24:10Z",
+      "tags": [
+        "CMPDI",
+        "Geology",
+        "Exploration",
+        "Boreholes",
+        "Reserves",
+        "Talcher"
+      ],
+      "summary": "Comprehensive drilling exploration data covering 140 boreholes. Identifies 34,200 MT total coal resources with 18,450 MT categorized under Proved category across Barakar Formation seams (Seam II to IX).",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.99,
+          "isScanned": false,
+          "rawText": "CENTRAL MINE PLANNING & DESIGN INSTITUTE LIMITED\nREGIONAL INSTITUTE - VII, BHUBANESWAR\nGEOLOGICAL EXPLORATION & RESOURCE ESTIMATION REPORT: TALCHER COALFIELD\nBorehole Density: 140 core boreholes drilled with cumulative meterage of 42,650 m.\nStratigraphy: Gondwana Supergroup, Karharbari & Barakar Formations.\nTotal Regional Coal Reserves: 34,200 Million Tonnes (Proved: 18,450 MT, Indicated: 11,200 MT, Inferred: 4,550 MT)."
+        },
+        {
+          "pageNumber": 18,
+          "ocrConfidence": 0.98,
+          "isScanned": false,
+          "rawText": "TABLE 2.4: SEAM-WISE RESERVES & THICKNESS CHARACTERISTICS\nSeam Name          Avg Thickness (m) Depth Range (m) Coal Grade  Proved Reserves (MT)\nSeam I (Karharbari) 4.2               180 - 450       G7 - G9     2,850\nSeam II (Barakar)   18.6               40 - 220       G11 - G13   6,400\nSeam III            8.4                60 - 280       G12 - G14   4,100\nSeam IV / V         12.1               90 - 340       G13         3,200\nSeam VI to IX       15.8              140 - 410       G14         1,900\nTOTAL                                                            18,450"
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_cmpdi_talcher_01",
+          "title": "Talcher Seam-wise Geological Reserves & Grade Matrix",
+          "pageNumber": 18,
+          "confidence": 0.98,
+          "headers": [
+            "Seam Name",
+            "Avg Thickness (m)",
+            "Depth Range (m)",
+            "Coal Grade",
+            "Proved Reserves (MT)"
+          ],
+          "rows": [
+            [
+              "Seam I (Karharbari)",
+              "4.2",
+              "180 - 450",
+              "G7 - G9",
+              2850
+            ],
+            [
+              "Seam II (Barakar)",
+              "18.6",
+              "40 - 220",
+              "G11 - G13",
+              6400
+            ],
+            [
+              "Seam III",
+              "8.4",
+              "60 - 280",
+              "G12 - G14",
+              4100
+            ],
+            [
+              "Seam IV / V",
+              "12.1",
+              "90 - 340",
+              "G13",
+              3200
+            ],
+            [
+              "Seam VI to IX",
+              "15.8",
+              "140 - 410",
+              "G14",
+              1900
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_cmpdi_01",
+          "pageNumber": 1,
+          "confidence": 0.99,
+          "sectionTitle": "Exploration Summary",
+          "content": "CMPDI Regional Institute VII drilled 140 boreholes totalling 42,650 m. Identified 34,200 MT total coal resources with 18,450 MT Proved category in Talcher Coalfield."
+        },
+        {
+          "id": "chk_cmpdi_02",
+          "pageNumber": 18,
+          "confidence": 0.98,
+          "sectionTitle": "Seam Thickness & Reserves",
+          "content": "Barakar Seam II is the primary opencast target with average thickness of 18.6 m, shallow depth of 40-220 m, G11-G13 grade, and proved reserves of 6,400 MT."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_talcher_01",
+          "documentId": "doc_cmpdi_talcher_2022",
+          "pageNumber": 1,
+          "entityType": "geological_reserves",
+          "entityKey": "Talcher Proved Coal Reserves",
+          "entityValue": 18450,
+          "unit": "MT",
+          "normalizedValue": 18450,
+          "normalizedUnit": "MT",
+          "sourceText": "Proved: 18,450 MT",
+          "extractionMethod": "STRUCTURED_CSV",
+          "confidence": 0.99,
+          "validationStatus": "APPROVED",
+          "timestamp": "2022-11-05T09:24:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_bccl_moonidih_2023",
+      "title": "BCCL Moonidih Underground Colliery - Longwall Mechanization & Coking Coal Report",
+      "filename": "BCCL_Moonidih_Underground_Modernization_2023.pdf",
+      "fileHash": "sha256_5a91cf7601ad892c",
+      "fileType": "pdf",
+      "fileSize": 2890000,
+      "subsidiary": "BCCL",
+      "mineName": "Moonidih Underground Project",
+      "coalfield": "Jharia Coalfield",
+      "reportingYear": 2023,
+      "docType": "SCANNED_MINING_REPORT",
+      "status": "VALIDATED",
+      "isScanned": true,
+      "pageCount": 16,
+      "uploadedAt": "2023-08-19T11:45:00Z",
+      "processedAt": "2023-08-19T11:48:12Z",
+      "tags": [
+        "BCCL",
+        "Moonidih",
+        "Underground",
+        "Coking Coal",
+        "Gas Drainage",
+        "Longwall"
+      ],
+      "summary": "Focuses on deep underground mining (Seam XVI & XVII) at 500m depth. High gas emission rate required pre-drainage methane drainage system. Powered Roof Support longwall shearer experienced 3 weeks downtime due to hydraulic pump failure.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.86,
+          "isScanned": true,
+          "rawText": "BHARAT COKING COAL LIMITED (BCCL)\nWESTERN JHARIA AREA - MOONIDIH PROJECT\nTECHNICAL REPORT ON POWERED ROOF SUPPORT (PRS) LONGWALL FACE OPERATION\nSeam: XVI Top Seam (Depth: 480 m to 520 m).\nCoal Category: Steel Grade-I Prime Coking Coal (Crucible Swelling Number: 6.5).\nMethane Emission: High (Degree-III gassy mine, 14.8 m3/tonne of coal extracted).\nProduction 2022-23: Target: 1.20 MT, Achieved: 0.94 MT (78.3%).\nShortfall Reason: Equipment failure in Powered Support electro-hydraulic system and severe methane influx requiring ventilatory throttling in Q3."
+        },
+        {
+          "pageNumber": 4,
+          "ocrConfidence": 0.88,
+          "isScanned": true,
+          "rawText": "COAL BENEFICIATION & STEEL SUPPLY:\nRaw coking coal washed at Moonidih Washery with yield of 38.5% clean coal (ash 17.5%), supplied exclusively to SAIL (Bhilai & Bokaro Steel Plants).\nGas Drainage Project: Pre-drainage boreholes extracted 2.8 Million cubic metres of pure methane, flaring 40% and utilizing remainder for pithead thermal heating."
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_bccl_01",
+          "title": "Moonidih Underground Key Performance Indicators 2022-23",
+          "pageNumber": 1,
+          "confidence": 0.88,
+          "headers": [
+            "Metric",
+            "Unit",
+            "Planned",
+            "Achieved",
+            "Variance / Reason"
+          ],
+          "rows": [
+            [
+              "Raw Coking Coal Production",
+              "MT",
+              "1.20",
+              "0.94",
+              "-21.7% (Longwall breakdown)"
+            ],
+            [
+              "Gas Drainage Volume",
+              "MCM",
+              "3.50",
+              "2.80",
+              "-20.0% (Seam impermeability)"
+            ],
+            [
+              "Clean Coal Dispatch to SAIL",
+              "MT",
+              "0.46",
+              "0.36",
+              "-21.7%"
+            ],
+            [
+              "OMS (Output per manshift)",
+              "Tonnes",
+              "3.20",
+              "2.45",
+              "-23.4%"
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_bccl_01",
+          "pageNumber": 1,
+          "confidence": 0.86,
+          "sectionTitle": "Production & Geological Challenges",
+          "content": "Moonidih underground produced 0.94 MT of prime coking coal against 1.20 MT target. Major geological hurdles included Degree-III methane emission (14.8 m3/t) and 3 weeks downtime from hydraulic pump failure."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_bccl_01",
+          "documentId": "doc_bccl_moonidih_2023",
+          "pageNumber": 1,
+          "entityType": "achieved_production",
+          "entityKey": "Moonidih Underground Production",
+          "entityValue": 0.94,
+          "unit": "MT",
+          "normalizedValue": 0.94,
+          "normalizedUnit": "MT",
+          "sourceText": "Achieved: 0.94 MT (78.3%)",
+          "extractionMethod": "OCR_REGEX",
+          "confidence": 0.9,
+          "validationStatus": "APPROVED",
+          "timestamp": "2023-08-19T11:48:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_ncl_singrauli_2024",
+      "title": "NCL Singrauli Coalfield Monthly Production & Dispatch Matrix 2023-24",
+      "filename": "NCL_Singrauli_Coalfield_Production_Dispatch_2024.xlsx",
+      "fileHash": "sha256_33918a287bfcc119",
+      "fileType": "xlsx",
+      "fileSize": 1845000,
+      "subsidiary": "NCL",
+      "coalfield": "Singrauli Coalfield",
+      "reportingYear": 2024,
+      "docType": "PRODUCTION_SPREADSHEET",
+      "status": "VALIDATED",
+      "isScanned": false,
+      "pageCount": 12,
+      "uploadedAt": "2024-04-05T08:10:00Z",
+      "processedAt": "2024-04-05T08:11:40Z",
+      "tags": [
+        "NCL",
+        "Jayant",
+        "Dudhichua",
+        "Singrauli",
+        "Power Plants",
+        "Excel Matrix"
+      ],
+      "summary": "Full monthly performance of Jayant, Dudhichua, Nigahi, Khadia, Bina, and Amlohri opencast projects. Total NCL coal production exceeded target by 1.8%, supplying 133 MT directly to pithead NTPC power stations via merry-go-round (MGR) trains.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 1,
+          "isScanned": false,
+          "rawText": "NORTHERN COALFIELDS LIMITED (SINGRAULI)\nANNUAL SPREADSHEET RECONCILIATION SHEET - FY 2023-24\nTotal Production: 141.52 MT (Target: 139.00 MT, +1.81%)\nTotal Offtake: 140.20 MT\nOverburden Handled: 476.20 Million Cubic Metres\nJayant OCP: 26.50 MT (Target 25.00 MT) | OB: 82.4 MCM\nDudhichua OCP: 24.80 MT (Target 24.00 MT) | OB: 74.6 MCM\nNigahi OCP: 22.10 MT (Target 21.50 MT) | OB: 69.2 MCM\nKhadia OCP: 16.20 MT (Target 16.00 MT) | OB: 58.1 MCM"
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_ncl_01",
+          "title": "NCL Major Opencast Projects Summary 2023-24",
+          "pageNumber": 1,
+          "confidence": 1,
+          "headers": [
+            "Project Name",
+            "Target (MT)",
+            "Actual (MT)",
+            "Achievement (%)",
+            "OB Removal (MCM)",
+            "Stripping Ratio (m3/t)"
+          ],
+          "rows": [
+            [
+              "Jayant OCP",
+              25,
+              26.5,
+              "106.0%",
+              82.4,
+              3.11
+            ],
+            [
+              "Dudhichua OCP",
+              24,
+              24.8,
+              "103.3%",
+              74.6,
+              3.01
+            ],
+            [
+              "Nigahi OCP",
+              21.5,
+              22.1,
+              "102.8%",
+              69.2,
+              3.13
+            ],
+            [
+              "Khadia OCP",
+              16,
+              16.2,
+              "101.3%",
+              58.1,
+              3.59
+            ],
+            [
+              "Amlohri OCP",
+              15,
+              15.42,
+              "102.8%",
+              54.3,
+              3.52
+            ],
+            [
+              "Bina OCP",
+              11.5,
+              11.6,
+              "100.9%",
+              41.2,
+              3.55
+            ],
+            [
+              "Other Mines",
+              26,
+              24.9,
+              "95.8%",
+              96.4,
+              3.87
+            ],
+            [
+              "Total NCL",
+              139,
+              141.52,
+              "101.8%",
+              476.2,
+              3.37
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_ncl_01",
+          "pageNumber": 1,
+          "confidence": 1,
+          "sectionTitle": "NCL Production Performance",
+          "content": "NCL exceeded target in FY 2023-24 with 141.52 MT vs 139.00 MT target. Jayant produced 26.50 MT with OB of 82.40 MCM and Dudhichua produced 24.80 MT with OB of 74.60 MCM."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_ncl_01",
+          "documentId": "doc_ncl_singrauli_2024",
+          "pageNumber": 1,
+          "entityType": "achieved_production",
+          "entityKey": "Jayant OCP Production",
+          "entityValue": 26.5,
+          "unit": "MT",
+          "normalizedValue": 26.5,
+          "normalizedUnit": "MT",
+          "sourceText": "Jayant OCP Actual: 26.50 MT",
+          "sourceTable": "tbl_ncl_01",
+          "extractionMethod": "STRUCTURED_CSV",
+          "confidence": 1,
+          "validationStatus": "APPROVED",
+          "timestamp": "2024-04-05T08:11:00Z"
+        },
+        {
+          "id": "ent_ncl_02",
+          "documentId": "doc_ncl_singrauli_2024",
+          "pageNumber": 1,
+          "entityType": "achieved_production",
+          "entityKey": "Dudhichua OCP Production",
+          "entityValue": 24.8,
+          "unit": "MT",
+          "normalizedValue": 24.8,
+          "normalizedUnit": "MT",
+          "sourceText": "Dudhichua OCP Actual: 24.80 MT",
+          "sourceTable": "tbl_ncl_01",
+          "extractionMethod": "STRUCTURED_CSV",
+          "confidence": 1,
+          "validationStatus": "APPROVED",
+          "timestamp": "2024-04-05T08:11:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_parl_starred_412",
+      "title": "Ministry of Coal - Lok Sabha Starred Question No. 412: Domestic Coal Production & Import Substitution",
+      "filename": "Ministry_Parliamentary_Question_LokSabha_Starred_412.pdf",
+      "fileHash": "sha256_110293fae881023d",
+      "fileType": "pdf",
+      "fileSize": 1420000,
+      "subsidiary": "Ministry of Coal",
+      "coalfield": "National Aggregate",
+      "reportingYear": 2023,
+      "docType": "PARLIAMENTARY_INQUIRY",
+      "status": "VALIDATED",
+      "isScanned": false,
+      "pageCount": 8,
+      "uploadedAt": "2023-12-14T16:00:00Z",
+      "processedAt": "2023-12-14T16:02:40Z",
+      "tags": [
+        "Parliament",
+        "Lok Sabha",
+        "Import Substitution",
+        "Ministry of Coal",
+        "High Priority"
+      ],
+      "summary": "Ministerial statement responding to parliamentary inquiries regarding 1 Billion Tonne production target, thermal coal stock levels at power utilities, and reduction in imported coal blending.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.99,
+          "isScanned": false,
+          "rawText": "GOVERNMENT OF INDIA, MINISTRY OF COAL\nLOK SABHA STARRED QUESTION NO. 412\nTO BE ANSWERED ON 13.12.2023\nQUESTION:\nWill the Minister of COAL be pleased to state:\n(a) The total domestic coal production during the last three years (2020-21 to 2022-23);\n(b) The steps taken to augment underground coal production and modernize legacy equipment;\n(c) The strategy to eliminate substitutable thermal coal imports by 2025-26?\n\nANSWER:\nMINISTER OF COAL, MINES AND PARLIAMENTARY AFFAIRS\n(a) Total domestic coal production:\n- 2020-21: 716.08 MT (CIL: 596.22 MT)\n- 2021-22: 778.19 MT (CIL: 622.63 MT)\n- 2022-23: 893.19 MT (CIL: 703.21 MT)\nGrowth in FY 2022-23 over previous year was 14.77%.\n(b) Mission Underground 100 MT launched by CIL targeting 100 MT from underground mines by 2030 through mass production technology, Continuous Miners (CM), and Longwall equipment in ECL, BCCL, and SECL.\n(c) Domestic blending mandated to increase; non-coking coal imports for power sector declined from 69 MT in 2019-20 to 35 MT in 2022-23."
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_parl_01",
+          "title": "3-Year All-India Domestic Coal Production Trend (Lok Sabha Q412)",
+          "pageNumber": 1,
+          "confidence": 0.99,
+          "headers": [
+            "Financial Year",
+            "Total India Production (MT)",
+            "Coal India Ltd (MT)",
+            "SCCL (MT)",
+            "Captive/Others (MT)"
+          ],
+          "rows": [
+            [
+              "2020-21",
+              716.08,
+              596.22,
+              50.58,
+              69.28
+            ],
+            [
+              "2021-22",
+              778.19,
+              622.63,
+              65.02,
+              90.54
+            ],
+            [
+              "2022-23",
+              893.19,
+              703.21,
+              67.14,
+              122.84
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_parl_01",
+          "pageNumber": 1,
+          "confidence": 0.99,
+          "sectionTitle": "Parliamentary Production Statistics",
+          "content": "In response to Lok Sabha Question 412, Ministry reported domestic coal production rose from 716.08 MT in 2020-21 to 893.19 MT in 2022-23, with Coal India contributing 703.21 MT in 2022-23."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_parl_01",
+          "documentId": "doc_parl_starred_412",
+          "pageNumber": 1,
+          "entityType": "achieved_production",
+          "entityKey": "India Total Coal Production 2022-23",
+          "entityValue": 893.19,
+          "unit": "MT",
+          "normalizedValue": 893.19,
+          "normalizedUnit": "MT",
+          "sourceText": "2022-23: 893.19 MT (CIL: 703.21 MT)",
+          "sourceTable": "tbl_parl_01",
+          "extractionMethod": "TABULAR_PARSER",
+          "confidence": 0.99,
+          "validationStatus": "APPROVED",
+          "timestamp": "2023-12-14T16:02:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_wcl_safety_2023",
+      "title": "WCL Pench & Wardha Valley Mines - Slope Monitoring Radar & Highwall Stability Audit",
+      "filename": "WCL_Pench_Kanhan_Slope_Stability_Safety_2023.pdf",
+      "fileHash": "sha256_9941a9bc019a33bc",
+      "fileType": "pdf",
+      "fileSize": 2210000,
+      "subsidiary": "WCL",
+      "mineName": "Umrer OCP",
+      "coalfield": "Wardha Valley Coalfield",
+      "reportingYear": 2023,
+      "docType": "SAFETY_COMPLIANCE_DOSSIER",
+      "status": "VALIDATED",
+      "isScanned": false,
+      "pageCount": 18,
+      "uploadedAt": "2023-09-10T12:00:00Z",
+      "processedAt": "2023-09-10T12:03:15Z",
+      "tags": [
+        "WCL",
+        "Safety",
+        "Slope Stability",
+        "Radar",
+        "Monsoon Risk",
+        "Umrer"
+      ],
+      "summary": "Geotechnical monitoring across deep opencast highwalls exceeding 120m depth. Deployed real-time GroundProbe Slope Stability Radar (SSR) preventing two major bench failures during heavy monsoon precipitation.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.97,
+          "isScanned": false,
+          "rawText": "WESTERN COALFIELDS LIMITED - DIRECTORATE OF SAFETY & ENVIRONMENT\nANNUAL HIGHWALL STABILITY & GEOTECHNICAL COMPLIANCE DOSSIER\nKey Site: Umrer Opencast Mine (Bench Height: 15m, Slope Angle: 42 degrees).\nGroundwater seepage along faulted sandstone contact created acute instability in Sector 3 East.\nSlope Monitoring Radar recorded displacement rate of 4.2 mm/hr on 18th July 2023. Timely alert triggered evacuation of 4 shovels and 12 dumpers 30 minutes prior to a 45,000 m3 bench slide. Zero casualties."
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_wcl_01",
+          "title": "Geotechnical Slope Alerts & Sensor Thresholds (Umrer OCP)",
+          "pageNumber": 1,
+          "confidence": 0.97,
+          "headers": [
+            "Location",
+            "Instrument Type",
+            "Trigger Displacement",
+            "Action Taken",
+            "Incident Outcome"
+          ],
+          "rows": [
+            [
+              "Sector 3 East",
+              "GroundProbe SSR",
+              "4.2 mm/hr",
+              "Pit evacuated immediately",
+              "45,000 m3 slide, zero loss"
+            ],
+            [
+              "Bench 4 North",
+              "In-place Inclinometer",
+              "0.8 mm/day",
+              "Tension crack grouted",
+              "Slope stabilized"
+            ],
+            [
+              "West Highwall",
+              "Piezometer Array",
+              "Pore pressure > 1.2 MPa",
+              "Dewatering boreholes drilled",
+              "Pressure normalized"
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_wcl_01",
+          "pageNumber": 1,
+          "confidence": 0.97,
+          "sectionTitle": "Slope Stability Monitoring",
+          "content": "At WCL Umrer OCP, Slope Monitoring Radar detected 4.2 mm/hr movement on 18 July 2023, enabling evacuation before a 45,000 m3 bench failure occurred with zero casualties."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_wcl_01",
+          "documentId": "doc_wcl_safety_2023",
+          "pageNumber": 1,
+          "entityType": "safety_incident",
+          "entityKey": "Umrer Slope Movement Alert",
+          "entityValue": "4.2 mm/hr evacuation successful",
+          "sourceText": "Slope Monitoring Radar recorded displacement rate of 4.2 mm/hr",
+          "extractionMethod": "OCR_REGEX",
+          "confidence": 0.95,
+          "validationStatus": "APPROVED",
+          "timestamp": "2023-09-10T12:03:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_mcl_belpahar_2024",
+      "title": "MCL Belpahar Opencast Expansion & Coal Evacuation Logistics 2023-24",
+      "filename": "MCL_Belpahar_IbValley_Expansion_2024.pdf",
+      "fileHash": "sha256_fa8762410a8d7992",
+      "fileType": "pdf",
+      "fileSize": 3450000,
+      "subsidiary": "MCL",
+      "mineName": "Belpahar OCP",
+      "coalfield": "Ib Valley Coalfield",
+      "reportingYear": 2024,
+      "docType": "ANNUAL_REPORT",
+      "status": "VALIDATED",
+      "isScanned": false,
+      "pageCount": 22,
+      "uploadedAt": "2024-05-02T15:20:00Z",
+      "processedAt": "2024-05-02T15:23:45Z",
+      "tags": [
+        "MCL",
+        "Ib Valley",
+        "Belpahar",
+        "Railway Siding",
+        "Dispatch",
+        "Logistics"
+      ],
+      "summary": "Belpahar OCP achieved 12.40 MT production (+8.7% YoY). Highlighted railway rake availability bottlenecks at Jharsuguda junction where 14 rake delays impacted pithead coal evacuation during peak power demand in May-June.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.98,
+          "isScanned": false,
+          "rawText": "MAHANADI COALFIELDS LIMITED - IB VALLEY AREA\nBELPAHAR OPENCAST PROJECT ANNUAL AUDIT FY 2023-24\nOperational Highlights:\nRaw Coal Output: 12.40 MT against annual target of 12.00 MT (103.3%).\nDispatch: 11.85 MT (Rail: 9.20 MT, MGR: 1.65 MT, Road: 1.00 MT).\nOverburden Handled: 18.4 MCM. Stripping Ratio: 1.48 m3/t.\nRail evacuation capacity constrained by single line block between Belpahar and Brajrajnagar sidings, leading to 1.8 MT pithead inventory build-up by end of Q2."
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_mcl_01",
+          "title": "Belpahar OCP Production & Evacuation Logistics (FY24)",
+          "pageNumber": 1,
+          "confidence": 0.98,
+          "headers": [
+            "Quarter",
+            "Coal Produced (MT)",
+            "Rail Dispatch (MT)",
+            "Pithead Stock (MT)",
+            "Rake Indented",
+            "Rake Supplied"
+          ],
+          "rows": [
+            [
+              "Q1 (Apr-Jun)",
+              3.1,
+              2.7,
+              1.4,
+              720,
+              642
+            ],
+            [
+              "Q2 (Jul-Sep)",
+              2.4,
+              2.1,
+              1.8,
+              580,
+              510
+            ],
+            [
+              "Q3 (Oct-Dec)",
+              3.4,
+              3.25,
+              1.1,
+              840,
+              812
+            ],
+            [
+              "Q4 (Jan-Mar)",
+              3.5,
+              3.8,
+              0.55,
+              910,
+              902
+            ],
+            [
+              "Total FY24",
+              12.4,
+              11.85,
+              0.55,
+              3050,
+              2866
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_mcl_01",
+          "pageNumber": 1,
+          "confidence": 0.98,
+          "sectionTitle": "Belpahar Production & Evacuation",
+          "content": "Belpahar OCP reached 12.40 MT production in FY 2023-24 (target 12.00 MT). Rail dispatch stood at 11.85 MT, with rake supply deficit causing 1.8 MT pithead stockpile during Q2."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_mcl_01",
+          "documentId": "doc_mcl_belpahar_2024",
+          "pageNumber": 1,
+          "entityType": "achieved_production",
+          "entityKey": "Belpahar OCP Production",
+          "entityValue": 12.4,
+          "unit": "MT",
+          "normalizedValue": 12.4,
+          "normalizedUnit": "MT",
+          "sourceText": "Raw Coal Output: 12.40 MT against annual target of 12.00 MT",
+          "sourceTable": "tbl_mcl_01",
+          "extractionMethod": "STRUCTURED_CSV",
+          "confidence": 0.98,
+          "validationStatus": "APPROVED",
+          "timestamp": "2024-05-02T15:23:00Z"
+        }
+      ]
+    },
+    {
+      "id": "doc_ccl_karanpura_2021",
+      "title": "CCL North Karanpura Coalfield - Ashok & Piparwar Geological Exploration & Coal Reserve Assessment",
+      "filename": "CCL_Bokaro_Karanpura_Geological_Assessment_2021.pdf",
+      "fileHash": "sha256_71a0b3882f091c78",
+      "fileType": "pdf",
+      "fileSize": 4120000,
+      "subsidiary": "CCL",
+      "mineName": "Ashok OCP",
+      "coalfield": "North Karanpura Coalfield",
+      "reportingYear": 2021,
+      "docType": "GEOLOGICAL_ASSESSMENT",
+      "status": "VALIDATED",
+      "isScanned": false,
+      "pageCount": 30,
+      "uploadedAt": "2021-12-10T14:00:00Z",
+      "processedAt": "2021-12-10T14:04:10Z",
+      "tags": [
+        "CCL",
+        "North Karanpura",
+        "Ashok OCP",
+        "Borehole",
+        "Reserves",
+        "Piparwar"
+      ],
+      "summary": "Detailed assessment of Dakra-Bukru-Ashok block. Thick seam opencast potential (Dakra Seam 14.5m average thickness). Total proved reserves calculated at 480 MT with low stripping ratio of 1.62 m3/t, G11 grade thermal coal.",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "ocrConfidence": 0.99,
+          "isScanned": false,
+          "rawText": "CENTRAL COALFIELDS LIMITED & CMPDI RI-III RANCHI\nGEOLOGICAL RESOURCE APPRAISAL: ASHOK OCP EXPANSION BLOCK\nLocation: North Karanpura Basin, Chatra & Ranchi Districts, Jharkhand.\nBoreholes Drilled: 64 Core boreholes.\nProved Reserves: 480.00 MT. Indicated Reserves: 140.00 MT.\nAverage Stripping Ratio: 1.62 m3/t. Seam Dakra Main: 14.5m thick, clean parting."
+        }
+      ],
+      "tables": [
+        {
+          "id": "tbl_ccl_01",
+          "title": "Ashok OCP Seam & Reserve Summary",
+          "pageNumber": 1,
+          "confidence": 0.99,
+          "headers": [
+            "Seam",
+            "Avg Thickness (m)",
+            "Specific Gravity",
+            "Gross Caloric Value (kcal/kg)",
+            "Proved Reserves (MT)"
+          ],
+          "rows": [
+            [
+              "Dakra Main",
+              14.5,
+              1.48,
+              "3,850 - 4,200 (G11)",
+              310
+            ],
+            [
+              "Bukru Upper",
+              6.2,
+              1.52,
+              "3,500 - 3,800 (G12)",
+              110
+            ],
+            [
+              "Bukru Lower",
+              4.1,
+              1.55,
+              "3,200 - 3,500 (G13)",
+              60
+            ],
+            [
+              "Total",
+              24.8,
+              "-",
+              "-",
+              480
+            ]
+          ]
+        }
+      ],
+      "chunks": [
+        {
+          "id": "chk_ccl_01",
+          "pageNumber": 1,
+          "confidence": 0.99,
+          "sectionTitle": "Ashok Geological Reserves",
+          "content": "Ashok OCP expansion block contains 480 MT proved coal reserves across Dakra Main and Bukru seams with 1.62 m3/t average stripping ratio and G11-G13 grade."
+        }
+      ],
+      "entities": [
+        {
+          "id": "ent_ccl_01",
+          "documentId": "doc_ccl_karanpura_2021",
+          "pageNumber": 1,
+          "entityType": "geological_reserves",
+          "entityKey": "Ashok Block Proved Reserves",
+          "entityValue": 480,
+          "unit": "MT",
+          "normalizedValue": 480,
+          "normalizedUnit": "MT",
+          "sourceText": "Proved Reserves: 480.00 MT",
+          "sourceTable": "tbl_ccl_01",
+          "extractionMethod": "STRUCTURED_CSV",
+          "confidence": 0.99,
+          "validationStatus": "APPROVED",
+          "timestamp": "2021-12-10T14:04:00Z"
+        }
+      ]
+    }
+  ],
+  "productionRecords": [
+    {
+      "id": "pr_2024_cil",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 1,
+      "subsidiary": "CIL Consolidated",
+      "mineName": "All Mines Combined",
+      "coalfield": "National",
+      "year": 2024,
+      "targetProductionMt": 780,
+      "achievedProductionMt": 773.6,
+      "achievementPercentage": 99.18,
+      "dispatchMt": 753.5,
+      "overburdenRemovalMcm": 1960.5,
+      "strippingRatio": 2.53,
+      "productivityOms": 12.8,
+      "confidence": 0.99,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_mcl",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 14,
+      "subsidiary": "MCL",
+      "mineName": "All MCL Mines",
+      "coalfield": "Talcher / Ib Valley",
+      "year": 2024,
+      "targetProductionMt": 204,
+      "achievedProductionMt": 206.1,
+      "achievementPercentage": 101.03,
+      "dispatchMt": 195.5,
+      "overburdenRemovalMcm": 298,
+      "strippingRatio": 1.45,
+      "productivityOms": 22.4,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_secl",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 14,
+      "subsidiary": "SECL",
+      "mineName": "All SECL Mines",
+      "coalfield": "Korba / Mand-Raigarh",
+      "year": 2024,
+      "targetProductionMt": 197,
+      "achievedProductionMt": 187,
+      "achievementPercentage": 94.92,
+      "dispatchMt": 183.4,
+      "overburdenRemovalMcm": 328,
+      "strippingRatio": 1.75,
+      "productivityOms": 16.5,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_ncl",
+      "documentId": "doc_ncl_singrauli_2024",
+      "pageNumber": 1,
+      "subsidiary": "NCL",
+      "mineName": "All NCL Mines",
+      "coalfield": "Singrauli Coalfield",
+      "year": 2024,
+      "targetProductionMt": 139,
+      "achievedProductionMt": 141.52,
+      "achievementPercentage": 101.81,
+      "dispatchMt": 140.2,
+      "overburdenRemovalMcm": 476.2,
+      "strippingRatio": 3.37,
+      "productivityOms": 18.2,
+      "confidence": 1,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_jayant",
+      "documentId": "doc_ncl_singrauli_2024",
+      "pageNumber": 1,
+      "subsidiary": "NCL",
+      "mineName": "Jayant OCP",
+      "coalfield": "Singrauli Coalfield",
+      "year": 2024,
+      "targetProductionMt": 25,
+      "achievedProductionMt": 26.5,
+      "achievementPercentage": 106,
+      "dispatchMt": 26.1,
+      "overburdenRemovalMcm": 82.4,
+      "strippingRatio": 3.11,
+      "productivityOms": 19.4,
+      "confidence": 1,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_dudhichua",
+      "documentId": "doc_ncl_singrauli_2024",
+      "pageNumber": 1,
+      "subsidiary": "NCL",
+      "mineName": "Dudhichua OCP",
+      "coalfield": "Singrauli Coalfield",
+      "year": 2024,
+      "targetProductionMt": 24,
+      "achievedProductionMt": 24.8,
+      "achievementPercentage": 103.33,
+      "dispatchMt": 24.5,
+      "overburdenRemovalMcm": 74.6,
+      "strippingRatio": 3.01,
+      "productivityOms": 18.9,
+      "confidence": 1,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_ccl",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 14,
+      "subsidiary": "CCL",
+      "mineName": "All CCL Mines",
+      "coalfield": "North Karanpura / Bokaro",
+      "year": 2024,
+      "targetProductionMt": 84,
+      "achievedProductionMt": 86.05,
+      "achievementPercentage": 102.44,
+      "dispatchMt": 84.2,
+      "overburdenRemovalMcm": 224.8,
+      "strippingRatio": 2.61,
+      "productivityOms": 11.2,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_wcl",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 14,
+      "subsidiary": "WCL",
+      "mineName": "All WCL Mines",
+      "coalfield": "Wardha Valley / Pench",
+      "year": 2024,
+      "targetProductionMt": 67,
+      "achievedProductionMt": 67.85,
+      "achievementPercentage": 101.27,
+      "dispatchMt": 66.9,
+      "overburdenRemovalMcm": 312.5,
+      "strippingRatio": 4.61,
+      "productivityOms": 7.8,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_bccl",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 14,
+      "subsidiary": "BCCL",
+      "mineName": "All BCCL Mines",
+      "coalfield": "Jharia Coalfield",
+      "year": 2024,
+      "targetProductionMt": 41,
+      "achievedProductionMt": 41.1,
+      "achievementPercentage": 100.24,
+      "dispatchMt": 40.15,
+      "overburdenRemovalMcm": 168.4,
+      "strippingRatio": 4.1,
+      "productivityOms": 5.4,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_ecl",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 14,
+      "subsidiary": "ECL",
+      "mineName": "All ECL Mines",
+      "coalfield": "Raniganj Coalfield",
+      "year": 2024,
+      "targetProductionMt": 39.5,
+      "achievedProductionMt": 38.12,
+      "achievementPercentage": 96.51,
+      "dispatchMt": 37.4,
+      "overburdenRemovalMcm": 142.6,
+      "strippingRatio": 3.74,
+      "productivityOms": 4.9,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2024_belpahar",
+      "documentId": "doc_mcl_belpahar_2024",
+      "pageNumber": 1,
+      "subsidiary": "MCL",
+      "mineName": "Belpahar OCP",
+      "coalfield": "Ib Valley Coalfield",
+      "year": 2024,
+      "targetProductionMt": 12,
+      "achievedProductionMt": 12.4,
+      "achievementPercentage": 103.33,
+      "dispatchMt": 11.85,
+      "overburdenRemovalMcm": 18.4,
+      "strippingRatio": 1.48,
+      "productivityOms": 14.6,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2023_cil",
+      "documentId": "doc_cil_ann_2024",
+      "pageNumber": 1,
+      "subsidiary": "CIL Consolidated",
+      "mineName": "All Mines Combined",
+      "coalfield": "National",
+      "year": 2023,
+      "targetProductionMt": 700,
+      "achievedProductionMt": 703.21,
+      "achievementPercentage": 100.46,
+      "dispatchMt": 694.7,
+      "overburdenRemovalMcm": 1654.8,
+      "strippingRatio": 2.35,
+      "productivityOms": 11.4,
+      "confidence": 0.99,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2023_gevra",
+      "documentId": "doc_secl_gevra_2023",
+      "pageNumber": 1,
+      "subsidiary": "SECL",
+      "mineName": "Gevra Mega OC",
+      "coalfield": "Korba Coalfield",
+      "year": 2023,
+      "targetProductionMt": 52,
+      "achievedProductionMt": 50.8,
+      "achievementPercentage": 97.69,
+      "dispatchMt": 50.4,
+      "overburdenRemovalMcm": 58.2,
+      "strippingRatio": 1.14,
+      "productivityOms": 28.5,
+      "confidence": 0.92,
+      "validationStatus": "CONFLICT"
+    },
+    {
+      "id": "pr_2023_kusmunda",
+      "documentId": "doc_secl_gevra_2023",
+      "pageNumber": 7,
+      "subsidiary": "SECL",
+      "mineName": "Kusmunda OC",
+      "coalfield": "Korba Coalfield",
+      "year": 2023,
+      "targetProductionMt": 42,
+      "achievedProductionMt": 43.15,
+      "achievementPercentage": 102.74,
+      "dispatchMt": 42.8,
+      "overburdenRemovalMcm": 62.4,
+      "strippingRatio": 1.45,
+      "productivityOms": 22.1,
+      "confidence": 0.94,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2023_moonidih",
+      "documentId": "doc_bccl_moonidih_2023",
+      "pageNumber": 1,
+      "subsidiary": "BCCL",
+      "mineName": "Moonidih Underground Project",
+      "coalfield": "Jharia Coalfield",
+      "year": 2023,
+      "targetProductionMt": 1.2,
+      "achievedProductionMt": 0.94,
+      "achievementPercentage": 78.33,
+      "dispatchMt": 0.91,
+      "overburdenRemovalMcm": 0,
+      "strippingRatio": 0,
+      "productivityOms": 2.45,
+      "confidence": 0.9,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2022_cil",
+      "documentId": "doc_parl_starred_412",
+      "pageNumber": 1,
+      "subsidiary": "CIL Consolidated",
+      "mineName": "All Mines Combined",
+      "coalfield": "National",
+      "year": 2022,
+      "targetProductionMt": 670,
+      "achievedProductionMt": 622.63,
+      "achievementPercentage": 92.93,
+      "dispatchMt": 661.9,
+      "overburdenRemovalMcm": 1362.4,
+      "strippingRatio": 2.19,
+      "productivityOms": 10.2,
+      "confidence": 0.99,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2022_gevra",
+      "documentId": "doc_secl_gevra_2023",
+      "pageNumber": 1,
+      "subsidiary": "SECL",
+      "mineName": "Gevra Mega OC",
+      "coalfield": "Korba Coalfield",
+      "year": 2022,
+      "targetProductionMt": 48,
+      "achievedProductionMt": 49.12,
+      "achievementPercentage": 102.33,
+      "dispatchMt": 48.9,
+      "overburdenRemovalMcm": 54.1,
+      "strippingRatio": 1.1,
+      "productivityOms": 26.2,
+      "confidence": 0.95,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2022_jayant",
+      "documentId": "doc_ncl_singrauli_2024",
+      "pageNumber": 1,
+      "subsidiary": "NCL",
+      "mineName": "Jayant OCP",
+      "coalfield": "Singrauli Coalfield",
+      "year": 2022,
+      "targetProductionMt": 22.5,
+      "achievedProductionMt": 23.4,
+      "achievementPercentage": 104,
+      "dispatchMt": 23.1,
+      "overburdenRemovalMcm": 72.8,
+      "strippingRatio": 3.11,
+      "productivityOms": 17.8,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2021_cil",
+      "documentId": "doc_parl_starred_412",
+      "pageNumber": 1,
+      "subsidiary": "CIL Consolidated",
+      "mineName": "All Mines Combined",
+      "coalfield": "National",
+      "year": 2021,
+      "targetProductionMt": 660,
+      "achievedProductionMt": 596.22,
+      "achievementPercentage": 90.34,
+      "dispatchMt": 574.5,
+      "overburdenRemovalMcm": 1344,
+      "strippingRatio": 2.25,
+      "productivityOms": 9.6,
+      "confidence": 0.99,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2021_gevra",
+      "documentId": "doc_secl_gevra_2023",
+      "pageNumber": 1,
+      "subsidiary": "SECL",
+      "mineName": "Gevra Mega OC",
+      "coalfield": "Korba Coalfield",
+      "year": 2021,
+      "targetProductionMt": 45,
+      "achievedProductionMt": 46.2,
+      "achievementPercentage": 102.67,
+      "dispatchMt": 45.8,
+      "overburdenRemovalMcm": 51,
+      "strippingRatio": 1.1,
+      "productivityOms": 24.5,
+      "confidence": 0.95,
+      "validationStatus": "VERIFIED"
+    },
+    {
+      "id": "pr_2020_cil",
+      "documentId": "doc_parl_starred_412",
+      "pageNumber": 1,
+      "subsidiary": "CIL Consolidated",
+      "mineName": "All Mines Combined",
+      "coalfield": "National",
+      "year": 2020,
+      "targetProductionMt": 660,
+      "achievedProductionMt": 602.14,
+      "achievementPercentage": 91.23,
+      "dispatchMt": 581.4,
+      "overburdenRemovalMcm": 1154,
+      "strippingRatio": 1.92,
+      "productivityOms": 9.1,
+      "confidence": 0.98,
+      "validationStatus": "VERIFIED"
+    }
+  ],
+  "geologicalRecords": [
+    {
+      "id": "geo_talcher_seam2",
+      "documentId": "doc_cmpdi_talcher_2022",
+      "pageNumber": 18,
+      "subsidiary": "MCL / CMPDI",
+      "coalfield": "Talcher Coalfield",
+      "blockName": "Talcher Barakar Seam II Block",
+      "provenReservesMt": 6400,
+      "indicatedReservesMt": 2800,
+      "inferredReservesMt": 1200,
+      "totalReservesMt": 10400,
+      "coalGrade": "G11 - G13",
+      "avgSeamThicknessM": 18.6,
+      "gasDrainagePotential": "LOW",
+      "confidence": 0.98
+    },
+    {
+      "id": "geo_ashok_block",
+      "documentId": "doc_ccl_karanpura_2021",
+      "pageNumber": 1,
+      "subsidiary": "CCL / CMPDI",
+      "coalfield": "North Karanpura Coalfield",
+      "blockName": "Ashok OCP Expansion Block",
+      "provenReservesMt": 480,
+      "indicatedReservesMt": 140,
+      "inferredReservesMt": 80,
+      "totalReservesMt": 700,
+      "coalGrade": "G11 (Non-coking thermal)",
+      "avgSeamThicknessM": 14.5,
+      "gasDrainagePotential": "LOW",
+      "confidence": 0.99
+    },
+    {
+      "id": "geo_moonidih_deep",
+      "documentId": "doc_bccl_moonidih_2023",
+      "pageNumber": 1,
+      "subsidiary": "BCCL / CMPDI",
+      "coalfield": "Jharia Coalfield",
+      "blockName": "Moonidih Deep Seam XVI-XVII",
+      "provenReservesMt": 124,
+      "indicatedReservesMt": 65,
+      "inferredReservesMt": 42,
+      "totalReservesMt": 231,
+      "coalGrade": "Steel Grade-I Prime Coking Coal",
+      "avgSeamThicknessM": 3.8,
+      "gasDrainagePotential": "HIGH",
+      "confidence": 0.92
+    }
+  ],
+  "inquiries": [
+    {
+      "id": "inq_parl_01",
+      "referenceNumber": "LS-PQ/Starred/4921/2024",
+      "house": "Lok Sabha",
+      "questionType": "Starred",
+      "subject": "Domestic Coking Coal Availability, Washery Yield and Steel Sector Self-Sufficiency",
+      "ministryDivision": "Parliamentary Cell / Operations Division",
+      "urgency": "Critical",
+      "dueDate": "2024-11-28",
+      "assignedTo": "Vikramaditya Roy (Under Secretary)",
+      "status": "Drafted",
+      "queryDetails": "Will the Minister of Coal be pleased to state: (a) Total raw coking coal production across BCCL and CCL during FY 2023-24; (b) Current capacity utilization of existing coking coal washeries; (c) Steps initiated under Mission Coking Coal to substitute imported metallurgical coal in blast furnaces.",
+      "linkedDocuments": [
+        {
+          "documentId": "doc_cil_ann_2024",
+          "documentTitle": "CIL Consolidated Annual Production & Dispatch Review 2023-24",
+          "pageNumber": 14,
+          "citationSnippet": "BCCL achieved 41.10 MT (100.2%) and CCL produced 86.05 MT (102.4%) during FY 2023-24."
+        },
+        {
+          "documentId": "doc_bccl_coking_2024",
+          "documentTitle": "BCCL Coking Coal Washery Yield & Offtake Assessment 2023-24",
+          "pageNumber": 5,
+          "citationSnippet": "Madhuban and Moonidih washeries operated at 74.2% capacity utilization delivering 12.8 MT clean coal to SAIL/RINL."
+        }
+      ],
+      "draftReply": "GOVERNMENT OF INDIA\nMINISTRY OF COAL\nLOK SABHA STARRED QUESTION NO. 4921\nANSWERED ON 28.11.2024\n\nSTATEMENT REFERRED TO IN REPLY TO PARTS (a) TO (c) OF LOK SABHA STARRED QUESTION NO. 4921:\n\n(a): During the financial year 2023-24, Bharat Coking Coal Limited (BCCL) achieved a raw coal production of 41.10 Million Tonnes (MT) (100.2% of target), while Central Coalfields Limited (CCL) produced 86.05 MT (102.4% of target), providing a solid foundation for domestic metallurgical feedstock.\n\n(b): Operating washeries across BCCL and CCL operated at a weighted capacity utilization of 74.2%, dispatching 12.8 MT of washed metallurgical clean coking coal to domestic steel producers including Steel Authority of India Limited (SAIL) and Rashtriya Ispat Nigam Limited (RINL).\n\n(c): Under 'Mission Coking Coal', CMPDI has identified and proved additional Barakar Formation deep coking blocks in Jharia and East Bokaro with estimated reserves of 4,200 MT. CIL is constructing 4 new mechanized heavy medium cyclone washeries with aggregate throughput of 14 MTPA.",
+      "verifiedBy": "Ananya Sen (Senior Analyst)",
+      "updatedAt": "2024-11-20T14:30:00Z"
+    },
+    {
+      "id": "inq_parl_02",
+      "referenceNumber": "RS-PQ/Unstarred/1182/2024",
+      "house": "Rajya Sabha",
+      "questionType": "Unstarred",
+      "subject": "Overburden Removal Compliance and Stripping Ratio Monitoring in Mega Opencast Mines",
+      "ministryDivision": "Technical Directorate / DGMS Compliance",
+      "urgency": "High",
+      "dueDate": "2024-12-05",
+      "assignedTo": "Ananya Sen (Analyst)",
+      "status": "Pending",
+      "queryDetails": "Whether Coal India subsidiaries have adhered to environmental and statutory stripping ratios in high-capacity opencast mines including Gevra and Kusmunda; and the measures deployed for composite slope stability monitoring.",
+      "linkedDocuments": [
+        {
+          "documentId": "doc_secl_gevra_2023",
+          "documentTitle": "SECL Gevra Mega Opencast Project - Annual Performance Dossier 2022-23",
+          "pageNumber": 8,
+          "citationSnippet": "Composite overburden handling reached 68.40 MCM against coal production of 50.80 MT, maintaining stripping ratio at 1.35 m3/t with continuous slope radar deployment."
+        }
+      ],
+      "draftReply": "GOVERNMENT OF INDIA\nMINISTRY OF COAL\nRAJYA SABHA UNSTARRED QUESTION NO. 1182\n\n(a) & (b): In SECL's Gevra Mega Opencast Project, composite overburden handled during FY 2022-23 stood at 68.40 Million Cubic Metres (MCM) against coal extraction of 50.80 MT, establishing a compliant stripping ratio of 1.35 m3/tonne. Slope stability is supervised using automated real-time ground-based radar systems certified by DGMS.",
+      "updatedAt": "2024-11-22T09:15:00Z"
+    },
+    {
+      "id": "inq_parl_03",
+      "referenceNumber": "MOC-PRIORITY/ADM-883/2024",
+      "house": "Ministry of Coal",
+      "questionType": "Administrative Priority",
+      "subject": "Verification of Geological Proved Reserves and Seam Correlation in Talcher Coalfield",
+      "ministryDivision": "Exploration & Geological Planning Desk",
+      "urgency": "Medium",
+      "dueDate": "2024-12-12",
+      "assignedTo": "Dr. Rajeshwar Sharma (GM IT & Geomatics)",
+      "status": "Approved",
+      "queryDetails": "Immediate verification required by Secretary (Coal) regarding CMPDI Regional Institute VII exploration data in Talcher Barakar Seams and projected opencast extractability.",
+      "linkedDocuments": [
+        {
+          "documentId": "doc_cmpdi_talcher_2023",
+          "documentTitle": "CMPDI Regional Institute VII - Geological Assessment Report on Talcher Coalfield",
+          "pageNumber": 12,
+          "citationSnippet": "Proved coal reserves stand established at 18,450 MT across Barakar formations with average seam thickness of 18.6m."
+        }
+      ],
+      "draftReply": "CMPDI Regional Institute VII exploration assessment has confirmed 18,450 MT under the Proved category in Talcher Coalfield. Barakar Seam II presents exceptional deposit thickness (average 18.6m) with low stripping ratio suitable for 50 MTPA dragline expansion projects.",
+      "verifiedBy": "Dr. Rajeshwar Sharma (Admin)",
+      "updatedAt": "2024-11-24T11:00:00Z"
+    }
+  ],
+  "reports": [
+    {
+      "id": "rep_01_consolidated",
+      "title": "CIL Pan-India Production & Geological Reserve Briefing (FY 2020-2024)",
+      "reportType": "Consolidated Performance Dossier",
+      "reportingPeriod": "FY 2020 - FY 2024",
+      "subsidiary": "All Subsidiaries",
+      "createdAt": "2026-09-26T10:43:00.818Z",
+      "generatedBy": "Ananya Sen (Analyst)",
+      "summaryStats": {
+        "totalProductionMt": 773.6,
+        "targetAchievementPct": 99.18,
+        "reservesAssessedMt": 18450,
+        "dataConfidenceScore": 98.4
+      },
+      "sourceDocuments": [
+        "CIL Consolidated Annual Production & Dispatch Review 2023-24",
+        "SECL Gevra Mega Opencast Project - Annual Performance Dossier 2022-23",
+        "CMPDI Regional Institute VII - Geological Assessment Report on Talcher Coalfield"
+      ],
+      "sections": [
+        {
+          "id": "sec_1",
+          "title": "1. Executive Summary",
+          "content": "Coal India Limited demonstrated steady recovery and acceleration, peaking at 773.60 MT in FY24 (10.0% growth YoY). Opencast mines accounted for 95.8% of total volume with composite overburden removal reaching 1,960.5 MCM."
+        }
+      ]
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "aud_1790419380821_puz43",
+      "timestamp": "2026-09-26T10:43:00.821Z",
+      "userId": "usr_admin_01",
+      "userName": "Dr. Rajeshwar Sharma",
+      "userRole": "ADMIN",
+      "action": "BENCHMARK_LOAD",
+      "resourceType": "SYSTEM",
+      "details": "Loaded official verified CMPDI / CIL benchmark dataset for evaluation.",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "aud_01",
+      "timestamp": "2024-04-18T10:32:15Z",
+      "userId": "usr_admin_01",
+      "userName": "Dr. Rajeshwar Sharma",
+      "userRole": "ADMIN",
+      "action": "DOCUMENT_PROCESS",
+      "resourceType": "DOCUMENT",
+      "resourceId": "doc_cil_ann_2024",
+      "details": "Processed CIL Annual Production Review 2023-24. Extracted 1 table, 2 text chunks, 2 verified entities.",
+      "ipAddress": "10.24.110.14",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "aud_02",
+      "timestamp": "2024-04-18T11:05:22Z",
+      "userId": "usr_analyst_01",
+      "userName": "Ananya Sen",
+      "userRole": "ANALYST",
+      "action": "ENTITY_VALIDATION_APPROVE",
+      "resourceType": "ENTITY",
+      "resourceId": "ent_01",
+      "details": "Approved CIL Total Raw Coal Production (773.60 MT) against audited statement.",
+      "ipAddress": "10.24.110.45",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "aud_03",
+      "timestamp": "2023-05-12T14:20:10Z",
+      "userId": "usr_admin_01",
+      "userName": "Dr. Rajeshwar Sharma",
+      "userRole": "ADMIN",
+      "action": "DOCUMENT_PROCESS",
+      "resourceType": "DOCUMENT",
+      "resourceId": "doc_secl_gevra_2023",
+      "details": "Flagged CONFLICT_REQUIRES_REVIEW on Gevra production: 52.5 MT field report vs 50.80 MT audited balance.",
+      "ipAddress": "10.24.110.14",
+      "status": "WARNING"
+    },
+    {
+      "id": "aud_04",
+      "timestamp": "2024-05-02T15:25:00Z",
+      "userId": "usr_analyst_01",
+      "userName": "Ananya Sen",
+      "userRole": "ANALYST",
+      "action": "NATURAL_QUERY",
+      "resourceType": "QUERY",
+      "details": "Query executed: \"Compare Mine A and Mine B from 2020 to 2024\" (Classified as HYBRID - SQL + RAG).",
+      "ipAddress": "10.24.110.45",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "aud_05",
+      "timestamp": "2024-05-02T15:30:10Z",
+      "userId": "usr_viewer_01",
+      "userName": "Vikramaditya Roy",
+      "userRole": "VIEWER",
+      "action": "REPORT_EXPORT",
+      "resourceType": "REPORT",
+      "resourceId": "rep_demo_01",
+      "details": "Exported Parliamentary Briefing Report to PDF for Ministry Review.",
+      "ipAddress": "10.200.4.88",
+      "status": "SUCCESS"
+    }
+  ],
+  "settings": {
+    "geminiModel": "gemini-3.8-flash",
+    "ocrEngineMode": "HYBRID_VISION_TESSERACT",
+    "autoApproveConfidenceThreshold": 0.95,
+    "maxVectorChunksPerQuery": 6,
+    "enforceSourceTraceability": true,
+    "activeOrganization": "CMPDI / Enterprise Intelligence",
+    "enableRealTimeAuditing": true
+  }
+}

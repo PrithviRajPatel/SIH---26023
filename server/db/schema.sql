@@ -48,16 +48,32 @@ CREATE TABLE IF NOT EXISTS documents (
     mime_type VARCHAR(128) NOT NULL,
     file_size BIGINT NOT NULL,
     file_hash VARCHAR(128) NOT NULL,
-    subsidiary VARCHAR(128) NOT NULL,
+    document_type VARCHAR(64) DEFAULT 'GENERAL_DOCUMENT',
+    doc_type VARCHAR(64) NOT NULL,
+    category VARCHAR(128) DEFAULT 'General Intelligence',
+    domain VARCHAR(64) DEFAULT 'GENERAL',
+    language VARCHAR(32) DEFAULT 'English',
+    doc_date VARCHAR(64),
+    reporting_period VARCHAR(128),
+    organization VARCHAR(255),
+    department VARCHAR(255),
+    location VARCHAR(255),
+    subsidiary VARCHAR(128),
     mine_name VARCHAR(255),
     coalfield VARCHAR(255),
-    reporting_year INTEGER NOT NULL,
-    doc_type VARCHAR(64) NOT NULL,
+    reporting_year INTEGER,
     status VARCHAR(64) NOT NULL DEFAULT 'UPLOADED',
     is_scanned BOOLEAN DEFAULT FALSE,
     page_count INTEGER DEFAULT 1,
     summary TEXT,
+    executive_summary TEXT,
     tags TEXT, -- Comma-separated or JSON
+    quality_score_json TEXT,
+    key_metrics_json TEXT,
+    insights_json TEXT,
+    visualizations_json TEXT,
+    timeline_events_json TEXT,
+    custom_metadata_json TEXT,
     created_by VARCHAR(64),
     is_archived BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -66,9 +82,11 @@ CREATE TABLE IF NOT EXISTS documents (
 
 -- Indexes for fast filtering
 CREATE INDEX IF NOT EXISTS idx_documents_sub ON documents(subsidiary);
+CREATE INDEX IF NOT EXISTS idx_documents_org ON documents(organization);
 CREATE INDEX IF NOT EXISTS idx_documents_year ON documents(reporting_year);
 CREATE INDEX IF NOT EXISTS idx_documents_hash ON documents(file_hash);
 CREATE INDEX IF NOT EXISTS idx_documents_status ON documents(status);
+CREATE INDEX IF NOT EXISTS idx_documents_domain ON documents(domain);
 
 -- 4. Document Pages
 CREATE TABLE IF NOT EXISTS document_pages (
@@ -78,6 +96,7 @@ CREATE TABLE IF NOT EXISTS document_pages (
     raw_text TEXT NOT NULL,
     ocr_confidence REAL DEFAULT 0.98,
     is_scanned BOOLEAN DEFAULT FALSE,
+    bounding_boxes_json TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_doc_pages_doc ON document_pages(document_id);

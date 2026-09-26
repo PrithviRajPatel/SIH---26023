@@ -22,6 +22,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { DocumentType, MiningDocument } from '../types';
+import { api } from '../services/api';
 
 interface UploadItem {
   id: string;
@@ -246,37 +247,74 @@ export const UploadDocumentsTab: React.FC<UploadDocumentsTabProps> = ({
     };
 
     try {
-      updateProgress('INGESTING', 15);
-      await new Promise(r => setTimeout(r, 200));
+      if (item.file) {
+        updateProgress('INGESTING', 10);
+        const formData = new FormData();
+        formData.append('file', item.file);
+        formData.append('title', item.name.replace(/\.[^/.]+$/, '').replace(/[_\\-]/g, ' '));
+        formData.append('subsidiary', item.subsidiary);
+        formData.append('mineName', item.mineName);
+        formData.append('reportingYear', String(item.year));
+        formData.append('docType', item.docType);
 
-      updateProgress('OCR_EXTRACTION', 35);
-      await new Promise(r => setTimeout(r, 250));
+        const uploadRes = await api.uploadBinaryFile(formData);
+        if (!uploadRes.success) {
+          throw new Error('Upload submission failed.');
+        }
 
-      updateProgress('TABLE_PARSING', 55);
-      await new Promise(r => setTimeout(r, 200));
+        const jobId = uploadRes.jobId;
+        const docId = uploadRes.documentId;
 
-      updateProgress('ENTITY_NER', 75);
-      await new Promise(r => setTimeout(r, 200));
+        // Poll real backend job status until complete
+        let completed = false;
+        let attempts = 0;
+        while (!completed && attempts < 120) {
+          attempts++;
+          await new Promise(r => setTimeout(r, 400));
+          const jobStatusRes = await api.getJobStatus(jobId);
+          const job = jobStatusRes?.job;
+          if (!job) break;
 
-      updateProgress('VERIFYING', 90);
-      await new Promise(r => setTimeout(r, 150));
+          if (job.status === 'COMPLETED') {
+            completed = true;
+            updateProgress('COMPLETED', 100);
+            setQueue(prev => prev.map(it => it.id === item.id ? { ...it, status: 'COMPLETED', progress: 100, resultDocId: docId } : it));
+            await onUploadDocument({ id: docId });
+            return true;
+          } else if (job.status === 'FAILED') {
+            throw new Error(job.errorMessage || 'Job processing failed.');
+          } else {
+            let stageStatus: UploadItem['status'] = 'INGESTING';
+            if (job.progress >= 80) stageStatus = 'INDEXING';
+            else if (job.progress >= 60) stageStatus = 'ENTITY_NER';
+            else if (job.progress >= 40) stageStatus = 'TABLE_PARSING';
+            else if (job.progress >= 20) stageStatus = 'OCR_EXTRACTION';
+            updateProgress(stageStatus, job.progress);
+          }
+        }
 
-      const res = await onUploadDocument({
-        title: item.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' '),
-        filename: item.name,
-        fileType: item.type,
-        fileSize: item.size,
-        subsidiary: item.subsidiary,
-        mineName: item.mineName,
-        reportingYear: item.year,
-        docType: item.docType,
-        textContent: item.rawText,
-        tags: [item.subsidiary, item.mineName, item.type.toUpperCase(), 'User Ingested']
-      });
+        return true;
+      } else {
+        // Direct template text ingestion
+        updateProgress('INGESTING', 30);
+        const res = await onUploadDocument({
+          title: item.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' '),
+          filename: item.name,
+          fileType: item.type,
+          fileSize: item.size,
+          subsidiary: item.subsidiary,
+          mineName: item.mineName,
+          reportingYear: item.year,
+          docType: item.docType,
+          textContent: item.rawText,
+          tags: [item.subsidiary, item.mineName, item.type.toUpperCase(), 'User Ingested']
+        });
 
-      const docId = res?.document?.id || res?.id || `doc_${Date.now()}`;
-      setQueue(prev => prev.map(it => it.id === item.id ? { ...it, status: 'COMPLETED', progress: 100, resultDocId: docId } : it));
-      return true;
+        const docId = res?.document?.id || res?.id || `doc_${Date.now()}`;
+        updateProgress('COMPLETED', 100);
+        setQueue(prev => prev.map(it => it.id === item.id ? { ...it, status: 'COMPLETED', progress: 100, resultDocId: docId } : it));
+        return true;
+      }
     } catch (err: any) {
       setQueue(prev => prev.map(it => it.id === item.id ? { ...it, status: 'FAILED', progress: 0, error: err.message || 'Processing failed' } : it));
       return false;

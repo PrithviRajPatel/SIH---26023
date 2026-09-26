@@ -306,6 +306,7 @@ export interface ParliamentaryInquiry {
   draftReply?: string;
   verifiedBy?: string;
   dispatchedAt?: string;
+  createdAt?: string;
   updatedAt: string;
 }
 

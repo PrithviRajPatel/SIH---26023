@@ -55,6 +55,19 @@ export const api = {
     return res.json();
   },
 
+  async uploadBinaryFile(formData: FormData): Promise<{ success: boolean; jobId: string; documentId: string }> {
+    const res = await fetch('/api/documents/upload', {
+      method: 'POST',
+      body: formData
+    });
+    return res.json();
+  },
+
+  async getJobStatus(jobId: string): Promise<{ job: { id: string; status: 'QUEUED' | 'PROCESSING' | 'COMPLETED' | 'FAILED'; progress: number; stage: string; errorMessage?: string } }> {
+    const res = await fetch(`/api/jobs/${jobId}`);
+    return res.json();
+  },
+
   async uploadDocument(data: {
     title: string;
     filename: string;

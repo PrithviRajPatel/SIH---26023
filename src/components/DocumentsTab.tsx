@@ -41,6 +41,8 @@ export const DocumentsTab: React.FC<DocumentsTabProps> = ({
   const [selectedYear, setSelectedYear] = useState('ALL');
   const [selectedType, setSelectedType] = useState('ALL');
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const [docToDelete, setDocToDelete] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const filteredDocs = documents.filter(doc => {
     const matchSearch = search === '' || 
@@ -64,11 +66,18 @@ export const DocumentsTab: React.FC<DocumentsTabProps> = ({
     }
   };
 
-  const handleDelete = async (docId: string, title: string) => {
-    if (window.confirm(`Are you sure you want to delete "${title}" from the repository?`)) {
-      if (onDeleteDocument) {
-        await onDeleteDocument(docId);
-      }
+  const handleDelete = (docId: string, title: string) => {
+    setDocToDelete({ id: docId, title });
+  };
+
+  const confirmDelete = async () => {
+    if (!docToDelete || !onDeleteDocument) return;
+    setIsDeleting(true);
+    try {
+      await onDeleteDocument(docToDelete.id);
+      setDocToDelete(null);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -309,6 +318,48 @@ export const DocumentsTab: React.FC<DocumentsTabProps> = ({
           </div>
         )}
       </div>
+
+      {/* In-app Document Deletion Confirmation Modal */}
+      {docToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-slate-900 border border-rose-500/40 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+                <Trash2 className="w-5 h-5 text-rose-400" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-white">Delete Document?</h3>
+                <p className="text-xs text-rose-400 font-medium">Remove from Repository & Vector Store</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+              Are you sure you want to permanently delete <strong className="text-white font-semibold">"{docToDelete.title}"</strong>?
+              This will remove all associated chunk vectors, tables, and extracted entities.
+            </p>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setDocToDelete(null)}
+                disabled={isDeleting}
+                className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={confirmDelete}
+                disabled={isDeleting}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition shadow-lg shadow-rose-900/40"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>{isDeleting ? 'Deleting...' : 'Yes, Delete Document'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
